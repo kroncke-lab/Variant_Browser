@@ -1,0 +1,280 @@
+<!--
+TODO: 1) Adjust clinical data to separately include Leducq patients
+TODO: 2) Remove duplicate variants displayed in distances table
+TODO: 3)
+-->
+{% extends "base.html" %}
+{% load static %}
+{% block page_content %}
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/date-1.0.3/r-2.2.7/sc-2.0.3/sb-1.0.1/sl-1.3.3/datatables.min.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
+
+
+<div align="center" class="jumbotron text-center">
+    <h1>
+        <p> <i>KCNH2</i> Variant <b>{{ variant.var }}</b> Detail </p>
+    </h1>
+</div>
+
+<i>KCNH2</i> {{ variant.var }} was found in a total of {{total_carriers}} carriers in {{ recs_clin| length }} papers:
+{{variant.lqt2}} had LQT2.
+
+{% if variant.gnomad > 0 %}
+    {{variant.var}} is present in {{variant.gnomad}} alleles in gnomAD.
+{% else %}
+    {{variant.var}} is not present in gnomAD.
+{% endif %}
+{{variant.var}} has been functionally characterized in {{ recs_funcs| length }} papers.
+This residue is located in a {{variant.structure}} region for LQT2.
+
+{% if alpha != "NA" %}
+<i>In silico</i> predictions, functional data (if available), and location in structure are equivalent to observing
+{{alpha}} individuals with LQT2 and {{beta}} unaffected individuals.
+{% endif %}
+<p></p>
+
+<body>
+
+<div align="center" class="content">
+    <h2>
+        <p> <i>In Silico</i> Data </p>
+    </h2>
+</div>
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>PROVEAN</th>
+        <th>PolyPhen-2</th>
+        <th>BLAST-PSSM</th>
+        <th>REVEL</th>
+        <th>Penetrance Density (%)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{{variant.provean_score}}</td>
+        <td>{{variant.pph2_prob}}</td>
+        <td>{{variant.blast_pssm}}</td>
+        <td>{{variant.revel_score}}</td>
+        <td>{% widthratio variant.lqt2_dist 1 100 %}</td>
+    </tr>
+   </tbody>
+</table>
+PROVEAN scores less than -2 are considered deleterious. REVEL scores higher than 0.5 or 0.75 is considered
+likely pathogenic (higher sensitivity with the former cutoff, higher specificity with the latter cutoff).
+A PolyPhen-2 score of 0.85 or greater is considered likely pathogenic.
+BLAST-PSSM reflects the evolutionary conservation of residue substitutions, more negative numbers indicate
+fewer observations of the specific substitution than is expected.
+<p></p>
+
+<div align="center" class="content">
+    <h2>
+        <p> Reported Carrier Data </p>
+    </h2>
+</div>
+<table id="clinrecs" class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>PubMed ID</th>
+        <th>Year</th>
+        <th>Carriers</th>
+        <th>Unaffected</th>
+        <th>LQT2</th>
+        <th>Other Disease</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if clin_papers > 0 %}
+        {% for p in recs_clin %}
+    <tr>
+        {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "Paris Cohort" %}
+        <td><a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}">{{ p.pmid }}</a></td>
+        {% else %}
+        <td>{{ p.pmid }}</td>
+        {% endif %}
+        <td>{{p.year}}</td>
+        <td>{{p.car}}</td>
+        <td>{{p.unaffected}}</td>
+        <td>{{p.lqt}}</td>
+        <td>{{p.other_diag}}</td>
+    </tr>
+        {% endfor %}
+    {% endif %}
+    <tr>
+        <td>LITERATURE, COHORT, AND GNOMAD:</td>
+        <td>-</td>
+        <td>{{total_carriers}}</td>
+        <td>{{variant.unaff}}</td>
+        <td>{{variant.lqt2}}</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>VARIANT FEATURES ALONE:</td>
+        <td>-</td>
+        <td>10</td>
+        <td>{{beta}}</td>
+        <td>{{alpha}}</td>
+        <td>-</td>
+    </tr>
+   </tbody>
+</table>
+Summary totals might not agree with the literature table because of duplicate patients, which were excluded from the total counts.
+
+<p></p>
+{% if func_papers > 0 %}
+<div align="center" class="content">
+    <h2>
+        <p>Functional Data Homozygously Collected </p>
+    </h2>
+</div>
+Steady state (S.S.) and peak tail current are relative % to wildtype (100% being no different from wildtype).
+V<sub>0.5</sub> act/inact are the voltages at which half of the maximal current is reached during an activation and
+inactivation protocol, each is in units of mV and relative to wildtype. Recovery from inactivation (Rec. inact.)
+and deactivation time (Deactivation) are the ratio of characteristic time constants with wildtype (unitless).
+<p></p>
+
+<table id="funcrecshm" class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>PubMed ID</th>
+        <th>Cell Type</th>
+        <th>S.S Peak (%WT)</th>
+        <th>Peak Tail I<sub>Kr</sub> (%WT)</th>
+        <th>V<sub>1/2</sub> Act.</th>
+        <th>V<sub>1/2</sub> Inact.</th>
+        <th>Recov. Inact.</th>
+        <th>Deactivation (%WT)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in recs_funcs %}
+    <tr>
+        <td><a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}">{{ p.pmid }}</a></td>
+        <td>{{p.cell_type}}</td>
+        <td>{% widthratio p.hm_ss 1 100 %}</td>
+        <td>{% widthratio p.hm_peak_tail 1 100 %}</td>
+        <td>{{p.hm_act}}</td>
+        <td>{{p.hm_inact}}</td>
+        <td>{{p.hm_recov_inact}}</td>
+        <td>{{p.hm_tau_deact_fast}}</td>
+    </tr>
+    {% endfor %}
+   </tbody>
+</table>
+
+<p></p>
+<div align="center" class="content">
+    <h2>
+        <p>Functional Data Heterozygously Collected </p>
+    </h2>
+</div>
+Functional parameters are the same as defined above.
+<p></p>
+<table id="funcrecsht" class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>PubMed ID</th>
+        <th>Cell Type</th>
+        <th>S.S Peak (%WT)</th>
+        <th>Peak Tail I<sub>Kr</sub> (%WT)</th>
+        <th>V<sub>1/2</sub> Act.</th>
+        <th>V<sub>1/2</sub> Inact.</th>
+        <th>Deactivation (%WT)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in recs_funcs %}
+    <tr>
+        <td><a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}">{{ p.pmid }}</a></td>
+        <td>{{p.cell_type}}</td>
+        <td>{% widthratio p.ht_ss 1 100 %}</td>
+        <td>{% widthratio p.ht_peak_tail 1 100 %}</td>
+        <td>{{p.ht_act}}</td>
+        <td>{{p.ht_inact}}</td>
+        <td>{{p.ht_deact}}</td>
+    </tr>
+    {% endfor %}
+   </tbody>
+</table>
+{% endif %}
+<p></p>
+
+{% if var_type %}
+<div align="center" class="content">
+    <h2>
+        <p> <b>{{ variant.var }}</b> has {{ recs_dists| length }} previously observed neighbors within 15 angstroms </p>
+    </h2>
+</div>
+A residue within a folded protein on average has nearest neighbors that fall roughly into two shells: a "nearest"
+neighbor around 5-6 angstroms and a second shell around 11 angstroms. NOTE: some residues appear multiple times at
+different distances. This results from the fact that the functional Kv11.1 channel is a homotetramer and occasionally
+the same residue from multiple subunits is present within the 15A window. All variants shown in the rightmost
+column have been observed in at least one individual in the literature or gnomAD.
+<p></p>
+<table id="distrecs" class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>Neighbor</th>
+        <th>Distance (Angstroms)</th>
+        <th>Variants Observed in Individuals</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in recs_dists %}
+        <tr>
+            <td>{{p.neighbor}}</td>
+            <td>{% widthratio p.distance 1 1 %}</td>
+            <td>
+            {% for r in recs_vars %}
+                {% if r.resnum == p.neighbor %}
+                         <a href="{% url 'kcnh2:detail' r.hgvsc %}">{{r.var}}, </a>
+                {% endif %}
+            {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+
+   </tbody>
+</table>
+{% endif %}
+
+</body>
+<p></p>
+<p></p>
+<p></p>
+<script>
+// Variant Detail Tables:
+$(document).ready(function() {
+    var table = $('#clinrecs').DataTable( {
+        scrollY: 200,
+        scrollCollapse: true,
+        paging: false,
+        searching: false, info: false
+        });
+        $('#funcrecshm').DataTable( {
+        scrollY: 200,
+        scrollCollapse: true,
+        paging: false,
+        searching: false, info: false
+        });
+        $('#funcrecsht').DataTable( {
+        scrollY: 200,
+        scrollCollapse: true,
+        paging: false,
+        searching: false, info: false
+        });
+        $('#distrecs').DataTable( {
+        scrollY: 200,
+        scrollCollapse: true,
+        paging: false,
+        searching: false, info: false
+        });
+});
+</script>
+{% endblock %}
