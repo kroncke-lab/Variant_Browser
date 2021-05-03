@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'variantbrowser'
           slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_33c64c0994ea4b63aa9548706422a809 }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_0d615a4e24294150bcc2037193d51524 }}
