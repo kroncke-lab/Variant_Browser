@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-d@p%q*!jf4nlv_r8go6$w=+p*z9@+w=%(l3w3o)@^7q7v^c61j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net']
+ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', '127.0.0.1']
 
 
 # Application definition
@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net']
 INSTALLED_APPS = [
     #'scn5a',
     'kcnh2',
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -59,7 +61,7 @@ ROOT_URLCONF = 'variantbrowser.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'variantbrowser\\templates']
+        'DIRS': [BASE_DIR / 'variantbrowser/templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -140,9 +142,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    str(BASE_DIR.joinpath('static')),
 )
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
