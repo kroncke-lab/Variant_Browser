@@ -59,7 +59,7 @@ ROOT_URLCONF = 'variantbrowser.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'variantbrowser\\templates']
+        'DIRS': [BASE_DIR / 'variantbrowser/templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
