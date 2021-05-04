@@ -6,15 +6,6 @@ from kcnh2.models import newVariant, ClinicalPapers, kcnh2Distances, FunctionalP
 
 # Create your views here.
 
-
-def about(request):
-    return render(request, 'about.html')
-
-
-def penetrance_estimation(request):
-    return render(request, 'penetrance_estimate.html')
-
-
 def display(request):
     recs = newVariant.objects.all()
     return render(request, 'main.html', {'recs': recs})
