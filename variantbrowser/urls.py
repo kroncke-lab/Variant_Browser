@@ -19,11 +19,12 @@ TODO add SCN5A url and all subsequently necessary files to run variant browser s
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('KCNH2/', include('kcnh2.urls')),
     #path('SCN5A/', include('scn5a.urls')),
-    path('', TemplateView.as_view(template_name='base.html')),
+    path('', views.home, name='home'),
 ]
 
