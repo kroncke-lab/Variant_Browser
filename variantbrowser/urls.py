@@ -26,5 +26,7 @@ urlpatterns = [
     path('KCNH2/', include('kcnh2.urls')),
     #path('SCN5A/', include('scn5a.urls')),
     path('', views.home, name='home'),
+    path('penetrance_estimate_protocol', views.penetrance_estimation, name='penetrance_estimate'),
+    path('about/', views.about, name='about'),
 ]
 
