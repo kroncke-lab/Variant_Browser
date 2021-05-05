@@ -1,5 +1,4 @@
 <!--
-TODO: 1) Adjust clinical data to separately include Leducq patients
 TODO: 2) Remove duplicate variants displayed in distances table
 TODO: 3)
 -->
@@ -37,7 +36,7 @@ This residue is located in a {{variant.structure}} region for LQT2.
 <i>In silico</i> predictions, functional data (if available), and location in structure are equivalent to observing
 {{alpha}} individuals with LQT2 and {{beta}} unaffected individuals.
 {% endif %}
-<p></p>
+Missense variants are combined across degenerate codon substitutions since these data were not consistently available.
 
 <body>
 
@@ -70,7 +69,9 @@ PROVEAN scores less than -2 are considered deleterious. REVEL scores higher than
 likely pathogenic (higher sensitivity with the former cutoff, higher specificity with the latter cutoff).
 A PolyPhen-2 score of 0.85 or greater is considered likely pathogenic.
 BLAST-PSSM reflects the evolutionary conservation of residue substitutions, more negative numbers indicate
-fewer observations of the specific substitution than is expected.
+fewer observations of the specific substitution than is expected. Penetrance density is our previously published method
+to calculate the average LQTS probability density in a shell of residues surrounding a residue of interest
+(<a href="https://pubmed.ncbi.nlm.nih.gov/30828412/">ref</a>).
 <p></p>
 
 <div align="center" class="content">
