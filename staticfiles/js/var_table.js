@@ -6,7 +6,6 @@ $(document).ready( function() {
 
 function initTable () {
     let table = $('#example').DataTable( {
-        orderClasses: true,
         scrollX: true,
         scrollY: 400,
         scroller: true,
@@ -18,7 +17,7 @@ function initTable () {
             'searchBuilder',
             'searchPanes'
         ],
-        dom: 'Bfti'
+        dom: 'Bfti',
     }).on('search.dt', function () {
     tableActions(table);
 });
