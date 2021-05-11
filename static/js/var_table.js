@@ -6,6 +6,7 @@ $(document).ready( function() {
 
 function initTable () {
     let table = $('#example').DataTable( {
+        order: [ 0, 'desc' ],
         orderClasses: true,
         scrollX: true,
         scrollY: 400,
