@@ -83,6 +83,7 @@ WSGI_APPLICATION = 'variantbrowser.wsgi.application'
 DATABASE_ROUTERS = ['variantbrowser.dbrouter.DemoRouter']
 DATABASE_APPS_MAPPING = {'azure_data': 'azure_sql_db'}
 
+# will need to remove
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
