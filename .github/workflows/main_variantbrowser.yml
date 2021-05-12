@@ -15,6 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Set up SQL access environment variables
+    - shell: bash
+      env:
+        DJANGO_DATABASE_NAME: ${{ secrets.DJANGO_DATABASE_NAME }}
+      run: export  DJANGO_DATABASE_NAME="$DJANGO_DATABASE_NAME" 
+      
     - uses: actions/checkout@v2
 
     - name: Set up Python version
@@ -22,12 +28,7 @@ jobs:
       with:
         python-version: '3.8'
     
-    - name: Set up SQL access environment variables
-    - shell: bash
-      env:
-        DJANGO_DATABASE_NAME: ${{ secrets.DJANGO_DATABASE_NAME }}
-      run: export  DJANGO_DATABASE_NAME="$DJANGO_DATABASE_NAME" 
-      
+
     - name: Create and start virtual environment
       run: |
         python -m venv venv
