@@ -57,9 +57,7 @@ jobs:
       
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
-        env:
-          DJANGO_DATABASE_NAME: ${{ secrets.DJANGO_DATABASE_NAME }}
-          TEST_VAR: 'THISISATEST'
+
         with:
           app-name: 'variantbrowser'
           slot-name: 'production'
