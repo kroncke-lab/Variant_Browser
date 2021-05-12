@@ -83,7 +83,6 @@ WSGI_APPLICATION = 'variantbrowser.wsgi.application'
 DATABASE_ROUTERS = ['variantbrowser.dbrouter.DemoRouter']
 DATABASE_APPS_MAPPING = {'azure_data': 'azure_sql_db'}
 
-
 if 'DJANGO_DATABASE_PASSWORD' in os.environ.keys():
     # Staging or production database
     DATABASES = {
