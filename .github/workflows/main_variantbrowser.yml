@@ -21,7 +21,15 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: '3.8'
-
+    
+    - name: Set up SQL access environment variables
+    - shell: bash
+      env:
+        DJANGO_DATABASE_NAME: ${{ secrets.DJANGO_DATABASE_NAME }}
+        DJANGO_DATABASE_USER: ${{ secrets.DJANGO_DATABASE_USER }}
+        DJANGO_DATABASE_PASSWORD: ${{ secrets.DJANGO_DATABASE_PASSWORD }}
+        DJANGO_DATABASE_SERVER: ${{ secrets.DJANGO_DATABASE_SERVER }}
+        
     - name: Create and start virtual environment
       run: |
         python -m venv venv
