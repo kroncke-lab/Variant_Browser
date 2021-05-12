@@ -109,19 +109,7 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
-        },
-        'azure_sql_db': {
-            'NAME': 'sandboxtest',
-            'ENGINE': 'mssql',
-            'USER': 'kronckbm',
-            'PASSWORD': 'Ch3mistry1',
-            'HOST': 'sandboxtest.database.windows.net',
-            'PORT': '1433',
-
-            'OPTIONS': {
-                'driver': 'ODBC Driver 17 for SQL Server',
-            },
-        },
+        }
     }
 
 
