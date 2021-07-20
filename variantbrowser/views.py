@@ -21,4 +21,4 @@ def penetrance_estimation(request):
 
 
 def penetrance_estimation_first_SCN5A(request):
-    return render(request, 'penetrance_estimate_first_SCN5A.html')
+    return render(request, 'penetrance_protocol_first_SCN5A.html')
