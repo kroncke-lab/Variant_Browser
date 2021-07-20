@@ -18,3 +18,7 @@ def about(request):
 
 def penetrance_estimation(request):
     return render(request, 'penetrance_estimate.html')
+
+
+def penetrance_estimation_first_SCN5A(request):
+    return render(request, 'penetrance_estimate_first_SCN5A.html')
