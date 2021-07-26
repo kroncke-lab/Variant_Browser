@@ -85,13 +85,14 @@ DATABASE_ROUTERS = ['variantbrowser.dbrouter.DemoRouter']
 DATABASE_APPS_MAPPING = {'azure_data': 'azure_sql_db'}
 
 # will need to remove
+DJANGO_DATABASE_NAME = os.environ("DJANGO_DATABASE_NAME")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
     'azure_sql_db': {
-        'NAME': os.environ("DJANGO_DATABASE_NAME"),
+        'NAME': DJANGO_DATABASE_NAME,
         'ENGINE': 'mssql',
         'USER': 'kronckbm',
         'PASSWORD': 'Ch3mistry1',
