@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     },
     'azure_sql_db': {
-        'NAME': DJANGO_DATABASE_NAME,
+        'NAME': os.getenv("DJANGO_DATABASE_NAME"),
         'ENGINE': 'mssql',
         'USER': 'kronckbm',
         'PASSWORD': 'Ch3mistry1',
