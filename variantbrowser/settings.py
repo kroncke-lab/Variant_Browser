@@ -86,7 +86,7 @@ DATABASE_ROUTERS = ['variantbrowser.dbrouter.DemoRouter']
 DATABASE_APPS_MAPPING = {'azure_data': 'azure_sql_db'}
 
 # will need to remove
-DJANGO_DATABASE_NAME = os.environ.get("DJANGO_DATABASE_NAME")
+DJANGO_DATABASE_NAME = os.environ.get('DJANGO_DATABASE_NAME')
 #DJANGO_DATABASE_NAME = os.environ.get("DJANGO_DATABASE_NAME")
 #DJANGO_DATABASE_NAME = os.environ.get("DJANGO_DATABASE_NAME")
 #DJANGO_DATABASE_NAME = os.environ.get("DJANGO_DATABASE_NAME")
@@ -97,7 +97,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     },
     'azure_sql_db': {
-        'NAME': 'sandboxtest',
+        'NAME': DJANGO_DATABASE_NAME,
         'ENGINE': 'mssql',
         'USER': 'kronckbm',
         'PASSWORD': 'Ch3mistry1',
