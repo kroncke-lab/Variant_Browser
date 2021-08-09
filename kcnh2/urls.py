@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from kcnh2 import views
 
 app_name = 'kcnh2'
 urlpatterns = [
