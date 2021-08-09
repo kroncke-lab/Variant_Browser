@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 
-TODO USE ENVIRONMENT VARIABLES TO SET DATABASE PARAMETERS!!!
 TODO add SCN5A functionality
 """
 
@@ -24,11 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = 'django-insecure-d@p%q*!jf4nlv_r8go6$w=+p*z9@+w=%(l3w3o)@^7q7v^c61j'   # os.environ['SECRET_KEY']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', '127.0.0.1']
 
@@ -36,8 +35,8 @@ ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', '127.
 # Application definition
 
 INSTALLED_APPS = [
-    #'scn5a',
     'kcnh2',
+    'scn5a',
     'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -85,10 +84,10 @@ WSGI_APPLICATION = 'variantbrowser.wsgi.application'
 DATABASE_ROUTERS = ['variantbrowser.dbrouter.DemoRouter']
 DATABASE_APPS_MAPPING = {'azure_data': 'azure_sql_db'}
 
-DJANGO_DATABASE_NAME = os.environ['DJANGO_DATABASE_NAME']
-DJANGO_DATABASE_PASSWORD = os.environ['DJANGO_DATABASE_PASSWORD']
-DJANGO_DATABASE_SERVER = os.environ['DJANGO_DATABASE_SERVER']
-DJANGO_DATABASE_USER = os.environ['DJANGO_DATABASE_USER']
+DJANGO_DATABASE_NAME = 'sandboxtest'  # os.environ['DJANGO_DATABASE_NAME']
+DJANGO_DATABASE_PASSWORD = 'Ch3mistry1'  # os.environ['DJANGO_DATABASE_PASSWORD']
+DJANGO_DATABASE_SERVER = 'sandboxtest.database.windows.net'  # os.environ['DJANGO_DATABASE_SERVER']
+DJANGO_DATABASE_USER = 'kronckbm'  # os.environ['DJANGO_DATABASE_USER']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
