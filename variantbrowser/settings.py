@@ -84,10 +84,10 @@ WSGI_APPLICATION = 'variantbrowser.wsgi.application'
 DATABASE_ROUTERS = ['variantbrowser.dbrouter.DemoRouter']
 DATABASE_APPS_MAPPING = {'azure_data': 'azure_sql_db'}
 
-DJANGO_DATABASE_NAME = 'sandboxtest'  # os.environ['DJANGO_DATABASE_NAME']
-DJANGO_DATABASE_PASSWORD = 'Ch3mistry1'  # os.environ['DJANGO_DATABASE_PASSWORD']
-DJANGO_DATABASE_SERVER = 'sandboxtest.database.windows.net'  # os.environ['DJANGO_DATABASE_SERVER']
-DJANGO_DATABASE_USER = 'kronckbm'  # os.environ['DJANGO_DATABASE_USER']
+DJANGO_DATABASE_NAME = os.environ['DJANGO_DATABASE_NAME']
+DJANGO_DATABASE_PASSWORD =  os.environ['DJANGO_DATABASE_PASSWORD']
+DJANGO_DATABASE_SERVER = os.environ['DJANGO_DATABASE_SERVER']
+DJANGO_DATABASE_USER = os.environ['DJANGO_DATABASE_USER']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
