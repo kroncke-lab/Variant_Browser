@@ -15,7 +15,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('KCNH2/', include('kcnh2.urls')),
-    #path('SCN5A/', include('scn5a.urls')),
+    path('SCN5A/', include('scn5a.urls')),
     path('', views.home, name='home'),
     path('penetrance_estimate_protocol', views.penetrance_estimation, name='penetrance_estimate'),
     path('penetrance_estimate_protocol_details', views.penetrance_estimation_first_SCN5A, name='penetrance_estimate_details'),
