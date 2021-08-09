@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-d@p%q*!jf4nlv_r8go6$w=+p*z9@+w=%(l3w3o)@^7q7v^c61j
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', '127.0.0.1']
 
