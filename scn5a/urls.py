@@ -1,8 +1,8 @@
 from django.urls import path
-from . import views
+from scn5a.views import display, variantview
 
 app_name = 'scn5a'
 urlpatterns = [
-    path('', views.display, name='main'),
-    path('variantinfo/<str:hgvsc>', views.variantview, name='detail'),
+    path('', display, name='main'),
+    path('variantinfo/<str:hgvsc>', variantview, name='detail'),
 ]
