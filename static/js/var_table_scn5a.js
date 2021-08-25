@@ -1,10 +1,13 @@
 
 $(document).ready( function() {
     initTable();
-    tableActions();
+
 } );
 
 function initTable () {
+
+    $('#example').show();
+
     let table = $('#example').DataTable( {
         order: [ 0, 'asc' ],
         orderClasses: true,
@@ -23,18 +26,19 @@ function initTable () {
     }).on('search.dt', function () {
     tableActions(table);
 });
+    $(".lds-dual-ring").remove();
+     tableActions(table);
 }
 
 
 
-function tableActions () {
+function tableActions (table) {
     var brs1 = [];
     var lqt3 = [];
     var unaff = [];
     var p_brs1 = [];
     var p_lqt3 = [];
 
-    let table = $('#example').DataTable();
     table.rows({filter: 'applied'}).every( function() {
         var data = this.data();
         brs1.push(data[6]);
