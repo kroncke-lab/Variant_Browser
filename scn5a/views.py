@@ -1,14 +1,17 @@
 import math
-
+from django.utils import timezone
 from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 from scn5a.models import newVariant_scn5a, scn5aDistances, scn5aPapers
 
 
 # Create your views here.
-
+# thirty days 86400 * 30
+@cache_page(1)
 def display(request):
     recs = newVariant_scn5a.objects.all()
-    return render(request, 'scn5a/main.html', {'recs': recs})
+    ret = render(request, 'scn5a/main.html', {'recs': recs})
+    return ret
 
 
 def variantview(request, hgvsc):
@@ -47,4 +50,5 @@ def variantview(request, hgvsc):
                                            'variant': variant, 'beta': beta,
                                            'alpha_brs1': alpha_brs1, 'beta_brs1': beta_brs1, 'alpha_lqt3': alpha_lqt3,
                                            'beta_lqt3': beta_lqt3, 'clin_papers': len(recs_clin),
-                                           'func_papers': len(recs_funcs), 'var_type': var_type})
+                                           'func_papers': len(recs_funcs), 'var_type': var_type
+                                                 })

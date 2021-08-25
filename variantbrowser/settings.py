@@ -26,7 +26,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', '127.0.0.1']
 
@@ -89,8 +89,16 @@ DJANGO_DATABASE_SERVER = os.environ['DJANGO_DATABASE_SERVER']
 DJANGO_DATABASE_USER = os.environ['DJANGO_DATABASE_USER']
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DJANGO_DATABASE_NAME,
+        'ENGINE': 'mssql',
+        'USER': DJANGO_DATABASE_USER,
+        'PASSWORD': DJANGO_DATABASE_PASSWORD,
+        'HOST': DJANGO_DATABASE_SERVER,
+        'PORT': '1433',
+
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+        },
     },
     'azure_sql_db': {
         'NAME': DJANGO_DATABASE_NAME,
@@ -104,6 +112,12 @@ DATABASES = {
             'driver': 'ODBC Driver 17 for SQL Server',
         },
     },
+}
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+    }
 }
 
 # Password validation
