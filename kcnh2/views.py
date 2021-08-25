@@ -1,14 +1,16 @@
 import math
 
 from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 from kcnh2.models import newVariant, ClinicalPapers, kcnh2Distances, FunctionalPapers
 
 
 # Create your views here.
-
+@cache_page(60)
 def display(request):
     recs = newVariant.objects.all()
-    return render(request, 'kcnh2/main.html', {'recs': recs})
+    ret = render(request, 'kcnh2/main.html', {'recs': recs})
+    return ret
 
 
 def variantview(request, hgvsc):

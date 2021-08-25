@@ -1,11 +1,36 @@
-<!--
-TODO: 1) Adjust resnum to remove "None" to enable better searching
--->
-
 {% extends "base.html" %}
 {% load static %}
 {% block page_content %}
 
+<style>
+.lds-dual-ring {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 28px;
+  border-radius: 50%;
+  border: 6px solid #78cbf1;
+  border-color: #646464 transparent #646464 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+div.fa-beer {
+    margin-top: 70px;
+}
+</style>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
@@ -46,7 +71,8 @@ TODO: 1) Adjust resnum to remove "None" to enable better searching
         in (results will update the histogram plots below).
     </p>
 </div>
-<table id="example" class="table table-striped table-bordered">
+    <div class="lds-dual-ring" align="center" ></div>
+<table id="example" class="table table-striped table-bordered" style="display:none">
     <thead>
     <tr>
         <th>Ch.7</th>
@@ -70,8 +96,8 @@ TODO: 1) Adjust resnum to remove "None" to enable better searching
         <td>{{sts.pos}}</td>
         <td>{{sts.ref}}</td>
         <td>{{sts.alt}}</td>
-        <td><a href="{% url 'kcnh2:detail' sts.hgvsc %}">{{sts.var}}</a></td>
-        <td>{{sts.hgvsc}}</td>
+        <td><a href="{% url 'kcnh2:detail' sts.hgvsc %}">{{sts.var|truncatechars_html:7}}</a></td>
+        <td>{{sts.hgvsc|truncatechars_html:9}}</td>
         <td>{{sts.resnum}}</td>
         <td>{{sts.wtAA}}</td>
         <td>{{sts.mutAA}}</td>
@@ -90,16 +116,19 @@ TODO: 1) Adjust resnum to remove "None" to enable better searching
     Below is histogram of the number of heterozygous carriers of <i>KCNH2</i> variants observed in individuals diagnosed
     with LQT2. The y-axis is the number of unique variants and the x-axis shows the number of heterozygous carriers.
 	<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+    <div class="lds-dual-ring" align="center" ></div>
     <div align="center"><h1>Histogram of Putative Unaffected Heterozygous <i>KCNH2</i> Variant Carriers</h1></div>
     Below is a histogram of the number of heterozygous carriers of <i>KCNH2</i> variants observed in unaffected
     individuals or those in gnomAD (given the rarity of the LQT2 phenotype in the general public, we assume these
     individuals are also likely unaffected). The y-axis is the number of unique variants (log scale) and the x-axis
     shows the number of heterozygous carriers (truncated at 300 to aid visualization).
     <div id='myDiv2'><!-- Plotly chart will be drawn inside this DIV --></div>
+    <div class="lds-dual-ring" align="center" ></div>
     <div align="center"><h1>Histogram of LQT2 Penetrance Estimates for <i>KCNH2</i> Variants</h1> Included in the Table
         Above.</div>
     Below is a histogram of the estimates of LQT2 penetrance for all variants displayed in the table above. The range is
     from 0% (impossible) to 100% (certain).
     <div id='myDiv3'><!-- Plotly chart will be drawn inside this DIV --></div>
+    <div class="lds-dual-ring" align="center" ></div>
 </body>
 {% endblock %}
