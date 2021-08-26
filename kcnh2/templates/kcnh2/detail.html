@@ -11,6 +11,11 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
 
+<style>
+div.content {
+    margin-top: 70px;
+}
+</style>
 
 <div align="center" class="jumbotron text-center">
     <h1>
@@ -68,7 +73,7 @@ A PolyPhen-2 score of 0.85 or greater is considered likely pathogenic.
 BLAST-PSSM reflects the evolutionary conservation of residue substitutions, more negative numbers indicate
 fewer observations of the specific substitution than is expected. Penetrance density is our previously published method
 to calculate the average LQTS probability density in a shell of residues surrounding a residue of interest
-(<a href="https://pubmed.ncbi.nlm.nih.gov/30828412/">ref</a>).
+(<a href="https://pubmed.ncbi.nlm.nih.gov/30828412/">Kroncke et al. 2019</a>).
 <p></p>
 
 <div align="center" class="content">
@@ -212,7 +217,7 @@ Functional parameters are the same as defined above.
 </div>
 A residue within a folded protein on average has nearest neighbors that fall roughly into two shells: a "nearest"
 neighbor around 5-6 angstroms and a second shell around 11 angstroms. NOTE: some residues appear multiple times at
-different distances. This results from the fact that the functional Kv11.1 channel is a homotetramer and occasionally
+    different distances. This results from the fact that the functional K<sub>V</sub>11.1 channel is a homotetramer and occasionally
 the same residue from multiple subunits is present within the 15A window. All variants shown in the rightmost
 column have been observed in at least one individual in the literature or gnomAD.
 <p></p>
