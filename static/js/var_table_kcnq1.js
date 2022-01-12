@@ -29,18 +29,18 @@ function initTable () {
 
 
 function tableActions (table) {
-    var lqt2 = [];
+    var lqt1 = [];
     var tot = [];
-    var p_lqt2 = [];
+    var p_lqt1 = [];
 
     table.rows({filter: 'applied'}).every( function() {
         var data = this.data();
-        lqt2.push(data[4]);
-        tot.push(data[5]);
-        p_lqt2.push(data[8])
+        lqt1.push(data[5]);
+        tot.push(data[4]);
+        p_lqt1.push(data[7])
     });
     var trace = {
-      x: lqt2,
+      x: lqt1,
       type: 'histogram',
       xbins: {
         size: 1,
@@ -49,11 +49,11 @@ function tableActions (table) {
     };
     let layout = {
         xaxis: {
-            title: "Number of KCNH2 variant carriers diagnosed with LQTS",
+            title: "Number of KCNQ1 variant carriers diagnosed with LQTS",
             range: [1,]
         },
         yaxis: {
-            title: "Number of unique KCNH2 variants",
+            title: "Number of unique KCNQ1 variants",
             autorange: true
         }
     };
@@ -72,11 +72,11 @@ function tableActions (table) {
     };
     var layout2 = {
         xaxis: {
-            title: "Number of carriers for each KCNH2 variant",
+            title: "Number of carriers for each KCNQ1 variant",
             range: [1,300],
         },
         yaxis: {
-            title: "Number of unique KCNH2 variants",
+            title: "Number of unique KCNQ1 variants",
             type: 'log',
             autorange: true
     }
@@ -85,7 +85,7 @@ function tableActions (table) {
     Plotly.newPlot('myDiv2', data2, layout2);
 
     var trace3 = {
-        x: p_lqt2,
+        x: p_lqt1,
         type: 'histogram',
         autobinx: false,
         xbins: {
@@ -96,11 +96,11 @@ function tableActions (table) {
     };
     var layout3 = {
         xaxis: {
-            title: "LQT2 Penetrance Estimate (%)",
+            title: "LQT1 Penetrance Estimate (%)",
             range: [0,100],
         },
         yaxis: {
-            title: "Number of unique KCNH2 variants",
+            title: "Number of unique KCNQ1 variants",
             autorange: true
     }
     };

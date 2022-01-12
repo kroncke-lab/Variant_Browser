@@ -11,14 +11,10 @@ function initTable () {
     let table = $('#example').DataTable( {
         order: [ 0, 'asc' ],
         orderClasses: true,
-        scrollX: true,
         scrollY: 400,
         scroller: true,
+        responsive: true,
         buttons: [
-            'copyHtml5',
-            'csvHtml5',
-            'pdfHtml5',
-            'colvis',
             'searchBuilder',
             'searchPanes'
         ],
@@ -41,11 +37,11 @@ function tableActions (table) {
 
     table.rows({filter: 'applied'}).every( function() {
         var data = this.data();
-        brs1.push(data[6]);
-        lqt3.push(data[7]);
-        unaff.push(data[8]);
-        p_brs1.push(data[12])
-        p_lqt3.push(data[14])
+        brs1.push(data[4]);
+        lqt3.push(data[5]);
+        unaff.push(data[6]);
+        p_brs1.push(data[9])
+        p_lqt3.push(data[11])
     });
     var trace = {
       x: brs1,

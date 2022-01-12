@@ -6,7 +6,7 @@ from kcnh2.models import newVariant, ClinicalPapers, kcnh2Distances, FunctionalP
 
 
 # Create your views here.
-@cache_page(60*60*31)
+@cache_page(200)#(60*60*31)
 def display(request):
     recs = newVariant.objects.all()
     ret = render(request, 'kcnh2/main.html', {'recs': recs})
