@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% load static %}
 {% block page_content %}
@@ -30,6 +31,7 @@
 div.fa-beer {
     margin-top: 70px;
 }
+
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.2.1/css/searchPanes.dataTables.min.css"/>
@@ -49,76 +51,72 @@ div.fa-beer {
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
 
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-<script type="text/javascript" src="{% static 'js/var_table_kcnh2.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/var_table_kcnq1.js' %}"></script>
 
 <div align="center" class="text-center" style="margin-top: 30px">
     <h1>
-        <p> <i>KCNH2</i> Variant Browser </p>
+        <p> <i>KCNQ1</i> Variant Browser </p>
     </h1>
 </div>
 <div>
     <p>
-        Below is a comprehensive list of variants found in <i>KCNH2</i> affected or unaffected with the disease most
-        commonly associated with variants in <i>KCNH2</i>: long QT type 2 (LQT2; OMIM: 613688). Coding variants are
-        referenced to isoform "A" (Q12809-1, transcript ENST00000262186.10) to match convention.
-        Our analysis is primarily for missense and in-frame insertion/deletion
-        variants; however, some nonsense variants are included. We do not include synonymous variants.
-        'LQT2' is the number of heterozygotes diagnosed with LQT2; 'Unaffected' is the number of heterozygotes
-        unaffected with disease, including those found in the genome aggregation database (gnomAD). Click variant link
-        for more details. Below are histogram plots for LQT2 affected carriers, unaffected carriers, and estimated LQT2
-        penetrance. Use the 'Search Builder' and 'Search Panes' to select subsets of variants based on properties you
-        are interested in (results will update the histogram plots below).
+        Here we have a comprehensive list of variants in <i>KCNQ1</i> found in individuals affected and unaffected with the
+        two diseases most commonly associated with variants in KCNQ1, long QT type 1 (LQT3; OMIM: 192500). Coding
+        variants are referenced to isoform P51787 (ENST00000155840.12: CHECK!!!) to
+        match convention. 'Total Carriers' is the number of heterozygotes diagnosed with LQT1 or other disease,
+        Unaffected with disease, and found in the genome aggregation database (gnomAD). 'Other' is the number of
+        heterozygoes diagnosed with a cardiac disease which is not LQT1. Click the variant link for more details. Functional
+        classification of variants was done according to the following criteria
     </p>
 </div>
-    <div class="lds-dual-ring" align="center" ></div>
+    <div class="lds-dual-ring" align="center"></div>
 <table id="example" class="table table-striped table-bordered" style="display:none">
     <thead>
     <tr>
-        <th>Ch.7</th>
+        <th>Ch.11</th>
         <th>HGVSc</th>
         <th>Variant</th>
         <th>Residue Number</th>
-        <th>LQT2</th>
+        <th>LQT1</th>
         <th>Total Carriers</th>
-        <th>Function</th>
-        <th>Location</th>
-        <th>LQT2 Penetrance(%)</th>
+        <th>Location (LQT1)</th>
+        <th>LQT1 Penetrance(%)</th>
     </tr>
     </thead>
     <tbody>
     {% for sts in recs %}
     <tr>
         <td>{{sts.pos}}</td>
-        <td>{{sts.hgvsc|truncatechars_html:9}}</td>
-        <td><a href="{% url 'kcnh2:detail' sts.hgvsc %}">{{sts.var|truncatechars_html:7}}</a></td>
+        <td>{{sts.hgvsc|truncatechars_html:12}}</td>
+        <td><a href="{% url 'kcnq1:detail' sts.hgvsc %}">{{sts.var|truncatechars_html:7}}</a></td>
         <td>{{sts.resnum}}</td>
-        <td>{{sts.lqt2}}</td>
+        <th>{{sts.lqt1}}</th>
         <td>{{sts.total_carriers}}</td>
-        <td>{{sts.function}}</td>
-        <td>{{sts.structure}}</td>
-        <td>{% widthratio sts.p_mean_w 1 100 %}</td>
+        <td>{{sts.structure_lqt1}}</td>
+        <td>{% widthratio sts.lqt1_penetrance 1 100 %}</td>
     </tr>
     {% endfor %}
 
    </tbody>
 </table>
-<body>
-    <div align="center" class="fa-beer"><h1>Histogram of <i>KCNH2</i> Variant Carriers with LQTS</h1></div>
-    Below is histogram of the number of heterozygous carriers of <i>KCNH2</i> variants observed in individuals diagnosed
-    with LQT2. The y-axis is the number of unique variants and the x-axis shows the number of heterozygous carriers.
+    <body>
+    <div align="center" class="fa-beer"><h1>Histogram of <i>KCNQ1</i> Variant Carriers with LQTS</h1></div>
+    Below is histogram of the number of heterozygous carriers of <i>KCNQ1</i> variants observed in individuals diagnosed
+    with LQT1. The y-axis is the number of unique variants and the x-axis shows the number of heterozygous carriers.
 	<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
     <div class="lds-dual-ring" align="center" ></div>
-    <div align="center" class="fa-beer"><h1>Histogram of Putative Unaffected Heterozygous <i>KCNH2</i> Variant Carriers</h1></div>
-    Below is a histogram of the number of heterozygous carriers of <i>KCNH2</i> variants observed in unaffected
-    individuals or those in gnomAD (given the rarity of the LQT2 phenotype in the general public, we assume these
+    <div align="center" class="fa-beer"><h1>Histogram of Putative Unaffected Heterozygous <i>KCNQ1</i> Variant Carriers</h1></div>
+    Below is a histogram of the number of heterozygous carriers of <i>KCNQ1</i> variants observed in unaffected
+    individuals or those in gnomAD (given the rarity of the LQT1 phenotype in the general public, we assume these
     individuals are also likely unaffected). The y-axis is the number of unique variants (log scale) and the x-axis
     shows the number of heterozygous carriers (truncated at 300 to aid visualization).
     <div id='myDiv2'><!-- Plotly chart will be drawn inside this DIV --></div>
     <div class="lds-dual-ring" align="center" ></div>
-    <div align="center" class="fa-beer"><h1>Histogram of LQT2 Penetrance Estimates for <i>KCNH2</i> Variants</h1></div>
-    Below is a histogram of the estimates of LQT2 penetrance for all variants displayed in the table above. The range is
+    <div align="center" class="fa-beer"><h1>Histogram of LQT1 Penetrance Estimates for <i>KCNQ1</i> Variants</h1></div>
+    Below is a histogram of the estimates of LQT1 penetrance for all variants displayed in the table above. The range is
     from 0% (impossible) to 100% (certain).
     <div id='myDiv3'><!-- Plotly chart will be drawn inside this DIV --></div>
     <div class="lds-dual-ring" align="center" ></div>
 </body>
+
 {% endblock %}
