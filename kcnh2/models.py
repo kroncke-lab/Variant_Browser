@@ -14,6 +14,7 @@ class newVariant(models.Model):
     alt = models.TextField(blank=True, null=True)
     wtAA = models.TextField(blank=True, null=True)
     mutAA = models.TextField(blank=True, null=True)
+    isoform = models.TextField(blank=True, null=True)
 
     hgvsc = models.TextField(primary_key=True, db_column='HGVSc')
     hgvsp = models.TextField(db_column='HGVSp', blank=True, null=True)
