@@ -11,6 +11,7 @@ function initTable () {
     let table = $('#example').DataTable( {
         order: [ 0, 'asc' ],
         orderClasses: true,
+        scrollX: true,
         scrollY: 400,
         scrollX: true,
         scroller: true,
