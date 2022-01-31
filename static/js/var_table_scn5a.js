@@ -14,7 +14,6 @@ function initTable () {
         scrollX: true,
         scrollY: 400,
         scroller: true,
-        responsive: true,
         buttons: [
             'searchBuilder',
             'searchPanes'
