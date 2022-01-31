@@ -13,7 +13,6 @@ function initTable () {
         orderClasses: true,
         scrollX: true,
         scrollY: 400,
-        scrollX: true,
         scroller: true,
         responsive: true,
         buttons: [
