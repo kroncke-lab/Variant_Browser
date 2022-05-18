@@ -28,6 +28,7 @@ def variantview(request, hgvsc):
     #    var_type = False
     #else:
     var_type = True
+    unaff = variant.total_carriers - variant.lqt1
 
     try:
         alpha = math.floor(float(variant.lqt1_penetrance*10))
@@ -40,4 +41,4 @@ def variantview(request, hgvsc):
                                                  'variant': variant, 'alpha': alpha,
                                                  'beta': beta, 'clin_papers': len(recs_clin),
                                                  'var_in_silico': var_in_silico, 'func_papers': len(recs_funcs),
-                                                 'var_type': var_type})
+                                                 'var_type': var_type, 'unaff': unaff})

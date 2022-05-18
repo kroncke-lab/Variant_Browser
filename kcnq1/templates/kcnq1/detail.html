@@ -22,11 +22,26 @@ div.content {
         <p> <i>KCNQ1</i> Variant <b>{{ variant.var }}</b> Detail </p>
     </h1>
 </div>
+We estimate the penetrance of LQTS for <i>KCNQ1</i> {{ variant.var }} is {% widthratio variant.p_mean_w 1 100 %}.
+{% if variant.total_carriers > 0 %}
+    This variant was found in a total of {{total_carriers}} carriers in {{ recs_clin| length }} papers or gnomAD:
+    {{variant.lqt1}} had LQTS.
+{% else %}
+    We are unaware of any observations of this variant in individuals.
+{% endif %}
 
-<i>KCNQ1</i> {{ variant.var }} was found in a total of {{variant.total_carriers}} carriers in {{ recs_clin| length }} papers:
-{{variant.lqt1}} had LQT1.
+{% if variant.gnomad > 0 %}
+    {{variant.var}} is present in {{variant.gnomad}} alleles in gnomAD.
+{% else %}
+    {{variant.var}} is not present in gnomAD.
+{% endif %}
 
-{{variant.var}} has been functionally characterized in {{ recs_funcs| length }} papers.
+{% if recs_funcs > 0 %}
+    {{variant.var}} has been functionally characterized in {{ recs_funcs| length }} papers.
+{% else %}
+    {{variant.var}} has not been functionally characterized.
+{% endif %}
+
 This residue is located in a {{variant.structure_lqt1}} region for LQT1.
 
 {% if alpha != "NA" %}
@@ -82,6 +97,7 @@ to calculate the average LQTS probability density in a shell of residues surroun
         <th>PubMed ID</th>
         <th>Year</th>
         <th>Carriers</th>
+        <th>Unaffected</th>
         <th>LQT1</th>
         <th>Other Disease</th>
     </tr>
@@ -97,6 +113,7 @@ to calculate the average LQTS probability density in a shell of residues surroun
         {% endif %}
         <td>{{p.year}}</td>
         <td>{{p.car}}</td>
+        <td>{{ p.unaff }}</td>
         <td>{{p.lqt1}}</td>
         <td>{{p.other_diag}}</td>
     </tr>
@@ -106,6 +123,7 @@ to calculate the average LQTS probability density in a shell of residues surroun
         <td>LITERATURE, COHORT, AND GNOMAD:</td>
         <td>-</td>
         <td>{{variant.total_carriers}}</td>
+        <td>{{ unaff }}</td>
         <td>{{variant.lqt1}}</td>
         <td>{{ variant.other_diag }}</td>
     </tr>
@@ -113,6 +131,7 @@ to calculate the average LQTS probability density in a shell of residues surroun
         <td>VARIANT FEATURES ALONE:</td>
         <td>-</td>
         <td>10</td>
+        <td>{{ beta }}</td>
         <td>{{alpha}}</td>
         <td>-</td>
     </tr>
