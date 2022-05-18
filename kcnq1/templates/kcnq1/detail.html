@@ -36,7 +36,7 @@ We estimate the penetrance of LQTS for <i>KCNQ1</i> {{ variant.var }} is {% widt
     {{variant.var}} is not present in gnomAD.
 {% endif %}
 
-{% if recs_funcs > 0 %}
+{% if recs_funcs|length > 0 %}
     {{variant.var}} has been functionally characterized in {{ recs_funcs| length }} papers.
 {% else %}
     {{variant.var}} has not been functionally characterized.
