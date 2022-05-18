@@ -78,6 +78,7 @@ div.fa-beer {
         <th>Residue Number</th>
         <th>LQT1</th>
         <th>Total Carriers</th>
+        <th>Function</th>
         <th>Location (LQT1)</th>
         <th>LQT1 Penetrance(%)</th>
     </tr>
@@ -91,6 +92,7 @@ div.fa-beer {
         <td>{{sts.resnum}}</td>
         <th>{{sts.lqt1}}</th>
         <td>{{sts.total_carriers}}</td>
+        <td>{{ sts.function_lqt1 }}</td>
         <td>{{sts.structure_lqt1}}</td>
         <td>{% widthratio sts.lqt1_penetrance 1 100 %}</td>
     </tr>
