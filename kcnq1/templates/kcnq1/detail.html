@@ -24,7 +24,7 @@ div.content {
 </div>
 We estimate the penetrance of LQTS for <i>KCNQ1</i> {{ variant.var }} is {% widthratio variant.lqt1_penetrance 1 100 %}%.
 {% if variant.total_carriers > 0 %}
-    This variant was found in a total of {{total_carriers}} carriers in {{ recs_clin| length }} papers or gnomAD:
+    This variant was found in a total of {{variant.total_carriers}} carriers in {{ recs_clin| length }} papers or gnomAD:
     {{variant.lqt1}} had LQTS.
 {% else %}
     We are unaware of any observations of this variant in individuals.
