@@ -49,6 +49,10 @@ def variantview(request, hgvsc):
         beta_brs1 = "NA"
         alpha_lqt3 = "NA"
         beta_lqt3 = "NA"
+        alpha_lqt3_tot = "NA"
+        tot_with_prior_lqt3 = "NA"
+        alpha_brs1_tot = "NA"
+        tot_with_prior_brs1 = "NA"
     return render(request, 'scn5a/detail.html', {'recs_dists': recs_dists, 'recs_funcs': recs_funcs,
                                            'recs_clin': recs_clin, 'var': var, 'recs_vars': recs_vars,
                                            'variant': variant, 'beta': beta,
