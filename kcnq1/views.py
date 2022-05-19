@@ -31,7 +31,7 @@ def variantview(request, hgvsc):
     unaff = variant.total_carriers - variant.lqt1
 
     try:
-        alpha = math.floor(float(variant.lqt1_penetrance*10))
+        alpha = math.floor(float(variant.lqt1_penetrance*(variant.total_carriers+10)))-variant.lqt1
         beta = 10 - alpha
         alpha_lqt1 = alpha + variant.lqt1
         tot_with_prior = 10 + variant.total_carriers
