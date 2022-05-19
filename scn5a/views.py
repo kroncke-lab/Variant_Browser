@@ -7,7 +7,7 @@ from scn5a.models import newVariant_scn5a, scn5aDistances, scn5aPapers
 
 # Create your views here.
 # thirty days 86400 * 30
-@cache_page(60*60*31)
+#@cache_page(60*60*31)
 def display(request):
     recs = newVariant_scn5a.objects.all()
     ret = render(request, 'scn5a/main.html', {'recs': recs})
