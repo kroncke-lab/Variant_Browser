@@ -48,7 +48,7 @@ This residue is located in a {{variant.structure_lqt1}} region for LQT1.
 <i>In silico</i> predictions, functional data (if available), and location in structure are equivalent to observing
 {{alpha}} individuals with LQT1 and {{beta}} unaffected individuals. We therefore suggest all information present
     lead us to estimate the LQTS penetrance for <i>KCNQ1</i> {{ variant.var }} around
-    {% widthratio variant.lqt1_penetrance 1 100 %}%, ({alpha_lqt1}/{tot_with_prior}).
+    {% widthratio variant.lqt1_penetrance 1 100 %}%, ({{ alpha_lqt1 }}/{{ tot_with_prior }}).
 {% endif %}
 
 <body>
@@ -139,8 +139,8 @@ to calculate the average LQTS probability density in a shell of residues surroun
    </tbody>
 </table>
 Summary totals might not agree with the literature table because of duplicate patients, which were excluded from the
-total counts. Missense variants are combined across degenerate codon substitutions in the data below since these data were not consistently available.
-
+total counts. We do not distinguish here between multiple missense codons. Missense variants are combined across
+degenerate codon substitutions since codon-level data were not consistently available for curation.
 
 <p></p>
 {% if func_papers > 0 %}
