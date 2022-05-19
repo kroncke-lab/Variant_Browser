@@ -90,7 +90,7 @@ div.fa-beer {
     <tr>
         <td>{{sts.pos}}</td>
         <td>{{sts.hgvsc|truncatechars_html:9}}</td>
-        <td><a href="{% url 'kcnh2:detail' sts.hgvsc %}">{{sts.var|truncatechars_html:7}}</a></td>
+        <td><a href="{% url 'kcnh2:detail' sts.hgvsc %}" target="_blank">{{sts.var|truncatechars_html:7}}</a></td>
         <td>{{sts.resnum}}</td>
         <td>{{sts.lqt2}}</td>
         <td>{{sts.total_carriers}}</td>
