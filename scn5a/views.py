@@ -40,6 +40,10 @@ def variantview(request, hgvsc):
         alpha_lqt3 = math.floor(float(variant.alpha_lqt3))
         beta_lqt3 = 5 - alpha_lqt3
         beta = beta_lqt3 + beta_brs1
+        alpha_lqt3_tot = alpha_lqt3 + variant.lqt3
+        tot_with_prior_lqt3 = 10 + variant.total_carriers
+        alpha_brs1_tot = alpha_brs1 + variant.brs1
+        tot_with_prior_brs1 = 10 + variant.total_carriers
     except ValueError and TypeError:
         alpha_brs1 = "NA"
         beta_brs1 = "NA"
@@ -50,5 +54,7 @@ def variantview(request, hgvsc):
                                            'variant': variant, 'beta': beta,
                                            'alpha_brs1': alpha_brs1, 'beta_brs1': beta_brs1, 'alpha_lqt3': alpha_lqt3,
                                            'beta_lqt3': beta_lqt3, 'clin_papers': len(recs_clin),
-                                           'func_papers': len(recs_funcs), 'var_type': var_type
+                                           'func_papers': len(recs_funcs), 'var_type': var_type,
+                                                 "alpha_lqt3_tot":alpha_lqt3_tot, "tot_with_prior_lqt3":tot_with_prior_lqt3,
+                                                 "alpha_brs1_tot":alpha_brs1_tot, "tot_with_prior_brs1":tot_with_prior_brs1
                                                  })

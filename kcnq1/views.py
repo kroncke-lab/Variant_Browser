@@ -38,6 +38,8 @@ def variantview(request, hgvsc):
     except ValueError and TypeError:
         alpha = "NA"
         beta = "NA"
+        alpha_lqt1 = "NA"
+        tot_with_prior = "MA"
     return render(request, 'kcnq1/detail.html', {'recs_dists': recs_dists, 'recs_funcs': recs_funcs,
                                                  'recs_clin': recs_clin, 'var': var, 'recs_vars': recs_vars,
                                                  'variant': variant, 'alpha': alpha,

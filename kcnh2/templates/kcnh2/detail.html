@@ -49,7 +49,7 @@ This residue is located in a {{variant.structure}} region for LQT2.
 <i>In silico</i> predictions, functional data (if available), and location in structure are equivalent to observing
 {{alpha}} individuals with LQT2 and {{beta}} unaffected individuals.These data combined with observations of carriers
     lead us to estimate the LQTS penetrance for <i>KCNQ1</i> {{ variant.var }} around
-    {% widthratio variant.lqt1_penetrance 1 100 %}%, ({{ alpha_lqt1 }}/{{ tot_with_prior }}).
+    {% widthratio variant.p_mean_w 1 100 %}% ({{ alpha_lqt2 }}/{{ tot_with_prior }}).
 {% endif %}
 
 <body>
@@ -79,7 +79,7 @@ This residue is located in a {{variant.structure}} region for LQT2.
     </tr>
    </tbody>
 </table>
-PROVEAN scores less than -2 are considered deleterious. REVEL scores higher than 0.5 or 0.75 is considered
+PROVEAN scores less than -2 are considered deleterious. REVEL scores higher than 0.5 or 0.75 are considered
 likely pathogenic (higher sensitivity with the former cutoff, higher specificity with the latter cutoff).
 A PolyPhen-2 score of 0.85 or greater is considered likely pathogenic.
 BLAST-PSSM reflects the evolutionary conservation of residue substitutions, more negative numbers indicate

@@ -25,7 +25,10 @@ div.content {
     </h1>
 </div>
 
-<i>SCN5A</i> {{ variant.var }} was found in a total of {{variant.total_carriers}} carriers in {{ recs_clin| length }} papers:
+We estimate the penetrance of LQTS for <i>SCN5A</i> {{ variant.var }} around
+{% widthratio variant.lqt3_penetrance 1 100 %}% and the Brugada syndrome penetrance around
+    {% widthratio variant.brs1_penetrance 1 100 %}%. <i>SCN5A</i> {{ variant.var }} was found in a total of
+    {{variant.total_carriers}} carriers in {{ recs_clin| length }} papers and/or in gnomAD:
 {{variant.brs1}} had Brugada syndrome, {{variant.lqt3}} had LQTS.
 
 {% if variant.gnomad > 0 %}
@@ -40,8 +43,11 @@ This residue is located in a {{variant.structure_brs1}} region for Brugada syndr
 {% if alpha_brs1 != "NA" %}
 <i>In silico</i> predictions, functional data (if available), and location in structure are equivalent to observing
 {{alpha_brs1}} individuals with Brugada syndrome, {{ alpha_lqt3 }} with LQTS, and {{beta}} unaffected individuals.
+    These data combined with observations of carriers
+    lead us to estimate the LQTS penetrance for <i>SCN5A</i> {{ variant.var }} around
+    {% widthratio variant.lqt3_penetrance 1 100 %}% ({{ alpha_lqt3_tot }}/{{ tot_with_prior_lqt3 }}) and the Brugada
+    syndrome penetrance around {% widthratio variant.brs1_penetrance 1 100 %}% ({{ alpha_brs1_tot }}/{{ tot_with_prior_brs1 }}).
 {% endif %}
-Missense variants are combined across degenerate codon substitutions since these data were not consistently available.
 
 <body>
 
@@ -72,7 +78,7 @@ Missense variants are combined across degenerate codon substitutions since these
     </tr>
    </tbody>
 </table>
-PROVEAN scores less than -2 are considered deleterious. REVEL scores higher than 0.5 or 0.75 is considered
+PROVEAN scores less than -2 are considered deleterious. REVEL scores higher than 0.5 or 0.75 are considered
 likely pathogenic (higher sensitivity with the former cutoff, higher specificity with the latter cutoff).
 A PolyPhen-2 score of 0.85 or greater is considered likely pathogenic.
 BLAST-PSSM reflects the evolutionary conservation of residue substitutions, more negative numbers indicate
@@ -141,7 +147,8 @@ to calculate the average BrS/LQTS probability density in a shell of residues sur
    </tbody>
 </table>
 Summary totals might not agree with the literature table because of duplicate patients, which were excluded from the
-total counts.
+total counts. We do not distinguish here between multiple missense codons. Missense variants are combined across
+degenerate codon substitutions since codon-level data were not consistently available for curation.
 
 <p></p>
 {% if func_papers > 0 %}
