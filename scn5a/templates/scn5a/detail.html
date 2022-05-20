@@ -41,12 +41,12 @@ This residue is located in a {{variant.structure_brs1}} region for Brugada syndr
     region for LQTS.
 
 {% if alpha_brs1 != "NA" %}
-<i>In silico</i> predictions, functional data (if available), and location in structure are equivalent to observing
-{{alpha_brs1}} individuals with Brugada syndrome, {{ alpha_lqt3 }} with LQTS, and {{beta}} unaffected individuals.
-    These data combined with observations of carriers
-    lead us to estimate the LQTS penetrance for <i>SCN5A</i> {{ variant.var }} around
-    {% widthratio variant.lqt3_penetrance 1 100 %}% ({{ alpha_lqt3_tot }}/{{ tot_with_prior_lqt3 }}) and the Brugada
-    syndrome penetrance around {% widthratio variant.brs1_penetrance 1 100 %}% ({{ alpha_brs1_tot }}/{{ tot_with_prior_brs1 }}).
+<i>In silico</i> predictions, functional data (if available), and location in structure are equivalent to phenotyping
+    10 individuals for Brugada syndrome ({{alpha_brs1}} diagnosed with Brugada syndrome) and 5 individuals for LQTS ({{ alpha_lqt3 }}
+    with LQTS). These data combined with observations of carriers lead us to estimate the LQTS penetrance for <i>SCN5A</i>
+    {{ variant.var }} around {% widthratio variant.lqt3_penetrance 1 100 %}% ({{ alpha_lqt3_tot }}/{{ tot_with_prior_lqt3 }})
+    and the Brugada syndrome penetrance around {% widthratio variant.brs1_penetrance 1 100 %}%
+    ({{ alpha_brs1_tot }}/{{ tot_with_prior_brs1 }}).
 {% endif %}
 
 <body>
