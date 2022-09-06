@@ -37,7 +37,7 @@ function tableActions (table) {
         var data = this.data();
         lqt1.push(data[5]);
         tot.push(data[4]);
-        p_lqt1.push(data[9])
+        p_lqt1.push(data[8])
     });
     var trace = {
       x: lqt1,
