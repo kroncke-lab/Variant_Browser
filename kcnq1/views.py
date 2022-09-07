@@ -6,7 +6,7 @@ from kcnq1.models import KCNQ1NewVariant, KCNQ1ClinicalPapers, kcnq1Distances, K
 
 # Create your views here.
 # thirty days 86400 * 30
-@cache_page(60*60*31)
+#@cache_page(60*60*31)
 def display(request):
     recs = KCNQ1NewVariant.objects.all()
     ret = render(request, 'kcnq1/main.html', {'recs': recs})
