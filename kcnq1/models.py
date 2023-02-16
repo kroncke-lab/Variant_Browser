@@ -24,6 +24,7 @@ class KCNQ1NewVariant(models.Model):
     function_lqt1 = models.TextField(db_column='Function', blank=True, null=True)  # Field name made lowercase.
     lqt1_penetrance = models.IntegerField(db_column='p_mean_w', blank=True, null=True)
     lqt1_dist = models.IntegerField(blank=True, null=True)
+    gnomad = models.IntegerField(blank=True, null=False, default=0)
 
     def __str__(self):
         return self.var
