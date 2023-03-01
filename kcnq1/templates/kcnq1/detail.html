@@ -107,7 +107,7 @@ to calculate the average LQTS probability density in a shell of residues surroun
     {% if clin_papers > 0 %}
         {% for p in recs_clin %}
     <tr>
-        {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "Paris Cohort" %}
+        {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "France Cohort" %}
         <td><a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}">{{ p.pmid }}</a></td>
         {% else %}
         <td>{{ p.pmid }}</td>
