@@ -97,7 +97,7 @@ div.fa-beer {
     {% for sts in recs %}
     <tr>
         <td>{{sts.pos}}</td>
-        <td><a href="{% url 'scn5a:detail' sts.hgvsc %}" target="_blank">{{sts.var|truncatechars_html:7}}</a></td>
+        <td><a href="{% url 'scn5a:detail' sts.hgvsc %}" target="_blank">{{sts.var|truncatechars_html:9}}</a></td>
         <td>{{sts.hgvsc|truncatechars_html:9}}</td>
         <td>{{sts.resnum}}</td>
         <th>{{sts.brs1}}</th>
