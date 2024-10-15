@@ -14,6 +14,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+       # Install ODBC development headers (necessary for pyodbc)
+      - name: Install ODBC Dependencies
+        run: sudo apt-get install -y unixodbc-dev
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
