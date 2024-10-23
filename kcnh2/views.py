@@ -41,7 +41,7 @@ def variantview(request, hgvsc):
         beta = "NA"
         alpha_lqt2 = "NA"
         tot_with_prior = "NA"
-    return render(request, 'kcnh2/detail.html', {'recs_dists': recs_dists, 'recs_funcs': recs_funcs,
+    return render(request, 'kcnh2/detail.html', {'mave_score': mave_score, 'mave_score_SE': mave_score_SE, 'recs_dists': recs_dists, 'recs_funcs': recs_funcs,
                                            'recs_clin': recs_clin, 'var': var, 'recs_vars': recs_vars,
                                            'variant': variant, 'total_carriers': total_carriers, 'alpha': alpha,
                                            'beta': beta, 'clin_papers': len(recs_clin), 'func_papers': len(recs_funcs),
