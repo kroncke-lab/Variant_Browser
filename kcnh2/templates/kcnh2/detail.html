@@ -38,8 +38,8 @@ We estimate the penetrance of LQTS for <i>KCNH2</i> {{ variant.var }} is {% widt
 {% endif %}
 
 {% if mave_score != "NA" %}
-We have tested the trafficking efficiency of this variant, {%variant.mave_score|floatformat:0 %}% of WT 
-with a standard error of {% variant.mave_score_SE |floatformat:0 %}%; approximately below 50% of WT is considered PS3 moderate and below 30% for PS3 strong.   
+We have tested the trafficking efficiency of this variant, {variant.mave_score|floatformat:0 }% of WT 
+with a standard error of { variant.mave_score_SE |floatformat:0 }%; approximately below 50% of WT is considered PS3 moderate and below 30% for PS3 strong.   
 {% endif %}
 
 {% if recs_funcs|length > 0 %}
