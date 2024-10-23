@@ -20,7 +20,7 @@ class newVariant(models.Model):
     hgvsp = models.TextField(db_column='HGVSp', blank=True, null=True)
 
     pos = models.IntegerField(blank=True, null=True)
-    total_carriers = models.IntegerField(blank=True, null=False, default=0)
+    total_carriers = models.IntegerField(db_column='total_carriers_adj', blank=True, null=False, default=0)
     pph2_prob = models.TextField(blank=True, null=True)
     provean_score = models.TextField(blank=True, null=True)
     blast_pssm = models.TextField(blank=True, null=True)
@@ -29,15 +29,13 @@ class newVariant(models.Model):
     chrom = models.IntegerField(blank=True, null=True)
     dnanum = models.IntegerField(blank=True, null=True)
     resnum = models.IntegerField(blank=True, null=True)
-    alpha = models.TextField(blank=True, null=True)
-    beta = models.TextField(blank=True, null=True)
-    mave_score = models.FloatField(blank=True, null=True)
-    mave_score_SE = models.FloatField(blank=True, null=True)
-    
-    gnomad = models.IntegerField(db_column='gnomAD', blank=False, null=False, default=0)  # Field name made lowercase.
+    alpha = models.TextField(db_column='alpha_revised', blank=True, null=True)
+    beta = models.TextField(db_column='beta_revised', blank=True, null=True)
+
+    gnomad = models.IntegerField(db_column='gnomad_v4', blank=False, null=False, default=0)  # Field name made lowercase.
     structure = models.TextField(db_column='Structure', blank=True, null=True)  # Field name made lowercase.
     function = models.TextField(db_column='Function', blank=True, null=True)  # Field name made lowercase.
-    p_mean_w = models.IntegerField(blank=True, null=True)
+    p_mean_w = models.IntegerField(db_column='LQT2_penetrance_revised', blank=True, null=True)
 
     @property
     def tot_carriers(self):
@@ -45,6 +43,7 @@ class newVariant(models.Model):
 
     def __str__(self):
         return self.var
+
 
 
 class ClinicalPapers(models.Model):
