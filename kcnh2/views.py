@@ -23,7 +23,10 @@ def variantview(request, hgvsc):
     recs_vars = set(newVariant.objects.filter(resnum__in=neighbors, lqt2__gt=0) | \
                     newVariant.objects.filter(resnum__in=neighbors, unaff__gt=0))
     variant = newVariant.objects.get(hgvsc=hgvsc)
-    total_carriers = variant.lqt2 + variant.unaff
+    total_carriers = variant.total_carriers
+    mave_score = variant.mave_score
+    mave_score_SE = variant.mave_score_SE
+    
     if variant.mutAA == "X" or variant.mutAA == "fsX":
         var_type = False
     else:
