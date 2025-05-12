@@ -2,6 +2,7 @@ import math
 from django.shortcuts import render
 from ryr2.models import RYR2Variant
 
+@cache_page(60*60*31)
 def display(request):
     variants = RYR2Variant.objects.all()
     ret = render(request, 'ryr2/main.html', {'variants': variants})
