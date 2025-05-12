@@ -26,9 +26,9 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True #False
 
-ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', '127.0.0.1']
+ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'kcnh2',
     'scn5a',
     'kcnq1',
+    'ryr2',
     'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',

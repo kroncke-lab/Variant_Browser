@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_content %}
+
+<style>
+.lds-dual-ring {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 28px;
+  border-radius: 50%;
+  border: 6px solid #78cbf1;
+  border-color: #646464 transparent #646464 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.2.1/css/searchPanes.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.0.1/css/searchBuilder.dataTables.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css"/>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/date-1.0.3/r-2.2.7/sc-2.0.3/sb-1.0.1/sl-1.3.3/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/searchbuilder/1.3.0/js/dataTables.searchBuilder.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="{% static 'js/var_table_ryr2.js' %}"></script>
+
+<div align="center" class="text-center" style="margin-top: 30px">
+    <h1>
+        <p> <i>RYR2</i> Variant Browser </p>
+    </h1>
+</div>
+<div>
+    <p>
+        Here we have a comprehensive list of variants in <i>RYR2</i> found in individuals affected and unaffected with the
+        disease most commonly associated with variants in RYR2, catecholaminergic polymorphic ventricular tachycardia (CPVT; OMIM: 604772). Coding
+        variants are referenced to isoform P21817 (ENST00000366574.7) to
+        match convention. 'Total Carriers' is the number of heterozygotes diagnosed with CPVT or other disease,
+        Unaffected with disease, and found in the genome aggregation database (gnomAD). 'Other' is the number of
+        heterozygotes diagnosed with a cardiac disease which is not CPVT.
+        Use the 'Search Builder' and 'Search Panes' to select subsets of variants based on properties you are interested in.
+    </p>
+</div>
+<div class="lds-dual-ring" align="center"></div>
+<table id="example" class="table table-striped table-bordered" style="display:none">
+    <thead>
+    <tr>
+        <th>Ch.1 (grch38)</th>
+        <th>Variant</th>
+        <th>Residue Number</th>
+        <th>CPVT</th>
+        <th>Total Carriers</th>
+        <th>Hotspot</th>
+        <th>CPVT Penetrance(%)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for sts in variants %}
+    <tr>
+        <td>{{ sts.grch38_pos }}</td>
+        <td>{{ sts.var }}</td>
+        <td>{{ sts.resnum }}</td>
+        <th>{{ sts.cpvt }}</th>
+        <td>{{ sts.total_carriers }}</td>
+        <td>{{ sts.hotspot }}</td>
+        <td>{% widthratio sts.p_mean_w 1 100 %}</td>
+    </tr>
+    {% endfor %}
+   </tbody>
+</table>
+
+{% endblock %}

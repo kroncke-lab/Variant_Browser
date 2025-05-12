@@ -34,7 +34,8 @@ class newVariant(models.Model):
     mave_score = models.FloatField(blank=True, null=True)
     mave_score_SE = models.FloatField(blank=True, null=True)
     mave_score_all = models.FloatField(blank=True, null=True)
-    
+    mave_score_all = models.FloatField(blank=True, null=True)
+
     gnomad = models.IntegerField(db_column='gnomad_v4', blank=False, null=False, default=0)  # Field name made lowercase.
     structure = models.TextField(db_column='Structure', blank=True, null=True)  # Field name made lowercase.
     function = models.TextField(db_column='Function', blank=True, null=True)  # Field name made lowercase.
