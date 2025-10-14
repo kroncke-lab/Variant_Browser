@@ -14,8 +14,6 @@ function initTable() {
         order: [[0, 'desc']],
         orderClasses: true,
         deferRender: true,
-        scrollY: '60vh',
-        scroller: true,
         responsive: true,
         pageLength: 50,
         lengthMenu: [
@@ -26,7 +24,9 @@ function initTable() {
             'searchBuilder',
             'searchPanes'
         ],
-        dom: 'Bfti',
+        dom: "<'row align-items-center mb-3'<'col-md-6 d-flex gap-2'B><'col-md-6 text-md-end'f>>" +
+             "<'row'<'col-12'tr>>" +
+             "<'row mt-3'<'col-md-6'i><'col-md-6'p>>",
         language: {
             loadingRecords: 'Loading RYR2 variants…'
         }
