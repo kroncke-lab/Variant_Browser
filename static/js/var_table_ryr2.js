@@ -3,36 +3,32 @@ $(document).ready(function() {
 });
 
 function initTable() {
-    $('#example').show();
-    let table = $('#example').DataTable({
+    const $table = $('#example');
+
+    $table.one('init.dt', function() {
+        $(".lds-dual-ring").remove();
+        $table.fadeIn('fast');
+    });
+
+    $table.DataTable({
         order: [[0, 'desc']],
         orderClasses: true,
-        scrollY: 400,
+        deferRender: true,
+        scrollY: '60vh',
         scroller: true,
         responsive: true,
+        pageLength: 50,
+        lengthMenu: [
+            [25, 50, 100, -1],
+            [25, 50, 100, 'All']
+        ],
         buttons: [
             'searchBuilder',
             'searchPanes'
         ],
-        dom: 'Bfti'
-    }).on('search.dt', function() {
-        tableActions(table);
+        dom: 'Bfti',
+        language: {
+            loadingRecords: 'Loading RYR2 variants…'
+        }
     });
-    $(".lds-dual-ring").remove();
-    tableActions(table);
-}
-
-function tableActions(table) {
-    var cpvt = [];
-    var tot = [];
-    var p_cpvt = [];
-
-    table.rows({filter: 'applied'}).every(function() {
-        var data = this.data();
-        cpvt.push(data[4]);  // Number of RYR2 variant carriers diagnosed with CPVT
-        tot.push(data[3]);   // Total number of carriers for each RYR2 variant
-        p_cpvt.push(data[5]); // CPVT penetrance estimate
-    });
-
-
 }
