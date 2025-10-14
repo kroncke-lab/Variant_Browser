@@ -1,257 +1,266 @@
-<!--
-TODO: 2) Remove duplicate variants displayed in distances table
--->
 {% extends "base.html" %}
 {% load static %}
-{% block page_content %}
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/date-1.0.3/r-2.2.7/sc-2.0.3/sb-1.0.1/sl-1.3.3/datatables.min.js"></script>
-
+{% block title %}<i>SCN5A</i> {{ variant.var }} · Variant Detail{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" integrity="sha384-lwliCN0C9wCJltE1YVS9nT0V0Mx3m1jbn2XX6YOY7Wh7Tk1s3tRtyhx4p6zX6Z8j" crossorigin="anonymous">
 <style>
-div.content {
-    margin-top: 70px;
-}
+    .stat-card {
+        border-radius: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    section + section {
+        margin-top: 3rem;
+    }
 </style>
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
-
-
-<div align="center" class="jumbotron text-center">
-    <h1>
-        <p> <i>SCN5A</i> Variant <b>{{ variant.var }}</b> Detail </p>
-    </h1>
-</div>
-
-We estimate the penetrance of LQTS for <i>SCN5A</i> {{ variant.var }} around
-{% widthratio variant.lqt3_penetrance 1 100 %}% and the Brugada syndrome penetrance around
-    {% widthratio variant.brs1_penetrance 1 100 %}%. <i>SCN5A</i> {{ variant.var }} was found in a total of
-    {{variant.total_carriers}} carriers in {{ recs_clin| length }} papers and/or in gnomAD:
-{{variant.brs1}} had Brugada syndrome, {{variant.lqt3}} had LQTS.
-
-{% if variant.gnomad > 0 %}
-    {{variant.var}} is present in {{variant.gnomad}} alleles in gnomAD.
-{% else %}
-    {{variant.var}} is not present in gnomAD.
-{% endif %}
-{{variant.var}} has been functionally characterized in {{ recs_funcs| length }} papers.
-This residue is located in a {{variant.structure_brs1}} region for Brugada syndrome and a {{ variant.structure_lqt3 }}
-    region for LQTS.
-
-{% if alpha_brs1 != "NA" %}
-<i>In silico</i> predictions, functional data (if available), and location in structure are equivalent to phenotyping
-    10 individuals for Brugada syndrome ({{alpha_brs1}} diagnosed with Brugada syndrome) and 5 individuals for LQTS ({{ alpha_lqt3 }}
-    with LQTS). These data combined with observations of carriers lead us to estimate the LQTS penetrance for <i>SCN5A</i>
-    {{ variant.var }} around {% widthratio variant.lqt3_penetrance 1 100 %}% ({{ alpha_lqt3_tot }}/{{ tot_with_prior_lqt3 }})
-    and the Brugada syndrome penetrance around {% widthratio variant.brs1_penetrance 1 100 %}%
-    ({{ alpha_brs1_tot }}/{{ tot_with_prior_brs1 }}).
-{% endif %}
-
-<body>
-
-<div align="center" class="content">
-    <h2>
-        <p> <i>In Silico</i> Data </p>
-    </h2>
-</div>
-<table class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>PROVEAN</th>
-        <th>PolyPhen-2</th>
-        <th>BLAST-PSSM</th>
-        <th>REVEL</th>
-        <th>Penetrance Density BrS (%)</th>
-        <th>Penetrance Density LQT3 (%)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>{{variant.provean_score}}</td>
-        <td>{{variant.pph2_prob}}</td>
-        <td>{{variant.blast_pssm}}</td>
-        <td>{{variant.revel_score}}</td>
-        <td>{% widthratio variant.brs1_dist 1 100 %}</td>
-        <td>{% widthratio variant.lqt3_dist 1 100 %}</td>
-    </tr>
-   </tbody>
-</table>
-PROVEAN scores less than -2 are considered deleterious. REVEL scores higher than 0.5 or 0.75 are considered
-likely pathogenic (higher sensitivity with the former cutoff, higher specificity with the latter cutoff).
-A PolyPhen-2 score of 0.85 or greater is considered likely pathogenic.
-BLAST-PSSM reflects the evolutionary conservation of residue substitutions, more negative numbers indicate
-fewer observations of the specific substitution than is expected. Penetrance Density is our previously published method
-to calculate the average BrS/LQTS probability density in a shell of residues surrounding a residue of interest
-(<a href="https://pubmed.ncbi.nlm.nih.gov/30828412/">Kroncke et al. 2019</a>).
-<p></p>
-
-<div align="center" class="content">
-    <h2>
-        <p> Reported Carrier Data </p>
-    </h2>
-</div>
-<table id="clinrecs" class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>PubMed ID</th>
-        <th>Year</th>
-        <th>Carriers</th>
-        <th>Unaffected</th>
-        <th>LQT3</th>
-        <th>BrS1</th>
-        <th>Other</th>
-        <th>Other Disease</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% if clin_papers > 0 %}
-        {% for p in recs_clin %}
-    <tr>
-        {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "Paris Cohort" %}
-        <td><a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}">{{ p.pmid }}</a></td>
+{% endblock %}
+{% block page_content %}
+<section class="py-4">
+    <div class="text-center mb-4">
+        <h1 class="display-6 fw-semibold"><i>SCN5A</i> Variant {{ variant.var }}</h1>
+        <p class="text-muted mx-auto" style="max-width: 60rem;">
+            Summary of observed carriers, functional annotations, and structural context for <i>SCN5A</i> {{ variant.var }}.
+            Data combine curated literature, international cohorts, and gnomAD observations.
+        </p>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm stat-card h-100">
+                <div class="card-body text-center">
+                    <p class="text-muted text-uppercase small mb-1">Estimated LQT3 penetrance</p>
+                    <p class="stat-value text-primary">{% widthratio variant.lqt3_penetrance 1 100 %}%</p>
+                    <p class="small text-muted mb-0">{{ alpha_lqt3_tot }}/{{ tot_with_prior_lqt3 }} effective observations</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm stat-card h-100">
+                <div class="card-body text-center">
+                    <p class="text-muted text-uppercase small mb-1">Estimated BrS1 penetrance</p>
+                    <p class="stat-value text-danger">{% widthratio variant.brs1_penetrance 1 100 %}%</p>
+                    <p class="small text-muted mb-0">{{ alpha_brs1_tot }}/{{ tot_with_prior_brs1 }} effective observations</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm stat-card h-100">
+                <div class="card-body text-center">
+                    <p class="text-muted text-uppercase small mb-1">Total carriers</p>
+                    <p class="stat-value">{{ variant.total_carriers }}</p>
+                    <p class="small text-muted mb-0">{{ variant.brs1 }} BrS1 · {{ variant.lqt3 }} LQT3 · {{ variant.unaff_gnomad }} unaffected</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-info mt-4" role="note">
+        {% if variant.gnomad > 0 %}
+            {{ variant.var }} is present in {{ variant.gnomad }} alleles in gnomAD.
         {% else %}
-        <td>{{ p.pmid }}</td>
+            {{ variant.var }} has not been reported in gnomAD.
         {% endif %}
-        <td>{{p.year}}</td>
-        <td>{{p.total_carriers}}</td>
-        <td>{{p.unaff_gnomad}}</td>
-        <td>{{p.lqt3}}</td>
-        <td>{{p.brs1}}</td>
-        <td>{{p.other}}</td>
-        <td>{{p.other_diag}}</td>
-    </tr>
-        {% endfor %}
+        This residue resides in a {{ variant.structure_brs1 }} region for Brugada syndrome and a {{ variant.structure_lqt3 }} region for LQT3.
+    </div>
+    {% if alpha_brs1 != "NA" %}
+        <p class="text-muted small">Variant features alone are equivalent to phenotyping {{ alpha_brs1 }} individuals for Brugada syndrome and {{ alpha_lqt3 }} individuals for LQT3.</p>
     {% endif %}
-    <tr>
-        <td>LITERATURE, COHORT, AND GNOMAD:</td>
-        <td>-</td>
-        <td>{{variant.total_carriers}}</td>
-        <td>{{variant.unaff_gnomad}}</td>
-        <td>{{variant.lqt3}}</td>
-        <td>{{variant.brs1}}</td>
-        <td>{{variant.other}}</td>
-        <td>-</td>
-    </tr>
-    <tr>
-        <td>VARIANT FEATURES ALONE:</td>
-        <td>-</td>
-        <td>15</td>
-        <td>{{beta}}</td>
-        <td>{{alpha_lqt3}}</td>
-        <td>{{alpha_brs1}}</td>
-        <td>-</td>
-        <td>-</td>
-    </tr>
-   </tbody>
-</table>
-Summary totals might not agree with the literature table because of duplicate patients, which were excluded from the
-total counts. We do not distinguish here between multiple missense codons. Missense variants are combined across
-degenerate codon substitutions since codon-level data were not consistently available for curation.
+</section>
 
-<p></p>
+<section aria-labelledby="in-silico-heading">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <h2 id="in-silico-heading" class="h4 fw-semibold mb-0"><em>In silico</em> predictors</h2>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle mb-2">
+            <caption class="text-muted">Variant-level computational predictors.</caption>
+            <thead class="table-light">
+            <tr>
+                <th scope="col">PROVEAN</th>
+                <th scope="col">PolyPhen-2</th>
+                <th scope="col">BLAST-PSSM</th>
+                <th scope="col">REVEL</th>
+                <th scope="col">Penetrance Density BrS (%)</th>
+                <th scope="col">Penetrance Density LQT3 (%)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ variant.provean_score }}</td>
+                <td>{{ variant.pph2_prob }}</td>
+                <td>{{ variant.blast_pssm }}</td>
+                <td>{{ variant.revel_score }}</td>
+                <td>{% widthratio variant.brs1_dist 1 100 %}</td>
+                <td>{% widthratio variant.lqt3_dist 1 100 %}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p class="text-muted small">PROVEAN scores below -2 suggest deleterious impact. REVEL scores above 0.5–0.75 are often interpreted as likely pathogenic. PolyPhen-2 scores above 0.85 are typically pathogenic. Penetrance density summarises neighbouring residue risk (<a href="https://pubmed.ncbi.nlm.nih.gov/30828412/" target="_blank" rel="noopener">Kroncke et al. 2019</a>).</p>
+</section>
+
+<section aria-labelledby="carrier-heading">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <h2 id="carrier-heading" class="h4 fw-semibold mb-0">Reported carrier data</h2>
+    </div>
+    <div class="table-responsive">
+        <table id="clinrecs" class="table table-striped table-bordered align-middle" style="width:100%">
+            <caption class="text-muted">Observed carriers by publication or cohort.</caption>
+            <thead class="table-light">
+            <tr>
+                <th scope="col">Source</th>
+                <th scope="col">Year</th>
+                <th scope="col">Carriers</th>
+                <th scope="col">Unaffected</th>
+                <th scope="col">LQT3</th>
+                <th scope="col">BrS1</th>
+                <th scope="col">Other</th>
+                <th scope="col">Other Disease</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if clin_papers > 0 %}
+                {% for p in recs_clin %}
+                    <tr>
+                        <td>
+                            {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "Paris Cohort" %}
+                                <a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}" target="_blank" rel="noopener">{{ p.pmid }}</a>
+                            {% else %}
+                                {{ p.pmid }}
+                            {% endif %}
+                        </td>
+                        <td>{{ p.year }}</td>
+                        <td>{{ p.total_carriers }}</td>
+                        <td>{{ p.unaff_gnomad }}</td>
+                        <td>{{ p.lqt3 }}</td>
+                        <td>{{ p.brs1 }}</td>
+                        <td>{{ p.other }}</td>
+                        <td>{{ p.other_diag }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            <tr>
+                <td>Literature, cohort, and gnomAD</td>
+                <td>–</td>
+                <td>{{ variant.total_carriers }}</td>
+                <td>{{ variant.unaff_gnomad }}</td>
+                <td>{{ variant.lqt3 }}</td>
+                <td>{{ variant.brs1 }}</td>
+                <td>{{ variant.other }}</td>
+                <td>–</td>
+            </tr>
+            <tr>
+                <td>Variant features alone</td>
+                <td>–</td>
+                <td>15</td>
+                <td>{{ beta }}</td>
+                <td>{{ alpha_lqt3 }}</td>
+                <td>{{ alpha_brs1 }}</td>
+                <td>–</td>
+                <td>–</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p class="text-muted small">Totals may differ from individual publications due to duplicate patients removed during curation.</p>
+</section>
+
 {% if func_papers > 0 %}
-<div align="center" class="content">
-    <h2>
-        <p>Functional Data</p>
-    </h2>
-</div>
-Peak and late/persistent current are relative to wildtype (100% being no different from wildtype).
-V<sub>0.5</sub> act/inact are the voltages at which half of the maximal current is reached during an activation and
-inactivation protocol, each is in units of mV and relative to wildtype.
-
-<table id="funcrecs" class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>PubMed ID</th>
-        <th>Year</th>
-        <th>Cell Type</th>
-        <th>Peak Current (%WT)</th>
-        <th>V<sub>1/2</sub> Act. (mV)</th>
-        <th>V<sub>1/2</sub> Inact. (mV)</th>
-        <th>Late/Persistent Current (%WT)</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for p in recs_funcs %}
-    <tr>
-        <td><a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}">{{ p.pmid }}</a></td>
-        <td>{{ p.year }}</td>
-        <td>{{p.cell_type}}</td>
-        <td>{% widthratio p.peak 1 100 %}</td>
-        <td>{{p.vhalf_act}}</td>
-        <td>{{p.vhalf_inact}}</td>
-        <td>{% widthratio p.late 1 100 %}</td>
-    </tr>
-    {% endfor %}
-   </tbody>
-</table>
+<section aria-labelledby="functional-heading">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <h2 id="functional-heading" class="h4 fw-semibold">Functional data</h2>
+    </div>
+    <p class="text-muted small">Peak and late/persistent current values are relative to wild-type (100% indicates no change). V<sub>1/2</sub> activation and inactivation denote the membrane potentials (mV) at which half-maximal current is achieved.</p>
+    <div class="table-responsive">
+        <table id="funcrecs" class="table table-striped table-bordered align-middle" style="width:100%">
+            <caption class="text-muted">Published electrophysiology measurements.</caption>
+            <thead class="table-light">
+            <tr>
+                <th scope="col">PubMed ID</th>
+                <th scope="col">Year</th>
+                <th scope="col">Cell Type</th>
+                <th scope="col">Peak Current (% WT)</th>
+                <th scope="col">V<sub>1/2</sub> Activation (mV)</th>
+                <th scope="col">V<sub>1/2</sub> Inactivation (mV)</th>
+                <th scope="col">Late/Persistent Current (% WT)</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p in recs_funcs %}
+                <tr>
+                    <td><a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}" target="_blank" rel="noopener">{{ p.pmid }}</a></td>
+                    <td>{{ p.year }}</td>
+                    <td>{{ p.cell_type }}</td>
+                    <td>{% widthratio p.peak 1 100 %}</td>
+                    <td>{{ p.vhalf_act }}</td>
+                    <td>{{ p.vhalf_inact }}</td>
+                    <td>{% widthratio p.late 1 100 %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endif %}
-<p></p>
 
 {% if var_type %}
-<div align="center" class="content">
-    <h2>
-        <p> <b>{{ variant.var }}</b> has {{ recs_dists| length }} previously observed neighbors within 15 angstroms </p>
-    </h2>
-</div>
-A residue within a folded protein on average has nearest neighbors that fall roughly into two shells: a "nearest"
-neighbor around 5-6 angstroms and a second shell around 11 angstroms. All variants shown in the rightmost
-column have been observed in at least one individual in the literature or gnomAD.
-<p></p>
-<table id="distrecs" class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>Neighbor</th>
-        <th>Distance (Angstroms)</th>
-        <th>Variants Observed in Individuals</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for p in recs_dists %}
-        <tr>
-            <td>{{p.neighbor}}</td>
-            <td>{% widthratio p.distance 1 1 %}</td>
-            <td>
-            {% for r in recs_vars %}
-                {% if r.resnum == p.neighbor %}
-                         <a href="{% url 'scn5a:detail' r.hgvsc %}">{{r.var}}, </a>
-                {% endif %}
+<section aria-labelledby="neighbor-heading">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <h2 id="neighbor-heading" class="h4 fw-semibold">Nearby variants</h2>
+    </div>
+    <p class="text-muted small">Neighbouring residues within 15 Ångström provide structural context. Variants listed in the right-most column have been observed clinically or in gnomAD.</p>
+    <div class="table-responsive">
+        <table id="distrecs" class="table table-striped table-bordered align-middle" style="width:100%">
+            <caption class="text-muted">Previously observed variants near {{ variant.var }}.</caption>
+            <thead class="table-light">
+            <tr>
+                <th scope="col">Neighbour residue</th>
+                <th scope="col">Distance (Å)</th>
+                <th scope="col">Observed variants</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p in recs_dists %}
+                <tr>
+                    <td>{{ p.neighbor }}</td>
+                    <td>{% widthratio p.distance 1 1 %}</td>
+                    <td>
+                        {% for r in recs_vars %}
+                            {% if r.resnum == p.neighbor %}
+                                <a href="{% url 'scn5a:detail' r.hgvsc %}">{{ r.var }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
             {% endfor %}
-            </td>
-        </tr>
-    {% endfor %}
-
-   </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endif %}
-
-</body>
-<p></p>
-<p></p>
-<p></p>
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js" integrity="sha384-eIg9w6n1vCtbmZh9rqx8pFazc2DSES0MtiCbxUHiGqU09AKnVdj6pTLXeuhgqGJp" crossorigin="anonymous"></script>
 <script>
-// Variant Detail Tables:
-$(document).ready(function() {
-    var table = $('#clinrecs').DataTable( {
-        scrollY: 300,
-        scrollCollapse: true,
+    const tableOptions = {
         paging: false,
-        searching: false, info: false
+        searching: false,
+        info: false,
+        ordering: true,
+        scrollY: 320,
+        scrollCollapse: true
+    };
+
+    $(function () {
+        $('#clinrecs').DataTable(tableOptions);
+        ['#funcrecs', '#distrecs'].forEach((selector) => {
+            const table = $(selector);
+            if (table.length) {
+                table.DataTable(tableOptions);
+            }
         });
-        $('#funcrecs').DataTable( {
-        scrollY: 300,
-        scrollCollapse: true,
-        paging: false,
-        searching: false, info: false
-        });
-        $('#distrecs').DataTable( {
-        scrollY: 300,
-        scrollCollapse: true,
-        paging: false,
-        searching: false, info: false
-        });
-});
+    });
 </script>
 {% endblock %}
