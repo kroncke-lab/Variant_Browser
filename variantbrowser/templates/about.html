@@ -1,114 +1,153 @@
 {% extends "base.html" %}
+{% block title %}About · Variant Browser{% endblock %}
 {% block page_content %}
-  <div id="outer-content">
-    <div id="content">
-      <div id="main">
-	<div class="header">
-	<h1>About us</h1>
-	</div>
-<p>This resource was built and is maintained by the Kroncke lab at the Vanderbilt University Medical Center
-    <a href="https://kroncke-lab.github.io/index.html">(Kroncke lab website)</a>. Please send any questions or comments to
-    brett.m.kroncke.1@vumc.org. Here we develop a model where information such as variant function and
-    structural location can inform an estimate of the risk of disease before the observation of heterozygous carriers, a
-    prior penetrance estimate for each variant. This analysis (described in greater detail on the
-    Penetrance Analysis page) enables an estimate of penetrance for all variants for which these data are available,
-    even before observing in a single individual.</p>
-
-<div class="header">
-	<h1><i>KCNH2 </i> background</h1>
-	</div>
-<p> 
-<p><i>KCNH2</i> (also known as the human ether a-go-go related gene, hERG) encodes a 1,159 amino acid protein,
-          K<sub>V</sub>11.1, a voltage-gated potassium channel in the heart. Coding-altering variants in <i>KCNH2</i>
-          have been mostly linked to the heart arrhythmias, <a href="https://www.omim.org/entry/613688">Long QT Syndrome
-              Type 2</a> (LQT2), and <a href="https://www.omim.org/entry/609620">Short QT Syndrome</a> (SQT1). Loss-of-function variants in <i>KCNH2</i> are
-          associated LQT2 and gain-of-function variants are associated with short QT Syndrome. The risk of sudden cardiac
-          death from these conditions can often be prevented with drug therapy or implantation of a defibrillator. <i>KCNH2</i>
-          variants are often studied <i>in vitro</i> in heterologous expression systems using patch clamp electrophysiology.
-          Use the dropdown tab at the upper left of the screen to access the full <i>KCNH2</i> dataset.
-
-</p>
-	<div class="header">
-		<h1>The <i>KCNH2</i> dataset</h1>
-	</div>
-<p>The dataset described on this website is a dataset of patient data and <i>in vitro</i> patch clamp data. This dataset
-    was first described in <a href="https://pubmed.ncbi.nlm.nih.gov/34309407/">Kozek et al. 2021</a> in Circulation:
-    Genomics and Precision Medicine. The data were curated from a comprehensive literature
-    review from papers written about <i>KCNH2</i> (or K<sub>V</sub>11.1, the protein product of <i>KCNH2</i>). In addition, five
-    centers that hold cardiology clinics and conduct research gathered clinical phenotypes and genotypes for individuals
-    heterozygous for <i>KCNH2</i> variants, including Unité de Rythmologie, Centre de Référence Maladies Cardiaques Héréditaires,
-    Service de Cardiologie, Hôpital Bichat, Paris, France; the Center for Cardiac Arrhythmias of Genetic Origin Istituto
-    Auxologico Italiano IRCCS, Milan, Italy; Shiga University of Medical Science Department of Cardiovascular and
-    Respiratory Medicine, Shiga, Japan; National Cerebral and Cardiovascular Center, Osaka, Japan; Nagasaki University,
-    Nagasaki, Japan. We quantified the number of carriers presenting with and without disease for 871 reported
-    <i>KCNH2</i> variants (an additional 266 <i>KCNH2</i> inframe/missense variants coming from the international
-    cohort). For approximately 180 variants, data were also available for at least one of six K<sub>V</sub>11.1
-    electrophysiologic parameters collected heterzygously and/or homozygously: steady state maximum current, peak tail
-    current, steady state V1/2 of activation and inactivation, recovery from inactivation,
-    and/or deactivation time.
-</p>
-
-<div class="header">
-	<h1><i>KCNQ1 </i> background</h1>
-	</div>
-<p> 
-<p><i>KCNQ1</i> encodes a 676 amino acid transmembrane protein, which along with its partner KCNE1, forms the I<sub>Ks</sub> current, 
-	the slow component of cardiac repolarization. Heterozygous variants in <i>KCNQ1</i> are associated with Long QT Syndrome (Type 1), 
-	Short QT Syndrome, and Atrial Fibrillation. Alongside its cardiac function, KCNQ1 is also expressed in the ear, the digestive track, and 
-	oocytes among other organs. Accordingly, there are additional functions such as KCNQ1-encoded RNA genes that function in X-inactivation, and 
-	SNPs linked to a number of complex diseases by common variant association studies. Interestingly, homozygous loss-of-funciton variants result 
-	in a more severe condition, Jervell and Lange-Nielsen Syndrome, characterized by both cardiac abnormality and congenital deafness. With regards 
-	to Long QT Syndrome, genetic data may be leveraged in the prospective clinical management of KCNQ1 variant heterozygotes. This work can 
-	potentially be life-saving through medicines or interventions, as sudden cardiac death through ventricular arrhythmias may arise as the sentinel 
-	disease manifestation. 
-	
-	
-</p>
-	<div class="header">
-		<h1>The <i>KCNQ1</i> dataset</h1>
-	</div>
-<p> This dataset hosted on this site was described in <a href="https://www.gimjournal.org/article/S1098-3600(22)01060-7/fulltext#relatedArticles">O’Neill et al., Genetics in Medicine</a>. It contains searchable phenotype information from the 
-	literature and collaborative networks and a host of in silico, structural, and functional covariates for each variant. A comprehensive 
-	literature review was undertaken searching for all papers publishing clinical cardiac data on <i>KCNQ1</i> variant heterozygotes to adjudicate 
-	LQTS status. We used the gnomAD database of genetic variation to find additional variant heterozygotes that were used as putatively 
-	unaffected controls. 3 tertiary care centers from around the world also contributed patient data, including Unité de Rythmologie, 
-	Centre de Référence Maladies Cardiaques Héréditaires, Service de Cardiologie, Hôpital Bichat, Paris, France; the Center for Cardiac 
-	Arrhythmias of Genetic Origin Istituto Auxologico Italiano IRCCS, Milan, Italy; National Cerebral and Cardiovascular Center, Osaka, Japan; 
-	Nagasaki University, Nagasaki, Japan. Combining the literature and the clinical cohorts (and manually excluding potential overlapping patients), 
-	we found 629 unique missense and in-frame insertion/deletion variants present among 10,389 variant heterozygotes. All raw data can be found 
-	on our GitHub page. 
-</p>
-	      
-<div class="header">
-	<h1><i>SCN5A </i> background</h1>
-	</div>
-<p><i>SCN5A</i> encodes a 2,016 amino-acid ion channel, Na<sub>V</sub>1.5, the main voltage-gated sodium channel in the heart.
-    Code-altering (missense) variants in <i>SCN5A</i> have been linked to many arrhythmia and cardiac conditions including
-    <a href="https://www.omim.org/entry/601144">Brugada Syndrome Type 1</a> (BrS1), <a href="https://www.omim.org/entry/603830">Long QT Syndrome Type 3</a>
-    (LQT3), <a href="https://www.omim.org/entry/601154">dilated cardiomyopathy</a>, <a href="https://www.omim.org/entry/113900">cardiac
-        conduction disease</a>, and <a href="https://www.omim.org/entry/608567">Sick Sinus Syndrome</a>.
-    Loss-of-function variants in <i>SCN5A</i> are associated with Brugada Syndrome and other cardiac conduction defects;
-    gain-of-function variants are associated with Long QT Syndrome. <i>SCN5A</i> variants are
-    often studied <i>in vitro</i> in heterologous expression systems using patch clamp electrophysiology.
-</p>
-	<div class="header">
-		<h1>The dataset</h1>
-	</div>
-<p>The dataset described on this website is a dataset of patient data and in vitro patch clamp data. This dataset was
-    first described in <a href="https://pubmed.ncbi.nlm.nih.gov/29728395/">Kroncke and Glazer et al. 2018, Circulation:
-        Genomic and Precision Medicine</a>. The data were curated from a comprehensive literature review from
-    papers written about <i>SCN5A</i> or Na<sub>V</sub>1.5. We quantified the number of
-    carriers presenting with and without disease for 1,712 reported <i>SCN5A</i> variants. For 356 variants, data were
-    also available for five Na<sub>V</sub>1.5 electrophysiologic parameters: peak current, late/persistent current, steady state
-    V<sub>0.5</sub> of activation and inactivation, and recovery from inactivation. We found that peak and late current
-    significantly associated with BrS1 (p < 0.001, rho = -0.44, Spearman’s rank test) and LQT3 disease penetrance
-    (p < 0.001, rho = 0.4). Steady state V<sub>0.5</sub> activation and recovery from inactivation also associated significantly
-    with BrS1 and LQT3 penetrance, respectively. This dataset was updated with papers published through January 2020.
-    The description of the revised dataset published in <a href="https://pubmed.ncbi.nlm.nih.gov/32569262/">Kroncke et al, 2020, PLOS Genetics</a>.
-    This paper also includes an updated Bayesian method for estimating the penetrance of each variant.</p>
-
+<section class="py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <h1 class="display-6 fw-semibold mb-3">About the Variant Browser</h1>
+            <p class="lead text-muted">The Kroncke Lab curates and shares harmonised clinical, structural, and functional
+                data for arrhythmia-associated genes to enable transparent penetrance estimation and variant
+                interpretation.</p>
+            <p class="text-muted">Questions or contributions? Email <a href="mailto:brett.m.kroncke.1@vumc.org">brett.m.kroncke.1@vumc.org</a> or visit the <a href="https://kroncke-lab.github.io/index.html" target="_blank" rel="noopener">Kroncke Lab website</a>.</p>
+        </div>
     </div>
-  </div>
-</div>
-{% endblock %}
+</section>
 
+<nav class="bg-white border rounded-3 shadow-sm p-4 mb-5">
+    <h2 class="h5 fw-semibold mb-3">On this page</h2>
+    <div class="row g-3">
+        <div class="col-md-6 col-lg-3">
+            <a class="btn btn-outline-secondary w-100" href="#mission">Our mission</a>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <a class="btn btn-outline-secondary w-100" href="#kcnh2">The <i>KCNH2</i> dataset</a>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <a class="btn btn-outline-secondary w-100" href="#kcnq1">The <i>KCNQ1</i> dataset</a>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <a class="btn btn-outline-secondary w-100" href="#scn5a">The <i>SCN5A</i> dataset</a>
+        </div>
+    </div>
+</nav>
+
+<section id="mission" class="pb-5">
+    <div class="row g-4 align-items-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h2 class="h4 fw-semibold">Our mission</h2>
+                    <p class="text-muted">Sequencing a genome now costs less than many routine clinical tests, yet the
+                        interpretive gap for rare variants persists. We develop statistical models that combine variant
+                        location, functional data, and <em>in silico</em> predictors to estimate penetrance before extensive
+                        clinical observation.</p>
+                    <p class="text-muted">Our penetrance workflow, described in <a href="https://pubmed.ncbi.nlm.nih.gov/32569262/" target="_blank" rel="noopener">Kroncke et al. 2020</a>,
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/34309407/" target="_blank" rel="noopener">Kozek et al. 2021</a>, and
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/36496179/" target="_blank" rel="noopener">O’Neill et al. 2023</a>, helps clinicians and researchers assess risk,
+                        prioritise follow-up, and improve variant reclassification.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="h5 fw-semibold">How to use the browser</h3>
+                    <ul class="text-muted small mb-0">
+                        <li class="mb-2"><strong>Filter:</strong> Use Search Builder and Search Panes to focus on variant
+                            subsets of interest.</li>
+                        <li class="mb-2"><strong>Download:</strong> Export filtered results to CSV for further analysis.</li>
+                        <li><strong>Compare:</strong> Charts summarise carrier counts and penetrance distributions for quick
+                            context.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="kcnh2" class="pb-5">
+    <div class="row g-4 align-items-start">
+        <div class="col-xl-7">
+            <h2 class="h4 fw-semibold"><i>KCNH2</i> background</h2>
+            <p class="text-muted">The 1,159 amino acid voltage-gated potassium channel encoded by <i>KCNH2</i> (K<sub>V</sub>11.1) is
+                central to cardiac repolarisation. Coding variants are linked to Long QT Syndrome type 2 (LQT2) and
+                Short QT Syndrome (SQT1). Loss-of-function variants predispose to LQT2, while gain-of-function variants are
+                associated with SQT1.</p>
+            <p class="text-muted">Functional characterisation commonly leverages heterologous systems with patch clamp
+                electrophysiology. Use the dataset navigation menu to open the full <i>KCNH2</i> variant table.</p>
+        </div>
+        <div class="col-xl-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="h6 fw-semibold text-uppercase text-muted">Dataset highlights</h3>
+                    <ul class="small text-muted mb-0">
+                        <li class="mb-2">Clinical phenotypes and genotypes curated from global arrhythmia cohorts.</li>
+                        <li class="mb-2">Electrophysiology metrics such as steady state current, activation/inactivation V<sub>1/2</sub>,
+                            and recovery kinetics.</li>
+                        <li>First reported in <a href="https://pubmed.ncbi.nlm.nih.gov/34309407/" target="_blank" rel="noopener">Kozek et al. 2021</a> with 871 variants and expanded
+                            cohort contributions.</li>
+                    </ul>
+                    <a class="btn btn-link px-0 mt-3" href="{% url 'kcnh2:main' %}">Open the <i>KCNH2</i> browser →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="kcnq1" class="pb-5">
+    <div class="row g-4 align-items-start flex-lg-row-reverse">
+        <div class="col-xl-7">
+            <h2 class="h4 fw-semibold"><i>KCNQ1</i> background</h2>
+            <p class="text-muted"><i>KCNQ1</i> encodes a 676 amino acid transmembrane protein that partners with KCNE1 to
+                produce the I<sub>Ks</sub> current, a slow component of cardiac repolarisation. Heterozygous variants are
+                associated with Long QT Syndrome type 1, Short QT Syndrome, and Atrial Fibrillation, while homozygous loss of
+                function causes Jervell and Lange-Nielsen Syndrome.</p>
+            <p class="text-muted">Beyond cardiac phenotypes, <i>KCNQ1</i> influences diverse tissues including the ear and
+                digestive tract. The dataset aggregates literature and clinical network observations to capture 629 missense
+                and in-frame variants among 10,389 heterozygotes.</p>
+        </div>
+        <div class="col-xl-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="h6 fw-semibold text-uppercase text-muted">Dataset highlights</h3>
+                    <ul class="small text-muted mb-0">
+                        <li class="mb-2">Integrates gnomAD carrier frequencies as unaffected controls.</li>
+                        <li class="mb-2">Captures structural hotspots that inform penetrance priors.</li>
+                        <li>Summarised in <a href="https://pubmed.ncbi.nlm.nih.gov/36496179/" target="_blank" rel="noopener">O’Neill et al. 2023</a>, <em>Genetics in Medicine</em>.</li>
+                    </ul>
+                    <a class="btn btn-link px-0 mt-3" href="{% url 'kcnq1:main' %}">Open the <i>KCNQ1</i> browser →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="scn5a" class="pb-5">
+    <div class="row g-4 align-items-start">
+        <div class="col-xl-7">
+            <h2 class="h4 fw-semibold"><i>SCN5A</i> background</h2>
+            <p class="text-muted"><i>SCN5A</i> encodes Na<sub>V</sub>1.5, the primary cardiac voltage-gated sodium channel. Missense
+                variants are implicated in Brugada Syndrome type 1 (BrS1), Long QT Syndrome type 3 (LQT3), dilated
+                cardiomyopathy, conduction disease, and Sick Sinus Syndrome. Loss-of-function variants tend to underlie BrS1,
+                while gain-of-function variants drive LQT3.</p>
+            <p class="text-muted">Our dataset combines literature reviews and international cohorts to track 1,712 variants
+                with carrier phenotypes, plus functional measurements of peak and late current, activation/inactivation
+                thresholds, and recovery kinetics.</p>
+        </div>
+        <div class="col-xl-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="h6 fw-semibold text-uppercase text-muted">Dataset highlights</h3>
+                    <ul class="small text-muted mb-0">
+                        <li class="mb-2">Penetrance estimates synthesise variant priors with observed carriers.</li>
+                        <li class="mb-2">Functional annotations distinguish loss-, partial loss-, mild loss-, and gain-of-function signatures.</li>
+                        <li>Updated through January 2020 and described in <a href="https://pubmed.ncbi.nlm.nih.gov/29728395/" target="_blank" rel="noopener">Kroncke &amp; Glazer et al. 2018</a> and
+                            <a href="https://pubmed.ncbi.nlm.nih.gov/32569262/" target="_blank" rel="noopener">Kroncke et al. 2020</a>.</li>
+                    </ul>
+                    <a class="btn btn-link px-0 mt-3" href="{% url 'scn5a:main' %}">Open the <i>SCN5A</i> browser →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
