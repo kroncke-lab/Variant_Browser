@@ -1,48 +1,129 @@
 {% extends "base.html" %}
+{% block title %}Home · Variant Browser{% endblock %}
 {% block page_content %}
-  <div id="outer-content">
-    <div id="content">
-      <div id="main">
-	<div class="header">
-	<h1>About us</h1>
-	</div>
-          <p>This resource was built using Python (Django) and is hosted on Azure
-              (<a href="https://github.com/kroncke-lab/Variant_Browser">GitHub</a>) and maintained by the Kroncke lab
-              at the Vanderbilt University Medical Center
-    <a href="https://kroncke-lab.github.io/index.html">(Kroncke lab website)</a>. Please send any questions or comments
-              to brett.m.kroncke.1@vumc.org.</p>
-
-<div class="header">
-	<h1>Background</h1>
-	</div>
-<p> 
-Sequencing an individual’s genome now costs less than many routine medical procedures. A resulting
-          vision is that everyone will have their genome sequenced early in life to enable individualized medical advice
-          about disease prevention and drug selection. A major concern with this vision, however, is proper
-          interpretation of the overwhelming volume of discovered novel and rare variants. In other contexts, a new
-          diagnostic test can be benchmarked and validated in studies that compare large populations with and without a
-          disorder to determine the predictive value of a positive result. In the genetic sequencing context, however,
-          a positive test for most variants cannot be applied to enough heterozygous individuals for a definitive
-          association with disease. A major resulting challenge facing contemporary genomic medicine is the clinical community’s
-          desire for yes/no
-          answers to the nuanced issue of whether a specific genetic variant will produce a meaningful phenotype.
-          The current framework used to assess the significance of these variants classifies them from likely pathogenic/
-          pathogenic to likely benign/benign, with most stuck as variant of uncertain significance. Here we present a
-          data-driven estimate of disease penetrance along side raw data for interpreting variants in <i>KCNQ1</i>,
-    <i>KCNH2</i>, and <i>SCN5A</i>.
-          To estimate penetrance of disease, heuristically, we found that the innate diagnostic information one learns
-          about a variant from three-dimensional variant location, <i>in vitro</i> functional data, and <i>in silico</i>
-          predictors is equivalent to the diagnostic information one learns about that same variant by clinically
-          phenotyping around 10-20 heterozygotes. These results are published in 2020 in
-    <a href="https://pubmed.ncbi.nlm.nih.gov/32569262/">PLOS Genetics</a>, in 2021 in
-    <a href="https://pubmed.ncbi.nlm.nih.gov/34309407/">Circulation: Genomics and Precision Medicine</a>, and in 2023 in 
-	<a href="https://pubmed.ncbi.nlm.nih.gov/36496179/">Genetics in Medicine</a>.
-    We present the results from these analyses in the form of searchable
-          tables.
-
-
+<section class="text-center py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            <h1 class="display-5 fw-semibold mb-3">Data-driven penetrance insights for inherited arrhythmia genes</h1>
+            <p class="lead text-muted">Explore curated clinical, structural, and functional evidence for <i>KCNQ1</i>,
+                <i>KCNH2</i>, <i>SCN5A</i>, and <i>RYR2</i> variants. Filter interactive tables, view graphical summaries,
+                and download data to support research and clinical decision making.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+                <a class="btn btn-primary" href="#get-started">Get started</a>
+                <a class="btn btn-outline-secondary" href="{% url 'about' %}">Learn more about the project</a>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-{% endblock %}
+</section>
 
+<section id="get-started" class="py-4">
+    <h2 class="h4 fw-semibold mb-4">Jump straight to a dataset</h2>
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+            <a class="text-decoration-none" href="{% url 'kcnq1:main' %}">
+                <div class="card h-100 border-0 shadow-sm hover-shadow">
+                    <div class="card-body">
+                        <h3 class="card-title h5"><i>KCNQ1</i></h3>
+                        <p class="card-text text-muted mb-0">Long QT type 1 variants with curated penetrance, functional
+                            assays, and structural annotations.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <a class="text-decoration-none" href="{% url 'kcnh2:main' %}">
+                <div class="card h-100 border-0 shadow-sm hover-shadow">
+                    <div class="card-body">
+                        <h3 class="card-title h5"><i>KCNH2</i></h3>
+                        <p class="card-text text-muted mb-0">Comprehensive view of LQT2 and SQT1 evidence, including
+                            patch-clamp electrophysiology summaries.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <a class="text-decoration-none" href="{% url 'scn5a:main' %}">
+                <div class="card h-100 border-0 shadow-sm hover-shadow">
+                    <div class="card-body">
+                        <h3 class="card-title h5"><i>SCN5A</i></h3>
+                        <p class="card-text text-muted mb-0">Variant browser highlighting Brugada syndrome and LQT3
+                            penetrance estimates alongside carrier counts.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <a class="text-decoration-none" href="{% url 'ryr2:main' %}">
+                <div class="card h-100 border-0 shadow-sm hover-shadow">
+                    <div class="card-body">
+                        <h3 class="card-title h5"><i>RYR2</i></h3>
+                        <p class="card-text text-muted mb-0">Curated carriers and literature supporting catecholaminergic
+                            polymorphic ventricular tachycardia research.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="row g-4 align-items-center">
+        <div class="col-lg-6">
+            <h2 class="h3 fw-semibold">Why this browser matters</h2>
+            <p class="text-muted">Genome sequencing is now routine, yet interpreting rare variants remains challenging.
+                The Variant Browser compiles published carrier cohorts, <i>in vitro</i> functional data, structural context,
+                and <i>in silico</i> predictors to deliver transparent, quantitative penetrance estimates.</p>
+            <ul class="list-unstyled text-muted mb-0">
+                <li class="mb-2"><span class="badge bg-secondary-subtle text-secondary-emphasis me-2">Curated evidence</span>
+                    Harmonised data across literature, clinics, and population resources.</li>
+                <li class="mb-2"><span class="badge bg-secondary-subtle text-secondary-emphasis me-2">Interactive tools</span>
+                    Filterable tables, downloadable CSVs, and chart-based summaries.</li>
+                <li><span class="badge bg-secondary-subtle text-secondary-emphasis me-2">Clinical context</span>
+                    Penetrance estimates to support variant reclassification and counselling.</li>
+            </ul>
+        </div>
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="h5 fw-semibold">Publications</h3>
+                    <p class="text-muted">Our analyses are described in:</p>
+                    <ul class="list-unstyled small mb-0">
+                        <li class="mb-2"><a href="https://pubmed.ncbi.nlm.nih.gov/32569262/" class="link-primary" target="_blank" rel="noopener">Kroncke et al. 2020, <em>PLOS Genetics</em></a></li>
+                        <li class="mb-2"><a href="https://pubmed.ncbi.nlm.nih.gov/34309407/" class="link-primary" target="_blank" rel="noopener">Kozek et al. 2021, <em>Circulation: Genomics and Precision Medicine</em></a></li>
+                        <li><a href="https://pubmed.ncbi.nlm.nih.gov/36496179/" class="link-primary" target="_blank" rel="noopener">O’Neill et al. 2023, <em>Genetics in Medicine</em></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="h5 fw-semibold">Stay connected</h3>
+                    <p class="text-muted">The Kroncke lab maintains the Variant Browser and welcomes collaborations,
+                        feedback, and new data contributions.</p>
+                    <ul class="list-unstyled small mb-0">
+                        <li>Email: <a href="mailto:brett.m.kroncke.1@vumc.org">brett.m.kroncke.1@vumc.org</a></li>
+                        <li>Lab website: <a href="https://kroncke-lab.github.io/index.html" target="_blank" rel="noopener">https://kroncke-lab.github.io</a></li>
+                        <li>Source: <a href="https://github.com/kroncke-lab/Variant_Browser" target="_blank" rel="noopener">GitHub repository</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="h5 fw-semibold">Need the raw data?</h3>
+                    <p class="text-muted">Each table includes export options. For larger integrations, please reach out so
+                        we can coordinate access to updated datasets and metadata schemas.</p>
+                    <a class="btn btn-outline-primary" href="{% url 'penetrance_estimate' %}">Review the penetrance protocol</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
