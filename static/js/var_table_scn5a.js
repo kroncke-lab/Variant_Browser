@@ -1,159 +1,139 @@
-
-$(document).ready( function() {
-    initTable();
-
-} );
-
-function initTable () {
-
-    $('#example').show();
-
-    let table = $('#example').DataTable( {
-        order: [ 0, 'asc' ],
-        orderClasses: true,
-        scrollX: true,
-        scrollY: 400,
-        scroller: true,
-        buttons: [
-            'searchBuilder',
-            'searchPanes'
-        ],
-        dom: 'Bfti'
-    }).on('search.dt', function () {
-    tableActions(table);
-});
-    $(".lds-dual-ring").remove();
-     tableActions(table);
-}
-
-
-
-function tableActions (table) {
-    var brs1 = [];
-    var lqt3 = [];
-    var unaff = [];
-    var p_brs1 = [];
-    var p_lqt3 = [];
-
-    table.rows({filter: 'applied'}).every( function() {
-        var data = this.data();
-        brs1.push(data[4]);
-        lqt3.push(data[5]);
-        unaff.push(data[6]);
-        p_brs1.push(data[9])
-        p_lqt3.push(data[11])
-    });
-    var trace = {
-      x: brs1,
-      type: 'histogram',
-      xbins: {
-        size: 1,
-        start: 1
-      }
-    };
-    let layout = {
-        xaxis: {
-            title: "Number of SCN5A variant carriers diagnosed with BrS1",
-            range: [1,]
-        },
-        yaxis: {
-            title: "Number of unique SCN5A variants",
-            autorange: true
-        }
-    };
-    var data = [trace];
-    Plotly.newPlot('myDiv1', data, layout);
-
-    var trace2 = {
-      x: lqt3,
-      type: 'histogram',
-      xbins: {
-        size: 1,
-        start: 1
-      }
-    };
-    let layout2 = {
-        xaxis: {
-            title: "Number of SCN5A variant carriers diagnosed with LQT3",
-            range: [1,]
-        },
-        yaxis: {
-            title: "Number of unique SCN5A variants",
-            autorange: true
-        }
-    };
-    var data2 = [trace2];
-    Plotly.newPlot('myDiv2', data2, layout2);
-
-    var trace3 = {
-        x: unaff,
-        type: 'histogram',
-        autobinx: false,
-        xbins: {
-            end: 300,
-            size: 2,
-            start: 1
-        }
-    };
-    var layout3 = {
-        xaxis: {
-            title: "Number of unaffected carriers for each SCN5A variant",
-            range: [1,300],
-        },
-        yaxis: {
-            title: "Number of unique SCN5A variants",
-            type: 'log',
-            autorange: true
+(function ($, Plotly, global) {
+    global.scn5aTableReady = false;
+    function debounce(fn, delay) {
+        let timer;
+        return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn.apply(this, args), delay);
+        };
     }
-    };
-    var data3 = [trace3];
-    Plotly.newPlot('myDiv3', data3, layout3);
 
-    var trace4 = {
-        x: p_brs1,
-        type: 'histogram',
-        autobinx: false,
-        xbins: {
-            end: 100,
-            size: 10,
-            start: 0
-        }
-    };
-    var layout4 = {
-        xaxis: {
-            title: "BrS1 Penetrance Estimate (%)",
-            range: [0,100],
-        },
-        yaxis: {
-            title: "Number of unique SCN5A variants",
-            autorange: true
+    function coerceNumber(value) {
+        const n = Number(value);
+        return Number.isFinite(n) ? n : 0;
     }
-    };
-    var data4 = [trace4];
-    Plotly.newPlot('myDiv4', data4, layout4);
 
-    var trace5 = {
-        x: p_lqt3,
-        type: 'histogram',
-        autobinx: false,
-        xbins: {
-            end: 100,
-            size: 10,
-            start: 0
-        }
-    };
-    var layout5 = {
-        xaxis: {
-            title: "LQT3 Penetrance Estimate (%)",
-            range: [0,100],
-        },
-        yaxis: {
-            title: "Number of unique SCN5A variants",
-            autorange: true
+    function buildHistogramConfig(xTitle, options = {}) {
+        return {
+            layout: Object.assign({
+                margin: {t: 36, r: 16, b: 48, l: 56},
+                bargap: 0.05,
+                hovermode: 'x unified',
+                xaxis: {title: xTitle, automargin: true},
+                yaxis: {title: 'Number of variants', automargin: true}
+            }, options.layout || {}),
+            config: Object.assign({displaylogo: false, responsive: true}, options.config || {}),
+            trace: Object.assign({type: 'histogram', autobinx: false, marker: {color: '#2563eb'}}, options.trace || {})
+        };
     }
-    };
-    var data5 = [trace5];
-    Plotly.newPlot('myDiv5', data5, layout5);
-}
 
+    function collectRowData(rows) {
+        const carriersBrs1 = [];
+        const carriersLqt3 = [];
+        const carriersUnaffected = [];
+        const penetranceBrs1 = [];
+        const penetranceLqt3 = [];
 
+        rows.each(function (row) {
+            carriersBrs1.push(coerceNumber(row[4]));
+            carriersLqt3.push(coerceNumber(row[5]));
+            carriersUnaffected.push(coerceNumber(row[6]));
+            penetranceBrs1.push(coerceNumber(row[9]));
+            penetranceLqt3.push(coerceNumber(row[11]));
+        });
+
+        return {
+            carriersBrs1,
+            carriersLqt3,
+            carriersUnaffected,
+            penetranceBrs1,
+            penetranceLqt3
+        };
+    }
+
+    function initCharts() {
+        const chartDefinitions = {
+            myDiv1: buildHistogramConfig('Number of BrS1-diagnosed carriers', {
+                layout: {xbins: {size: 1, start: 0.5}}
+            }),
+            myDiv2: buildHistogramConfig('Number of LQT3-diagnosed carriers', {
+                layout: {xbins: {size: 1, start: 0.5}},
+                trace: {marker: {color: '#f97316'}}
+            }),
+            myDiv3: buildHistogramConfig('Number of unaffected carriers', {
+                layout: {xbins: {start: 0.5, end: 300.5, size: 2}, yaxis: {type: 'log'}},
+                trace: {marker: {color: '#14b8a6'}}
+            }),
+            myDiv4: buildHistogramConfig('BrS1 penetrance (%)', {
+                layout: {xbins: {start: -0.5, end: 100.5, size: 10}},
+                trace: {marker: {color: '#0ea5e9'}}
+            }),
+            myDiv5: buildHistogramConfig('LQT3 penetrance (%)', {
+                layout: {xbins: {start: -0.5, end: 100.5, size: 10}},
+                trace: {marker: {color: '#7c3aed'}}
+            })
+        };
+
+        Object.entries(chartDefinitions).forEach(([elementId, definition]) => {
+            Plotly.newPlot(elementId, [Object.assign({}, definition.trace, {x: []})], definition.layout, definition.config);
+        });
+
+        return chartDefinitions;
+    }
+
+    function updateCharts(chartDefinitions, dataset) {
+        const traces = {
+            myDiv1: {x: dataset.carriersBrs1},
+            myDiv2: {x: dataset.carriersLqt3},
+            myDiv3: {x: dataset.carriersUnaffected},
+            myDiv4: {x: dataset.penetranceBrs1},
+            myDiv5: {x: dataset.penetranceLqt3}
+        };
+
+        Object.entries(traces).forEach(([elementId, trace]) => {
+            const definition = chartDefinitions[elementId];
+            Plotly.react(elementId, [Object.assign({}, definition.trace, trace)], definition.layout, definition.config);
+        });
+    }
+
+    function initTable() {
+        const chartDefinitions = initCharts();
+        const table = $('#scn5a-table').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'searchBuilder',
+                'searchPanes',
+                'copyHtml5',
+                'csvHtml5'
+            ],
+            order: [[0, 'asc']],
+            scrollX: true,
+            deferRender: true,
+            scroller: true,
+            stateSave: true
+        });
+
+        const emitReady = () => {
+            global.scn5aTableReady = true;
+            document.dispatchEvent(new Event('table:ready'));
+        };
+        if (table.settings()[0].oFeatures.bServerSide) {
+            table.one('draw', emitReady);
+        } else {
+            emitReady();
+        }
+
+        const refreshCharts = () => {
+            const rows = table.rows({filter: 'applied'}).data();
+            updateCharts(chartDefinitions, collectRowData(rows));
+        };
+
+        const debouncedRefresh = debounce(refreshCharts, 180);
+
+        table.on('search.dt column-visibility.dt page.dt order.dt draw.dt', debouncedRefresh);
+
+        refreshCharts();
+    }
+
+    $(document).ready(initTable);
+})(jQuery, window.Plotly, window);
