@@ -12,11 +12,45 @@
     <style>
         body {
             font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background-color: #f9fafb;
+            background-color: #f3f4f6;
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(217, 119, 6, 0.08));
+        }
+
+        .announcement-bar {
+            background: rgba(15, 23, 42, 0.75);
+            color: rgba(248, 250, 252, 0.9);
+        }
+
+        .announcement-bar .badge {
+            background-color: rgba(248, 250, 252, 0.18);
+            color: #f8fafc;
+            letter-spacing: 0.08em;
         }
 
         .navbar-brand {
             font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .navbar-custom {
+            background-color: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border-radius: 1rem;
+            box-shadow: 0 20px 45px -30px rgba(15, 23, 42, 0.45);
+            padding: 0.85rem 1.5rem;
+        }
+
+        .navbar-custom .nav-link {
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .navbar-custom .nav-link:hover,
+        .navbar-custom .nav-link:focus {
+            color: #2563eb;
         }
 
         main {
@@ -35,9 +69,18 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body class="d-flex flex-column min-vh-100">
-<header class="border-bottom bg-white">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
-        <div class="container">
+<header class="border-bottom pb-3 pb-lg-4">
+    <div class="announcement-bar py-2">
+        <div class="container d-flex flex-column flex-lg-row align-items-lg-center gap-2 justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge rounded-pill text-uppercase small">Update</span>
+                <span class="fw-semibold">Variant Browser refresh</span>
+            </div>
+            <span class="small text-white-50">Explore redesigned navigation and faster access to curated variant datasets.</span>
+        </div>
+    </div>
+    <div class="container mt-n2">
+        <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
             <a class="navbar-brand" href="{% url 'home' %}">Variant Browser</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
                     aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,10 +90,10 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="variantDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
+                           data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                             Variant Browsers
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="variantDropdown">
+                        <ul class="dropdown-menu shadow border-0" aria-labelledby="variantDropdown">
                             <li><a class="dropdown-item" href="{% url 'kcnq1:main' %}"><i>KCNQ1</i></a></li>
                             <li><a class="dropdown-item" href="{% url 'kcnh2:main' %}"><i>KCNH2</i></a></li>
                             <li><a class="dropdown-item" href="{% url 'scn5a:main' %}"><i>SCN5A</i></a></li>
@@ -67,10 +110,10 @@
                         <a class="nav-link" href="{% url 'penetrance_estimate' %}">Penetrance Estimation Protocol</a>
                     </li>
                 </ul>
-                <a class="btn btn-outline-primary" href="https://kroncke-lab.github.io">Kroncke Lab</a>
+                <a class="btn btn-primary" href="https://kroncke-lab.github.io">Kroncke Lab</a>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </div>
 </header>
 <main>
     <div class="container">
@@ -87,7 +130,15 @@
     </div>
 </footer>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-3gJwYp8p+6wXN4A4RduCMJLZemI7AJgkP82q0P0uH7E=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownTriggerList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+        dropdownTriggerList.forEach(function (dropdownToggleEl) {
+            new bootstrap.Dropdown(dropdownToggleEl);
+        });
+    });
+</script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>
