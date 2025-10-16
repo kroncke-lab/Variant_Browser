@@ -68,17 +68,17 @@
             </button>
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="variantDropdown" role="button"
-                           data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                            Variant Browsers
-                        </a>
-                        <ul class="dropdown-menu shadow border-0" aria-labelledby="variantDropdown">
-                            <li><a class="dropdown-item" href="{% url 'kcnq1:main' %}"><i>KCNQ1</i></a></li>
-                            <li><a class="dropdown-item" href="{% url 'kcnh2:main' %}"><i>KCNH2</i></a></li>
-                            <li><a class="dropdown-item" href="{% url 'scn5a:main' %}"><i>SCN5A</i></a></li>
-                            <li><a class="dropdown-item" href="{% url 'ryr2:main' %}"><i>RYR2</i></a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'kcnq1:main' %}"><i>KCNQ1</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'kcnh2:main' %}"><i>KCNH2</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'scn5a:main' %}"><i>SCN5A</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'ryr2:main' %}"><i>RYR2</i></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">Home</a>
@@ -113,12 +113,31 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.dropdown-toggle').forEach(function (dropdownToggleEl) {
-            dropdownToggleEl.addEventListener('click', function (event) {
-                event.preventDefault();
-                const dropdown = bootstrap.Dropdown.getOrCreateInstance(dropdownToggleEl);
-                dropdown.toggle();
-            });
+        const targetPhrase = 'Variant Browser refresh';
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        const containersToRemove = new Set();
+
+        while (walker.nextNode()) {
+            const text = walker.currentNode.nodeValue;
+            if (text && text.includes(targetPhrase)) {
+                let element = walker.currentNode.parentElement;
+                while (element && element !== document.body) {
+                    if (element.matches('[role="alert"], .alert, section, div')) {
+                        containersToRemove.add(element);
+                        break;
+                    }
+                    element = element.parentElement;
+                }
+                if (!element) {
+                    containersToRemove.add(walker.currentNode.parentElement);
+                }
+            }
+        }
+
+        containersToRemove.forEach(function (element) {
+            if (element) {
+                element.remove();
+            }
         });
     });
 </script>
