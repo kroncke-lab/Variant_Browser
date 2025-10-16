@@ -1,162 +1,149 @@
+
 {% extends "base.html" %}
 {% load static %}
-{% block title %}<i>SCN5A</i> Variant Browser · Variant Browser{% endblock %}
-{% block extra_css %}
-<link rel="stylesheet" href="https://cdn.datatables.net/v/dt-1.13.8/b-2.4.2/sb-1.7.0/sp-2.2.0/sc-2.3.0/sl-1.7.0/datatables.min.css" integrity="sha384-83XQO2GJx7dBkI3Kw3HpPBphUBfMx3KfOlFBlUI0vAfECv3TW3F8wAvoVz4+VSbj" crossorigin="anonymous">
-<style>
-    #table-loading {
-        min-height: 160px;
-    }
-    .chart-section {
-        margin-top: 3rem;
-    }
-</style>
-{% endblock %}
 {% block page_content %}
-<section class="py-4">
-    <div class="text-center mb-4">
-        <h1 class="display-6 fw-semibold"><i>SCN5A</i> Variant Browser</h1>
-        <p class="text-muted mx-auto" style="max-width: 60rem;">
-            Explore curated evidence for <i>SCN5A</i> variants observed in Brugada Syndrome (BrS1) and Long QT Syndrome type 3 (LQT3).
-            Filter the table, export subsets, and review chart summaries for carrier counts and penetrance estimates.
-        </p>
-    </div>
-    <div class="row g-4">
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <h2 class="h5 fw-semibold">How to read the table</h2>
-                    <ul class="text-muted small mb-0">
-                        <li><strong>Total Carriers</strong> aggregates BrS1, LQT3, unaffected, and gnomAD observations.</li>
-                        <li><strong>Function</strong> reflects peak and late current classifications (loss-, partial loss-, mild loss-, or gain-of-function).</li>
-                        <li><strong>Location</strong> columns summarise structural hotspot context for BrS1 and LQT3 penetrance.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <h2 class="h5 fw-semibold">Need the protocol?</h2>
-                    <p class="text-muted small">We estimate penetrance by combining variant priors (structure, function, <em>in silico</em>) with observed carriers.</p>
-                    <a class="btn btn-outline-primary btn-sm" href="{% url 'penetrance_estimate' %}">Review penetrance estimation</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<section class="py-3">
-    <div id="table-loading" class="d-flex justify-content-center align-items-center">
-        <div class="spinner-border text-primary" role="status" aria-label="Loading <i>SCN5A</i> table"></div>
-    </div>
-    <div class="table-responsive" id="table-wrapper" hidden>
-        <table id="scn5a-table" class="table table-striped table-bordered align-middle" style="width:100%">
-            <thead class="table-light">
-            <tr>
-                <th scope="col">Ch.3</th>
-                <th scope="col">Variant</th>
-                <th scope="col">HGVSc</th>
-                <th scope="col">Residue Number</th>
-                <th scope="col">BrS1</th>
-                <th scope="col">LQT3</th>
-                <th scope="col">Total Carriers</th>
-                <th scope="col">Function</th>
-                <th scope="col">Location (BrS1)</th>
-                <th scope="col">BrS1 Penetrance (%)</th>
-                <th scope="col">Location (LQT3)</th>
-                <th scope="col">LQT3 Penetrance (%)</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for sts in recs %}
-                <tr>
-                    <td>{{ sts.pos }}</td>
-                    <td><a href="{% url 'scn5a:detail' sts.hgvsc %}" target="_blank" rel="noopener">{{ sts.var|truncatechars_html:9 }}</a></td>
-                    <td>{{ sts.hgvsc|truncatechars_html:12 }}</td>
-                    <td>{{ sts.resnum }}</td>
-                    <td>{{ sts.brs1 }}</td>
-                    <td>{{ sts.lqt3 }}</td>
-                    <td>{{ sts.total_carriers }}</td>
-                    <td>{{ sts.function }}</td>
-                    <td>{{ sts.structure_brs1 }}</td>
-                    <td>{% widthratio sts.brs1_penetrance 1 100 %}</td>
-                    <td>{{ sts.structure_lqt3 }}</td>
-                    <td>{% widthratio sts.lqt3_penetrance 1 100 %}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</section>
+<style>
+.lds-dual-ring {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 28px;
+  border-radius: 50%;
+  border: 6px solid #78cbf1;
+  border-color: #646464 transparent #646464 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+div.fa-beer {
+    margin-top: 70px;
+}
 
-<section class="chart-section">
-    <h2 class="h4 fw-semibold">Variant distribution highlights</h2>
-    <p class="text-muted">Charts refresh automatically as you filter the table.</p>
-    <div class="row g-4">
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <h3 class="h6 fw-semibold mb-3">BrS1 carriers</h3>
-                    <div id="myDiv1"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <h3 class="h6 fw-semibold mb-3">LQT3 carriers</h3>
-                    <div id="myDiv2"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <h3 class="h6 fw-semibold mb-3">Unaffected carriers</h3>
-                    <div id="myDiv3"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <h3 class="h6 fw-semibold mb-3">BrS1 penetrance estimates</h3>
-                    <div id="myDiv4"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <h3 class="h6 fw-semibold mb-3">LQT3 penetrance estimates</h3>
-                    <div id="myDiv5"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endblock %}
-{% block extra_js %}
-<script src="https://cdn.datatables.net/v/dt-1.13.8/b-2.4.2/sb-1.7.0/sp-2.2.0/sc-2.3.0/sl-1.7.0/datatables.min.js" integrity="sha384-ycXPKzuLTbKHe01ukxptUf7PBU4Ly+X8hjKewH6YTGwGNzYgnpbaC45nWzWiaUuq" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js" integrity="sha384-CSqBs+5mzuapBw3vVSdPNGMbVsFx9U8Vi1O7y1bpMqOYS42Nn/LqedU8xSrTByi7" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha512-74p9cI4SZ/K45pyW8P1s0kQNqsZXqS+8CA0nVddOZXS6jttuPAHyBs+K6TfGsDz3jAC5vVsQt1zArhcXd1Lqeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js" integrity="sha512-5N5CwZ0pniNXh9vDOMkMt2rt7NmBGG99nmCaTKty+O+kO5OVwOB1p5MNDoAuCEi0aKBslZx2drXr/7Lr1leonw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" integrity="sha384-UxmEo42gnikIze8ih/7xToYtL6vhfVqlhK/SXGq49lLg7LmHeLeivh3CA8DmF/Jq" crossorigin="anonymous"></script>
-<script src="{% static 'js/var_table_scn5a.js' %}"></script>
-<script>
-    const revealTable = () => {
-        const loader = document.getElementById('table-loading');
-        const wrapper = document.getElementById('table-wrapper');
-        if (loader && wrapper) {
-            loader.setAttribute('hidden', 'hidden');
-            wrapper.removeAttribute('hidden');
-        }
-    };
+</style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.2.1/css/searchPanes.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.0.1/css/searchBuilder.dataTables.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css"/>
 
-    document.addEventListener('table:ready', revealTable);
-    if (window.scn5aTableReady) {
-        revealTable();
-    }
-</script>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/date-1.0.3/r-2.2.7/sc-2.0.3/sb-1.0.1/sl-1.3.3/datatables.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/searchbuilder/1.3.0/js/dataTables.searchBuilder.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type="text/javascript" src="{% static 'js/var_table_scn5a.js' %}"></script>
+
+<div align="center" class="text-center" style="margin-top: 30px">
+    <h1>
+        <p><i>SCN5A</i> Variant Browser </p>
+    </h1>
+</div>
+<div>
+    <p>
+        Here we have a comprehensive list of variants in <i>SCN5A</i> found in individuals affected and unaffected with the
+        two diseases most commonly associated with variants in SCN5A: Brugada Syndrome (BrS1; OMIM: 601144) and
+        long QT type 3 (LQT3; OMIM: 603830). Coding variants are referenced to isoform Q14524-1 (ENST00000333535.9) to
+        match convention. 'Total Carriers' is the number of heterozygotes diagnosed with LQT3, BrS1, Unaffected with
+        disease, and found in the genome aggregation database (gnomAD). 'Other' is the number of heterozygoes diagnosed
+        with a cardiac disease which is not LQT3 or BrS1. Click the variant link for more details. Functional
+        classification of variants was done according to the following criteria for sodium channel peak tail current,
+        stead state voltage of activation, and/or late/persistent current: Loss-of-function (LOF) < 10% peak,
+        partial LOF <50% peak, mild LOF 50-75% peak, normal 75-125% peak, Gain-of-function (GOF) > 125% peak current
+        or >300% late current, partial LOF >10 mV rightward shift in V<i>0.5</i> activation. Structurally, a "Non_Hotspot"
+        variant was surrounded by variants with <10% BrS1 penetrance on average, a "Mild_Hotspot" variant was
+        surrounded by variants with between 10% and 40% BrS1 penetrance, on average, a "Hotspot" variant was
+        surrounded by variants with greater than 40% BrS1 penetrance, on average.
+    </p>
+</div>
+    <div class="lds-dual-ring" align="center"></div>
+<table id="example" class="table table-striped table-bordered" style="display:none">
+    <thead>
+    <tr>
+        <th>Ch.3</th>
+        <th>Variant</th>
+        <th>HGVSc</th>
+        <th>Residue Number</th>
+        <th>BrS1</th>
+        <th>LQT3</th>
+        <th>Total Carriers</th>
+        <th>Function</th>
+        <th>Location (BrS1)</th>
+        <th>BrS1 Penetrance(%)</th>
+        <th>Location (LQT3)</th>
+        <th>LQT3 Penetrance(%)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for sts in recs %}
+    <tr>
+        <td>{{sts.pos}}</td>
+        <td><a href="{% url 'scn5a:detail' sts.hgvsc %}" target="_blank">{{sts.var|truncatechars_html:9}}</a></td>
+        <td>{{sts.hgvsc|truncatechars_html:9}}</td>
+        <td>{{sts.resnum}}</td>
+        <th>{{sts.brs1}}</th>
+        <td>{{sts.lqt3}}</td>
+        <td>{{sts.total_carriers}}</td>
+        <td>{{sts.function}}</td>
+        <td>{{sts.structure_brs1}}</td>
+        <td>{% widthratio sts.brs1_penetrance 1 100 %}</td>
+        <td>{{sts.structure_lqt3}}</td>
+        <td>{% widthratio sts.lqt3_penetrance 1 100 %}</td>
+    </tr>
+    {% endfor %}
+
+   </tbody>
+</table>
+
+<body>
+    <div align="center" class="fa-beer"><h1>Histogram of <i>SCN5A</i> Variant Carriers with BrS1</h1></div>
+    Below is histogram of the number of heterozygous carriers of <i>SCN5A</i> variants observed in individuals diagnosed
+    with BrS1 displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number
+    of heterozygous carriers.
+	<div id='myDiv1'></div>
+    <div class="lds-dual-ring" align="center" ></div>
+    <div align="center" class="fa-beer"><h1>Histogram of <i>SCN5A</i> Variant Carriers with LQT3</h1></div>
+    Below is histogram of the number of heterozygous carriers of <i>SCN5A</i> variants observed in individuals diagnosed
+    with LQT3 displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number
+    of heterozygous carriers.
+	<div id='myDiv2'></div>
+    <div class="lds-dual-ring" align="center"></div>
+    <div align="center" class="fa-beer"><h1>Histogram of Putative Unaffected Heterozygous <i>SCN5A</i> Variant Carriers</h1></div>
+    Below is a histogram of the number of heterozygous carriers of <i>SCN5A</i> variants observed in unaffected
+    individuals and in gnomAD (given the rarity of the BrS1 and LQT3 phenotypes in the general public, we assume
+    these individuals are also likely unaffected) displayed in the table above. The y-axis is the number of unique
+    variants (log scale) and the x-axis shows the number of heterozygous carriers (truncated at 300 to aid visualization).
+    <div id='myDiv3'></div>
+    <div class="lds-dual-ring" align="center"></div>
+    <div align="center" class="fa-beer"><h1>Histogram of BrS1 Penetrance Estimates for <i>SCN5A</i> Variants</h1></div>
+    Below is a histogram of the estimates of BrS1 penetrance for all variants displayed in the table above. The range
+    is from 0% (impossible) to 100% (certain).
+    <div id='myDiv4'></div>
+    <div class="lds-dual-ring" align="center"></div>
+    <div align="center" class="fa-beer"><h1>Histogram of LQT3 Penetrance Estimates for <i>SCN5A</i> Variants</h1></div>
+    Below is a histogram of the estimates of LQT3 penetrance for all variants displayed in the table above. The range
+    is from 0% (impossible) to 100% (certain).
+    <div id='myDiv5'></div>
+    <div class="lds-dual-ring" align="center"></div>
+</body>
+
 {% endblock %}
