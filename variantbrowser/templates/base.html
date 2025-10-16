@@ -19,17 +19,6 @@
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(217, 119, 6, 0.08));
         }
 
-        .announcement-bar {
-            background: rgba(15, 23, 42, 0.75);
-            color: rgba(248, 250, 252, 0.9);
-        }
-
-        .announcement-bar .badge {
-            background-color: rgba(248, 250, 252, 0.18);
-            color: #f8fafc;
-            letter-spacing: 0.08em;
-        }
-
         .navbar-brand {
             font-weight: 600;
             font-size: 1.05rem;
@@ -70,16 +59,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 <header class="border-bottom pb-3 pb-lg-4">
-    <div class="announcement-bar py-2">
-        <div class="container d-flex flex-column flex-lg-row align-items-lg-center gap-2 justify-content-between">
-            <div class="d-flex align-items-center gap-2">
-                <span class="badge rounded-pill text-uppercase small">Update</span>
-                <span class="fw-semibold">Variant Browser refresh</span>
-            </div>
-            <span class="small text-white-50">Explore redesigned navigation and faster access to curated variant datasets.</span>
-        </div>
-    </div>
-    <div class="container mt-n2">
+    <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
             <a class="navbar-brand" href="{% url 'home' %}">Variant Browser</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
@@ -133,9 +113,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const dropdownTriggerList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
-        dropdownTriggerList.forEach(function (dropdownToggleEl) {
-            new bootstrap.Dropdown(dropdownToggleEl);
+        document.querySelectorAll('.dropdown-toggle').forEach(function (dropdownToggleEl) {
+            dropdownToggleEl.addEventListener('click', function (event) {
+                event.preventDefault();
+                const dropdown = bootstrap.Dropdown.getOrCreateInstance(dropdownToggleEl);
+                dropdown.toggle();
+            });
         });
     });
 </script>
