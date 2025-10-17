@@ -10,7 +10,7 @@ class newVariant_scn5a(models.Model):
 
     lqt3 = models.IntegerField(blank=True, null=False, default=0)
     brs1 = models.IntegerField(blank=True, null=False, default=0)
-    var = models.TextField(primary_key=True, blank=False, null=True)
+    var = models.TextField(blank=False, null=True)
     unaff = models.IntegerField(blank=True, null=False, default=0)
     ref = models.TextField(blank=True, null=True)
     alt = models.TextField(blank=True, null=True)
