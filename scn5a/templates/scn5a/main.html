@@ -1,57 +1,58 @@
-
 {% extends "base.html" %}
 {% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+    .lds-dual-ring {
+      display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .lds-dual-ring:after {
+      content: " ";
+      display: block;
+      width: 64px;
+      height: 64px;
+      margin: 28px;
+      border-radius: 50%;
+      border: 6px solid #78cbf1;
+      border-color: #646464 transparent #646464 transparent;
+      animation: lds-dual-ring 1.2s linear infinite;
+    }
+    @keyframes lds-dual-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    div.fa-beer {
+        margin-top: 70px;
+    }
+    </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.2.1/css/searchPanes.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.0.1/css/searchBuilder.dataTables.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css"/>
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/date-1.0.3/r-2.2.7/sc-2.0.3/sb-1.0.1/sl-1.3.3/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/searchbuilder/1.3.0/js/dataTables.searchBuilder.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-2.27.1.min.js'></script>
+    <script type="text/javascript" src="{% static 'js/var_table_scn5a.js' %}"></script>
+{% endblock %}
+
 {% block page_content %}
-
-<style>
-.lds-dual-ring {
-  display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  width: 64px;
-  height: 64px;
-  margin: 28px;
-  border-radius: 50%;
-  border: 6px solid #78cbf1;
-  border-color: #646464 transparent #646464 transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-div.fa-beer {
-    margin-top: 70px;
-}
-
-</style>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.2.1/css/searchPanes.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.0.1/css/searchBuilder.dataTables.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css"/>
-
-
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/date-1.0.3/r-2.2.7/sc-2.0.3/sb-1.0.1/sl-1.3.3/datatables.min.js"></script>
-
-<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/searchbuilder/1.3.0/js/dataTables.searchBuilder.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
-
-<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-<script type="text/javascript" src="{% static 'js/var_table_scn5a.js' %}"></script>
 
 <div align="center" class="text-center" style="margin-top: 30px">
     <h1>
@@ -80,70 +81,60 @@ div.fa-beer {
     <thead>
     <tr>
         <th>Ch.3</th>
-        <th>Variant</th>
         <th>HGVSc</th>
+        <th>Variant</th>
         <th>Residue Number</th>
-        <th>BrS1</th>
         <th>LQT3</th>
+        <th>BrS1</th>
         <th>Total Carriers</th>
         <th>Function</th>
-        <th>Location (BrS1)</th>
-        <th>BrS1 Penetrance(%)</th>
-        <th>Location (LQT3)</th>
+        <th>Location</th>
         <th>LQT3 Penetrance(%)</th>
+        <th>BrS1 Penetrance(%)</th>
     </tr>
     </thead>
     <tbody>
     {% for sts in recs %}
     <tr>
         <td>{{sts.pos}}</td>
-        <td><a href="{% url 'scn5a:detail' sts.hgvsc %}" target="_blank">{{sts.var|truncatechars_html:9}}</a></td>
-        <td>{{sts.hgvsc|truncatechars_html:9}}</td>
+        <td>{{sts.hgvsc|truncatechars_html:12}}</td>
+        <td><a href="{% url 'scn5a:detail' sts.hgvsc %}" target="_blank">{{sts.var|truncatechars_html:7}}</a></td>
         <td>{{sts.resnum}}</td>
-        <th>{{sts.brs1}}</th>
         <td>{{sts.lqt3}}</td>
+        <td>{{sts.brs1}}</td>
         <td>{{sts.total_carriers}}</td>
-        <td>{{sts.function}}</td>
-        <td>{{sts.structure_brs1}}</td>
-        <td>{% widthratio sts.brs1_penetrance 1 100 %}</td>
-        <td>{{sts.structure_lqt3}}</td>
+        <td>{{sts.function_class}}</td>
+        <td>{{sts.structure}}</td>
         <td>{% widthratio sts.lqt3_penetrance 1 100 %}</td>
+        <td>{% widthratio sts.brs1_penetrance 1 100 %}</td>
     </tr>
     {% endfor %}
 
    </tbody>
 </table>
-
 <body>
-    <div align="center" class="fa-beer"><h1>Histogram of <i>SCN5A</i> Variant Carriers with BrS1</h1></div>
+    <div align="center" class="fa-beer"><h1>Histogram of <i>SCN5A</i> Variant Carriers with LQTS</h1></div>
     Below is histogram of the number of heterozygous carriers of <i>SCN5A</i> variants observed in individuals diagnosed
-    with BrS1 displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number
-    of heterozygous carriers.
-	<div id='myDiv1'></div>
-    <div class="lds-dual-ring" align="center" ></div>
-    <div align="center" class="fa-beer"><h1>Histogram of <i>SCN5A</i> Variant Carriers with LQT3</h1></div>
-    Below is histogram of the number of heterozygous carriers of <i>SCN5A</i> variants observed in individuals diagnosed
-    with LQT3 displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number
-    of heterozygous carriers.
-	<div id='myDiv2'></div>
+    with LQT3 displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number of heterozygous carriers.
+        <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
     <div class="lds-dual-ring" align="center"></div>
     <div align="center" class="fa-beer"><h1>Histogram of Putative Unaffected Heterozygous <i>SCN5A</i> Variant Carriers</h1></div>
     Below is a histogram of the number of heterozygous carriers of <i>SCN5A</i> variants observed in unaffected
-    individuals and in gnomAD (given the rarity of the BrS1 and LQT3 phenotypes in the general public, we assume
-    these individuals are also likely unaffected) displayed in the table above. The y-axis is the number of unique
-    variants (log scale) and the x-axis shows the number of heterozygous carriers (truncated at 300 to aid visualization).
-    <div id='myDiv3'></div>
+    individuals and in gnomAD (given the rarity of the LQT3 phenotype in the general public, we assume these
+    individuals are also likely unaffected) displayed in the table above. The y-axis is the number of unique variants (log scale) and the x-axis
+    shows the number of heterozygous carriers (truncated at 300 to aid visualization).
+    <div id='myDiv2'><!-- Plotly chart will be drawn inside this DIV --></div>
     <div class="lds-dual-ring" align="center"></div>
-    <div align="center" class="fa-beer"><h1>Histogram of BrS1 Penetrance Estimates for <i>SCN5A</i> Variants</h1></div>
-    Below is a histogram of the estimates of BrS1 penetrance for all variants displayed in the table above. The range
-    is from 0% (impossible) to 100% (certain).
-    <div id='myDiv4'></div>
+    <div align="center" class="fa-beer"><h1>Histogram of <i>SCN5A</i> Variant Carriers with BrS1</h1></div>
+    Below is histogram of the number of heterozygous carriers of <i>SCN5A</i> variants observed in individuals diagnosed
+    with BrS1 displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number of heterozygous carriers.
+    <div id='myDiv3'><!-- Plotly chart will be drawn inside this DIV --></div>
     <div class="lds-dual-ring" align="center"></div>
     <div align="center" class="fa-beer"><h1>Histogram of LQT3 Penetrance Estimates for <i>SCN5A</i> Variants</h1></div>
-    Below is a histogram of the estimates of LQT3 penetrance for all variants displayed in the table above. The range
-    is from 0% (impossible) to 100% (certain).
-    <div id='myDiv5'></div>
-    <div class="lds-dual-ring" align="center"></div>
+    Below is a histogram of the estimates of LQT3 penetrance for all variants displayed in the table above. The range is
+    0-100% penetrance, and we truncated the x-axis at 50% for data presentation. The y-axis is the number of unique
+    variants per penetrance bin (0.02 width). Using the 'Search Builder' and 'Search Panes' will filter the histogram
+    plots, allowing you to visualize the same subset as in the table above.
+    <div id='myDiv4'><!-- Plotly chart will be drawn inside this DIV --></div>
 </body>
-
 {% endblock %}

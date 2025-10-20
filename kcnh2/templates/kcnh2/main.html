@@ -1,55 +1,58 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+    .lds-dual-ring {
+      display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .lds-dual-ring:after {
+      content: " ";
+      display: block;
+      width: 64px;
+      height: 64px;
+      margin: 28px;
+      border-radius: 50%;
+      border: 6px solid #78cbf1;
+      border-color: #646464 transparent #646464 transparent;
+      animation: lds-dual-ring 1.2s linear infinite;
+    }
+    @keyframes lds-dual-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    div.fa-beer {
+        margin-top: 70px;
+    }
+    </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.2.1/css/searchPanes.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.0.1/css/searchBuilder.dataTables.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css"/>
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/date-1.0.3/r-2.2.7/sc-2.0.3/sb-1.0.1/sl-1.3.3/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/searchbuilder/1.3.0/js/dataTables.searchBuilder.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-2.27.1.min.js'></script>
+    <script type="text/javascript" src="{% static 'js/var_table_kcnh2.js' %}"></script>
+{% endblock %}
+
 {% block page_content %}
-
-<style>
-.lds-dual-ring {
-  display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  width: 64px;
-  height: 64px;
-  margin: 28px;
-  border-radius: 50%;
-  border: 6px solid #78cbf1;
-  border-color: #646464 transparent #646464 transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-div.fa-beer {
-    margin-top: 70px;
-}
-</style>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.2.1/css/searchPanes.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.0.1/css/searchBuilder.dataTables.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css"/>
-
-
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/ju/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/date-1.0.3/r-2.2.7/sc-2.0.3/sb-1.0.1/sl-1.3.3/datatables.min.js"></script>
-
-<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/searchbuilder/1.3.0/js/dataTables.searchBuilder.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
-
-<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-<script type="text/javascript" src="{% static 'js/var_table_kcnh2.js' %}"></script>
 
 <div align="center" class="text-center" style="margin-top: 30px">
     <h1>
@@ -64,8 +67,9 @@ div.fa-beer {
         Our analysis is primarily for missense and in-frame insertion/deletion
         variants; however, some nonsense variants are included. We do not include synonymous variants.
         'LQT2' is the number of heterozygotes diagnosed with LQT2; 'Unaffected' is the number of heterozygotes
-        unaffected with disease, including those found in the genome aggregation database (gnomAD). Multiplexed assay of variant effect (MAVE) data 
-	    demonstrate concentration of the potassium channel at the cell surface, done in very high throughput, referenced to WT (100%), PMID: 39315434. Click variant link
+        unaffected with disease, including those found in the genome aggregation database (gnomAD). Multiplexed assay of variant effect (MAVE) data
+            demonstrate concentration of the potassium channel at the cell surface, done in very high throughput, referenced to
+WT (100%), PMID: 39315434. Click variant link
         for more details. Below are histogram plots for LQT2 affected carriers, unaffected carriers, and estimated LQT2
         penetrance. Use the 'Search Builder' and 'Search Panes' to select subsets of variants based on properties you
         are interested in (results will update the histogram plots below).
@@ -107,7 +111,7 @@ div.fa-beer {
     <div align="center" class="fa-beer"><h1>Histogram of <i>KCNH2</i> Variant Carriers with LQTS</h1></div>
     Below is histogram of the number of heterozygous carriers of <i>KCNH2</i> variants observed in individuals diagnosed
     with LQT2 displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number of heterozygous carriers.
-	<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+        <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
     <div class="lds-dual-ring" align="center" ></div>
     <div align="center" class="fa-beer"><h1>Histogram of Putative Unaffected Heterozygous <i>KCNH2</i> Variant Carriers</h1></div>
     Below is a histogram of the number of heterozygous carriers of <i>KCNH2</i> variants observed in unaffected
@@ -118,8 +122,11 @@ div.fa-beer {
     <div class="lds-dual-ring" align="center" ></div>
     <div align="center" class="fa-beer"><h1>Histogram of LQT2 Penetrance Estimates for <i>KCNH2</i> Variants</h1></div>
     Below is a histogram of the estimates of LQT2 penetrance for all variants displayed in the table above. The range is
-    from 0% (impossible) to 100% (certain).
+    0-100% penetrance, and we truncated the x-axis at 50% for data presentation. The y-axis is the number of unique
+    variants per penetrance bin (0.02 width). Using the 'Search Builder' and 'Search Panes' will filter the histogram
+    plots, allowing you to visualize the same subset as in the table above. Selectable panes include a variant's
+    observed penetrance (LQT2), structure, functional classification (MAVE surface trafficking), presence of coding
+    data, location within the protein and the presence of functional data.
     <div id='myDiv3'><!-- Plotly chart will be drawn inside this DIV --></div>
-    <div class="lds-dual-ring" align="center" ></div>
 </body>
 {% endblock %}

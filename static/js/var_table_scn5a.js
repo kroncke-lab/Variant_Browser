@@ -156,4 +156,3 @@ function tableActions (table) {
     Plotly.newPlot('myDiv5', data5, layout5);
 }
 
-
