@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}<i>SCN5A</i> {{ variant.var }} · Variant Detail{% endblock %}
 {% block extra_css %}
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" integrity="sha384-lwliCN0C9wCJltE1YVS9nT0V0Mx3m1jbn2XX6YOY7Wh7Tk1s3tRtyhx4p6zX6Z8j" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'vendor/datatables/css/jquery.dataTables.min.css' %}">
 <style>
     .stat-card {
         border-radius: 1rem;
@@ -242,7 +242,7 @@
 {% endif %}
 {% endblock %}
 {% block extra_js %}
-<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js" integrity="sha384-eIg9w6n1vCtbmZh9rqx8pFazc2DSES0MtiCbxUHiGqU09AKnVdj6pTLXeuhgqGJp" crossorigin="anonymous"></script>
+<script src="{% static 'vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
 <script>
     const tableOptions = {
         paging: false,
