@@ -32,31 +32,42 @@
         margin-top: 70px;
     }
     </style>
-    <link rel="stylesheet" type="text/css" href="{% static 'vendor/datatables/css/jquery.dataTables.min.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'vendor/datatables/css/searchPanes.dataTables.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'vendor/datatables/css/searchBuilder.dataTables.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'vendor/datatables/css/select.dataTables.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'vendor/datatables/css/buttons.dataTables.css' %}"/>
+    <!-- DataTables 1.x Core CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+    <!-- Buttons Extension CSS (v2.x for DT1) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+    <!-- Select Extension CSS (v1.x for DT1) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
+    <!-- SearchBuilder Extension CSS (v1.x for DT1) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/searchbuilder/1.6.0/css/searchBuilder.dataTables.min.css">
+    <!-- SearchPanes Extension CSS (v2.x for DT1) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.dataTables.min.css">
 {% endblock %}
 
 {% block extra_js %}
     {{ block.super }}
-    <!-- jQuery already loaded in base.html, don't load again -->
-    
-    <!-- Load DataTables core -->
-    <script type="text/javascript" src="{% static 'vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
-
-    <!-- Load DataTables extensions -->
-    <script type="text/javascript" src="{% static 'vendor/datatables/js/dataTables.buttons.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'vendor/datatables/js/dataTables.searchBuilder.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'vendor/datatables/js/dataTables.searchPanes.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'vendor/datatables/js/dataTables.select.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'vendor/datatables/js/dataTables.responsive.min.js' %}"></script>
-    
-    <!-- Load Plotly -->
+    <!-- DataTables 1.x Core JS -->
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <!-- JSZip (required for Excel export) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- pdfmake (required for PDF export) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <!-- Buttons Extension JS (v2.x for DT1) -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+    <!-- Select Extension JS (v1.x for DT1) -->
+    <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
+    <!-- SearchBuilder Extension JS (v1.x for DT1) -->
+    <script src="https://cdn.datatables.net/searchbuilder/1.6.0/js/dataTables.searchBuilder.min.js"></script>
+    <!-- SearchPanes Extension JS (v2.x for DT1) -->
+    <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js"></script>
+    <!-- Responsive Extension JS -->
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <!-- Plotly -->
     <script src='https://cdn.plot.ly/plotly-2.27.1.min.js'></script>
-    
-    <!-- Load your custom script last -->
+    <!-- Custom KCNH2 JS -->
     <script type="text/javascript" src="{% static 'js/var_table_kcnh2.js' %}"></script>
 {% endblock %}
 
