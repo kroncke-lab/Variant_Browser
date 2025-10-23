@@ -37,11 +37,11 @@ function tableActions (table) {
 
     table.rows({filter: 'applied'}).every( function() {
         var data = this.data();
-        brs1.push(data[4]);
-        lqt3.push(data[5]);
+        brs1.push(data[5]);
+        lqt3.push(data[4]);
         unaff.push(data[6]);
-        p_brs1.push(data[9])
-        p_lqt3.push(data[11])
+        p_brs1.push(data[10])
+        p_lqt3.push(data[9])
     });
     var trace = {
       x: brs1,
