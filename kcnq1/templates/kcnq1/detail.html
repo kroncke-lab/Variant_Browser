@@ -1,269 +1,305 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block title %}<i>KCNQ1</i> {{ variant.var }} · Variant Detail{% endblock %}
 {% block extra_css %}
-    {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'vendor/datatables/css/jquery.dataTables.min.css' %}"/>
-    <style>
-    div.content {
-        margin-top: 70px;
+<link rel="stylesheet" href="{% static 'vendor/datatables/css/jquery.dataTables.min.css' %}">
+<style>
+    .stat-card {
+        border-radius: 1rem;
     }
-    </style>
-{% endblock %}
 
-{% block extra_js %}
-    {{ block.super }}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" src="{% static 'vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
-    <script>
-    $(function() {
-        $('#clinrecs').DataTable({
-            scrollY: 200,
-            scrollCollapse: true,
-            paging: false,
-            searching: false,
-            info: false
-        });
-        $('#funcrecshm').DataTable({
-            scrollY: 200,
-            scrollCollapse: true,
-            paging: false,
-            searching: false,
-            info: false
-        });
-        $('#funcrecsht').DataTable({
-            scrollY: 200,
-            scrollCollapse: true,
-            paging: false,
-            searching: false,
-            info: false
-        });
-        $('#distrecs').DataTable({
-            scrollY: 200,
-            scrollCollapse: true,
-            paging: false,
-            searching: false,
-            info: false
-        });
-    });
-    </script>
-{% endblock %}
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
 
+    section + section {
+        margin-top: 3rem;
+    }
+</style>
+{% endblock %}
 {% block page_content %}
-
-<div align="center" class="jumbotron text-center">
-    <h1>
-        <p> <i>KCNQ1</i> Variant <b>{{ variant.var }}</b> Detail </p>
-    </h1>
-</div>
-We estimate the penetrance of LQTS for <i>KCNQ1</i> {{ variant.var }} is {% widthratio variant.lqt1_penetrance 1 100 %}%.
-{% if variant.total_carriers > 0 %}
-    This variant was found in a total of {{variant.total_carriers}} carriers in {{ recs_clin| length }} papers or gnomAD,
-    {{variant.lqt1}} had LQTS.
-{% else %}
-    We are unaware of any observations of this variant in individuals.
-{% endif %}
-
-{% if variant.gnomad > 0 %}
-    {{variant.var}} is present in {{variant.gnomad}} alleles in gnomAD.
-{% else %}
-    {{variant.var}} is not present in gnomAD.
-{% endif %}
-
-{% if recs_funcs|length > 0 %}
-    {{variant.var}} has been functionally characterized in {{ recs_funcs| length }} papers.
-{% else %}
-    {{variant.var}} has not been functionally characterized.
-{% endif %}
-
-This residue is located in a {{variant.structure_lqt1}} region for LQT1.
-
-{% if alpha != "NA" %}
-<i>In silico</i> predictions, functional data (if available), and location in structure are equivalent to observing
-{{alpha}} individuals with LQT1 and {{beta}} unaffected individuals. These data combined with observations of carriers
-    lead us to estimate the LQTS penetrance for <i>KCNQ1</i> {{ variant.var }} around
-    {% widthratio variant.lqt1_penetrance 1 100 %}% ({{ alpha_lqt1 }}/{{ tot_with_prior }}).
-{% endif %}
-
-<body>
-
-<div align="center" class="content">
-    <h2>
-        <p> <i>In Silico</i> Data </p>
-    </h2>
-</div>
-<table class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>PROVEAN</th>
-        <th>PolyPhen-2</th>
-        <th>BLAST-PSSM</th>
-        <th>REVEL</th>
-        <th>Penetrance Density (%)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>{{var_in_silico.provean_score}}</td>
-        <td>{{var_in_silico.pph2_prob}}</td>
-        <td>{{var_in_silico.blast_pssm}}</td>
-        <td>{{var_in_silico.revel_score}}</td>
-        <td>{% widthratio variant.lqt1_dist 1 100 %}</td>
-    </tr>
-   </tbody>
-</table>
-PROVEAN scores less than -2 are considered deleterious. REVEL scores higher than 0.5 or 0.75 are considered
-likely pathogenic (higher sensitivity with the former cutoff, higher specificity with the latter cutoff).
-A PolyPhen-2 score of 0.85 or greater is considered likely pathogenic.
-BLAST-PSSM reflects the evolutionary conservation of residue substitutions, more negative numbers indicate
-fewer observations of the specific substitution than is expected. Penetrance density is our previously published method
-to calculate the average LQTS probability density in a shell of residues surrounding a residue of interest
-(<a href="https://pubmed.ncbi.nlm.nih.gov/30828412/">Kroncke et al. 2019</a>).
-<p></p>
-
-<div align="center" class="content">
-    <h2>
-        <p> Reported Carrier Data </p>
-    </h2>
-</div>
-<table id="clinrecs" class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>PubMed ID</th>
-        <th>Year</th>
-        <th>Carriers</th>
-        <th>Unaffected</th>
-        <th>LQT1</th>
-        <th>Other Disease</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% if clin_papers > 0 %}
-        {% for p in recs_clin %}
-    <tr>
-        {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "France Cohort" %}
-        <td><a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}">{{ p.pmid }}</a></td>
+<section class="py-4">
+    <div class="text-center mb-4">
+        <h1 class="display-6 fw-semibold"><i>KCNQ1</i> Variant {{ variant.var }}</h1>
+        <p class="text-muted mx-auto" style="max-width: 60rem;">
+            Summary of observed carriers, functional annotations, and structural context for <i>KCNQ1</i> {{ variant.var }}.
+            Data combine curated literature, international cohorts, and gnomAD observations.
+        </p>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm stat-card h-100">
+                <div class="card-body text-center">
+                    <p class="text-muted text-uppercase small mb-1">Estimated LQT1 penetrance</p>
+                    <p class="stat-value text-primary">{% widthratio variant.lqt1_penetrance 1 100 %}%</p>
+                    <p class="small text-muted mb-0">{{ alpha_lqt1 }}/{{ tot_with_prior }} effective observations</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm stat-card h-100">
+                <div class="card-body text-center">
+                    <p class="text-muted text-uppercase small mb-1">Total carriers</p>
+                    <p class="stat-value">{{ variant.total_carriers }}</p>
+                    <p class="small text-muted mb-0">{{ variant.lqt1 }} LQT1 · {{ variant.unaff_gnomad }} unaffected</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm stat-card h-100">
+                <div class="card-body text-center">
+                    <p class="text-muted text-uppercase small mb-1">Functional studies</p>
+                    <p class="stat-value">{{ recs_funcs|length }}</p>
+                    <p class="small text-muted mb-0">Publications with functional data</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-info mt-4" role="note">
+        {% if variant.gnomad > 0 %}
+            {{ variant.var }} is present in {{ variant.gnomad }} alleles in gnomAD.
         {% else %}
-        <td>{{ p.pmid }}</td>
+            {{ variant.var }} has not been reported in gnomAD.
         {% endif %}
-        <td>{{p.year}}</td>
-        <td>{{p.car}}</td>
-        <td>{{ p.unaff }}</td>
-        <td>{{p.lqt1}}</td>
-        <td>{{p.other_diag}}</td>
-    </tr>
-        {% endfor %}
+        This residue resides in a {{ variant.structure_lqt1 }} region for LQT1.
+    </div>
+    {% if alpha != "NA" %}
+        <p class="text-muted small">Variant features alone are equivalent to phenotyping {{ alpha }} individuals with LQT1 and {{ beta }} unaffected individuals.</p>
     {% endif %}
-    </tbody>
-</table>
-<div align="center" class="content">
-    <h2>
-        <p> Functional Assay Results </p>
-    </h2>
-</div>
-<table id="funcrecshm" class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>PubMed ID</th>
-        <th>Year</th>
-        <th>Study Type</th>
-        <th>Assay</th>
-        <th>Temperature</th>
-        <th>Cell Type</th>
-        <th>Result</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% if variant.funclqt1 > 0 %}
-        {% for p in recs_funcs %}
-            {% if p.fun_data == 'hm' %}
-    <tr>
-        {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "France Cohort" %}
-        <td><a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}">{{ p.pmid }}</a></td>
-        {% else %}
-        <td>{{ p.pmid }}</td>
-        {% endif %}
-        <td>{{p.year}}</td>
-        <td>{{p.study_type}}</td>
-        <td>{{p.assay}}</td>
-        <td>{{p.temp}}</td>
-        <td>{{p.cell_type}}</td>
-        <td>{{p.hm_result}}</td>
-    </tr>
+</section>
+
+<section aria-labelledby="in-silico-heading">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <h2 id="in-silico-heading" class="h4 fw-semibold mb-0"><em>In silico</em> predictors</h2>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle mb-2">
+            <caption class="text-muted">Variant-level computational predictors.</caption>
+            <thead class="table-light">
+            <tr>
+                <th scope="col">PROVEAN</th>
+                <th scope="col">PolyPhen-2</th>
+                <th scope="col">BLAST-PSSM</th>
+                <th scope="col">REVEL</th>
+                <th scope="col">Penetrance Density LQT1 (%)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ var_in_silico.provean_score }}</td>
+                <td>{{ var_in_silico.pph2_prob }}</td>
+                <td>{{ var_in_silico.blast_pssm }}</td>
+                <td>{{ var_in_silico.revel_score }}</td>
+                <td>{% widthratio variant.lqt1_dist 1 100 %}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p class="text-muted small">PROVEAN scores below -2 suggest deleterious impact. REVEL scores above 0.5–0.75 are often interpreted as likely pathogenic. PolyPhen-2 scores above 0.85 are typically pathogenic. BLAST-PSSM reflects evolutionary conservation; more negative values indicate rarer substitutions. Penetrance density summarises neighbouring residue risk (<a href="https://pubmed.ncbi.nlm.nih.gov/30828412/" target="_blank" rel="noopener">Kroncke et al. 2019</a>).</p>
+</section>
+
+<section aria-labelledby="carrier-heading">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <h2 id="carrier-heading" class="h4 fw-semibold mb-0">Reported carrier data</h2>
+    </div>
+    <div class="table-responsive">
+        <table id="clinrecs" class="table table-striped table-bordered align-middle" style="width:100%">
+            <caption class="text-muted">Observed carriers by publication or cohort.</caption>
+            <thead class="table-light">
+            <tr>
+                <th scope="col">Source</th>
+                <th scope="col">Year</th>
+                <th scope="col">Carriers</th>
+                <th scope="col">Unaffected</th>
+                <th scope="col">LQT1</th>
+                <th scope="col">Other Disease</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if clin_papers > 0 %}
+                {% for p in recs_clin %}
+                    <tr>
+                        <td>
+                            {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "France Cohort" %}
+                                <a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}" target="_blank" rel="noopener">{{ p.pmid }}</a>
+                            {% else %}
+                                {{ p.pmid }}
+                            {% endif %}
+                        </td>
+                        <td>{{ p.year }}</td>
+                        <td>{{ p.car }}</td>
+                        <td>{{ p.unaff }}</td>
+                        <td>{{ p.lqt1 }}</td>
+                        <td>{{ p.other_diag }}</td>
+                    </tr>
+                {% endfor %}
             {% endif %}
-        {% endfor %}
-    {% endif %}
-    </tbody>
-</table>
-<table id="funcrecsht" class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>PubMed ID</th>
-        <th>Year</th>
-        <th>Study Type</th>
-        <th>Assay</th>
-        <th>Temperature</th>
-        <th>Cell Type</th>
-        <th>Result</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% if variant.funclqt1 > 0 %}
-        {% for p in recs_funcs %}
-            {% if p.fun_data == 'ht' %}
-    <tr>
-        {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "France Cohort" %}
-        <td><a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}">{{ p.pmid }}</a></td>
-        {% else %}
-        <td>{{ p.pmid }}</td>
-        {% endif %}
-        <td>{{p.year}}</td>
-        <td>{{p.study_type}}</td>
-        <td>{{p.assay}}</td>
-        <td>{{p.temp}}</td>
-        <td>{{p.cell_type}}</td>
-        <td>{{p.ht_result}}</td>
-    </tr>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-    </tbody>
-</table>
+            <tr>
+                <td>Literature, cohort, and gnomAD</td>
+                <td>–</td>
+                <td>{{ variant.total_carriers }}</td>
+                <td>{{ variant.unaff_gnomad }}</td>
+                <td>{{ variant.lqt1 }}</td>
+                <td>–</td>
+            </tr>
+            <tr>
+                <td>Variant features alone</td>
+                <td>–</td>
+                <td>15</td>
+                <td>{{ beta }}</td>
+                <td>{{ alpha }}</td>
+                <td>–</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p class="text-muted small">Totals may differ from individual publications due to duplicate patients removed during curation.</p>
+</section>
 
-<div align="center" class="content">
-    <h2>
-        <p> Structural Neighbors </p>
-    </h2>
-</div>
-<table id="distrecs" class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>Residue</th>
-        <th>Distance (Å)</th>
-        <th>Variants</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for p in dist_dat %}
-        <tr>
-            <td>{{p.neighbor}}</td>
-            <td>{% widthratio p.distance 1 1 %}</td>
-            <td>
-            {% for r in recs_vars %}
-                {% if r.resnum == p.neighbor %}
-                         <a href="{% url 'kcnq1:detail' r.hgvsc %}">{{r.var}}, </a>
+{% if variant.funclqt1 > 0 %}
+<section aria-labelledby="functional-heading">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <h2 id="functional-heading" class="h4 fw-semibold">Functional data</h2>
+    </div>
+    <p class="text-muted small">Functional assay results from published electrophysiology studies. HM indicates homomeric channels, HT indicates heteromeric channels.</p>
+
+    <h3 class="h6 fw-semibold mt-4 mb-2">Homomeric channel data</h3>
+    <div class="table-responsive">
+        <table id="funcrecshm" class="table table-striped table-bordered align-middle" style="width:100%">
+            <caption class="text-muted">Published electrophysiology measurements (homomeric).</caption>
+            <thead class="table-light">
+            <tr>
+                <th scope="col">PubMed ID</th>
+                <th scope="col">Year</th>
+                <th scope="col">Study Type</th>
+                <th scope="col">Assay</th>
+                <th scope="col">Temperature</th>
+                <th scope="col">Cell Type</th>
+                <th scope="col">Result</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p in recs_funcs %}
+                {% if p.fun_data == 'hm' %}
+                <tr>
+                    <td>
+                        {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "France Cohort" %}
+                            <a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}" target="_blank" rel="noopener">{{ p.pmid }}</a>
+                        {% else %}
+                            {{ p.pmid }}
+                        {% endif %}
+                    </td>
+                    <td>{{ p.year }}</td>
+                    <td>{{ p.study_type }}</td>
+                    <td>{{ p.assay }}</td>
+                    <td>{{ p.temp }}</td>
+                    <td>{{ p.cell_type }}</td>
+                    <td>{{ p.hm_result }}</td>
+                </tr>
                 {% endif %}
             {% endfor %}
-            </td>
-        </tr>
-    {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-   </tbody>
-</table>
+    <h3 class="h6 fw-semibold mt-4 mb-2">Heteromeric channel data</h3>
+    <div class="table-responsive">
+        <table id="funcrecsht" class="table table-striped table-bordered align-middle" style="width:100%">
+            <caption class="text-muted">Published electrophysiology measurements (heteromeric).</caption>
+            <thead class="table-light">
+            <tr>
+                <th scope="col">PubMed ID</th>
+                <th scope="col">Year</th>
+                <th scope="col">Study Type</th>
+                <th scope="col">Assay</th>
+                <th scope="col">Temperature</th>
+                <th scope="col">Cell Type</th>
+                <th scope="col">Result</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p in recs_funcs %}
+                {% if p.fun_data == 'ht' %}
+                <tr>
+                    <td>
+                        {% if p.pmid != "Italy Cohort" and p.pmid != "Japan Cohort" and p.pmid != "France Cohort" %}
+                            <a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}" target="_blank" rel="noopener">{{ p.pmid }}</a>
+                        {% else %}
+                            {{ p.pmid }}
+                        {% endif %}
+                    </td>
+                    <td>{{ p.year }}</td>
+                    <td>{{ p.study_type }}</td>
+                    <td>{{ p.assay }}</td>
+                    <td>{{ p.temp }}</td>
+                    <td>{{ p.cell_type }}</td>
+                    <td>{{ p.ht_result }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endif %}
 
-</body>
-<p></p>
-<p></p>
-<p></p>
+{% if dist_dat %}
+<section aria-labelledby="neighbor-heading">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <h2 id="neighbor-heading" class="h4 fw-semibold">Nearby variants</h2>
+    </div>
+    <p class="text-muted small">Neighbouring residues within 15 Ångström provide structural context. Variants listed in the right-most column have been observed clinically or in gnomAD.</p>
+    <div class="table-responsive">
+        <table id="distrecs" class="table table-striped table-bordered align-middle" style="width:100%">
+            <caption class="text-muted">Previously observed variants near {{ variant.var }}.</caption>
+            <thead class="table-light">
+            <tr>
+                <th scope="col">Neighbour residue</th>
+                <th scope="col">Distance (Å)</th>
+                <th scope="col">Observed variants</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p in dist_dat %}
+                <tr>
+                    <td>{{ p.neighbor }}</td>
+                    <td>{% widthratio p.distance 1 1 %}</td>
+                    <td>
+                        {% for r in recs_vars %}
+                            {% if r.resnum == p.neighbor %}
+                                <a href="{% url 'kcnq1:detail' r.hgvsc %}">{{ r.var }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
+<script>
+    const tableOptions = {
+        paging: false,
+        searching: false,
+        info: false,
+        ordering: true,
+        scrollY: 320,
+        scrollCollapse: true
+    };
+
+    $(function () {
+        $('#clinrecs').DataTable(tableOptions);
+        ['#funcrecshm', '#funcrecsht', '#distrecs'].forEach((selector) => {
+            const table = $(selector);
+            if (table.length) {
+                table.DataTable(tableOptions);
+            }
+        });
+    });
+</script>
 {% endblock %}
