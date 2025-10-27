@@ -13,6 +13,7 @@ def display(request):
     return ret
 
 
+@cache_page(60*60*31)
 def variantview(request, hgvsc):
     resnum = newVariant.objects.filter(hgvsc=hgvsc).values_list('resnum', flat=True)
     var = newVariant.objects.filter(hgvsc=hgvsc).values_list('var', flat=True)
@@ -26,7 +27,7 @@ def variantview(request, hgvsc):
     total_carriers = variant.total_carriers
     mave_score = variant.mave_score_all
     mave_score_SE = variant.mave_score_SE
-    
+
     if variant.mutAA == "X" or variant.mutAA == "fsX":
         var_type = False
     else:
