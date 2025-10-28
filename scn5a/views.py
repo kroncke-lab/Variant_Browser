@@ -14,6 +14,7 @@ def display(request):
     return ret
 
 
+@cache_page(60*60*31)
 def variantview(request, hgvsc):
     resnum = newVariant_scn5a.objects.filter(hgvsc=hgvsc).values_list('resnum', flat=True)
     var = newVariant_scn5a.objects.filter(hgvsc=hgvsc).values_list('var', flat=True)
