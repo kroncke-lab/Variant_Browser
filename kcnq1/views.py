@@ -13,6 +13,7 @@ def display(request):
     return ret
 
 
+@cache_page(60*60*31)
 def variantview(request, hgvsc):
     resnum = KCNQ1NewVariant.objects.filter(hgvsc=hgvsc).values_list('resnum', flat=True)
     var = KCNQ1NewVariant.objects.filter(hgvsc=hgvsc).values_list('var', flat=True)
