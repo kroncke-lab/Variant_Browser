@@ -12,6 +12,19 @@ class BlockBotsMiddleware(MiddlewareMixin):
         "python-requests",
         "curl",
         "aiohttp",
+        # Search engine bots causing worker timeouts and memory exhaustion
+        "petalbot",          # Huawei search engine bot
+        "semrushbot",        # SEMrush SEO crawler
+        "bingbot",           # Microsoft Bing crawler
+        "claudebot",         # Anthropic's web crawler
+        # Other aggressive crawlers
+        "ahrefsbot",         # Ahrefs SEO tool
+        "mj12bot",           # Majestic SEO crawler
+        "dotbot",            # Moz/OpenSiteExplorer
+        "rogerbot",          # Moz SEO crawler
+        "blexbot",           # BLEXBot crawler
+        "serpstatbot",       # Serpstat SEO tool
+        "dataforseobot",     # DataForSEO tool
     ]
 
     def process_request(self, request):
