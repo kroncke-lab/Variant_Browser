@@ -1,7 +1,7 @@
 import math
 
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.cache import cache_page
 from scn5a.models import newVariant_scn5a, scn5aDistances, scn5aPapers
 
@@ -29,28 +29,31 @@ def display(request):
 
 @cache_page(60*60*31)
 def variantview(request, hgvsc):
-    variant = newVariant_scn5a.objects.select_related(None).only(
-        'resnum',
-        'var',
-        'mutAA',
-        'total_carriers',
-        'alpha_brs1',
-        'alpha_lqt3',
-        'lqt3',
-        'brs1',
-        'beta_brs1',
-        'beta_lqt3',
-        'unaff',
-        'gnomad',
-        'structure_brs1',
-        'structure_lqt3',
-        'pph2_prob',
-        'provean_score',
-        'blast_pssm',
-        'revel_score',
-        'lqt3_dist',
-        'brs1_dist',
-    ).get(hgvsc=hgvsc)
+    variant = get_object_or_404(
+        newVariant_scn5a.objects.select_related(None).only(
+            'resnum',
+            'var',
+            'mutAA',
+            'total_carriers',
+            'alpha_brs1',
+            'alpha_lqt3',
+            'lqt3',
+            'brs1',
+            'beta_brs1',
+            'beta_lqt3',
+            'unaff',
+            'gnomad',
+            'structure_brs1',
+            'structure_lqt3',
+            'pph2_prob',
+            'provean_score',
+            'blast_pssm',
+            'revel_score',
+            'lqt3_dist',
+            'brs1_dist',
+        ),
+        hgvsc=hgvsc
+    )
 
     recs_dists = scn5aDistances.objects.filter(resnum=variant.resnum, distance__lt=15)
     neighbors = list(recs_dists.values_list('neighbor', flat=True))
