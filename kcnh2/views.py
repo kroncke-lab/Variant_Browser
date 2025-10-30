@@ -1,7 +1,7 @@
 import math
 
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.cache import cache_page
 from kcnh2.models import newVariant, ClinicalPapers, kcnh2Distances, FunctionalPapers
 
@@ -26,25 +26,28 @@ def display(request):
 
 @cache_page(60*60*31)
 def variantview(request, hgvsc):
-    variant = newVariant.objects.select_related(None).only(
-        'resnum',
-        'var',
-        'mutAA',
-        'total_carriers',
-        'mave_score_all',
-        'mave_score_SE',
-        'alpha',
-        'lqt2',
-        'unaff',
-        'gnomad',
-        'structure',
-        'p_mean_w',
-        'pph2_prob',
-        'provean_score',
-        'blast_pssm',
-        'revel_score',
-        'lqt2_dist',
-    ).get(hgvsc=hgvsc)
+    variant = get_object_or_404(
+        newVariant.objects.select_related(None).only(
+            'resnum',
+            'var',
+            'mutAA',
+            'total_carriers',
+            'mave_score_all',
+            'mave_score_SE',
+            'alpha',
+            'lqt2',
+            'unaff',
+            'gnomad',
+            'structure',
+            'p_mean_w',
+            'pph2_prob',
+            'provean_score',
+            'blast_pssm',
+            'revel_score',
+            'lqt2_dist',
+        ),
+        hgvsc=hgvsc
+    )
 
     recs_dists = kcnh2Distances.objects.filter(resnum=variant.resnum, distance__lt=15)
     neighbors = list(recs_dists.values_list('neighbor', flat=True))
