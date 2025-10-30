@@ -53,9 +53,7 @@ def variantview(request, hgvsc):
     ).get(hgvsc=hgvsc)
 
     recs_dists = scn5aDistances.objects.filter(resnum=variant.resnum, distance__lt=15)
-    neighbors = list(
-        scn5aDistances.objects.filter(resnum=variant.resnum).values_list('neighbor', flat=True)
-    )
+    neighbors = list(recs_dists.values_list('neighbor', flat=True))
     recs_funcs = scn5aPapers.objects.filter(variant=variant.var).filter(
         Q(vhalf_act__isnull=False) | Q(peak__isnull=False) | Q(late__isnull=False)
     )
@@ -102,8 +100,8 @@ def variantview(request, hgvsc):
             'beta_brs1': beta_brs1,
             'alpha_lqt3': alpha_lqt3,
             'beta_lqt3': beta_lqt3,
-            'clin_papers': len(recs_clin),
-            'func_papers': len(recs_funcs),
+            'clin_papers': recs_clin.count(),
+            'func_papers': recs_funcs.count(),
             'var_type': var_type,
             "alpha_lqt3_tot": alpha_lqt3_tot,
             "tot_with_prior_lqt3": tot_with_prior_lqt3,

@@ -47,9 +47,7 @@ def variantview(request, hgvsc):
     ).get(hgvsc=hgvsc)
 
     recs_dists = kcnh2Distances.objects.filter(resnum=variant.resnum, distance__lt=15)
-    neighbors = list(
-        kcnh2Distances.objects.filter(resnum=variant.resnum).values_list('neighbor', flat=True)
-    )
+    neighbors = list(recs_dists.values_list('neighbor', flat=True))
     recs_funcs = FunctionalPapers.objects.filter(variant=variant.var)
     recs_clin = ClinicalPapers.objects.filter(variant=variant.var)
     recs_vars = newVariant.objects.filter(resnum__in=neighbors).filter(
@@ -88,8 +86,8 @@ def variantview(request, hgvsc):
             'total_carriers': total_carriers,
             'alpha': alpha,
             'beta': beta,
-            'clin_papers': len(recs_clin),
-            'func_papers': len(recs_funcs),
+            'clin_papers': recs_clin.count(),
+            'func_papers': recs_funcs.count(),
             'var_type': var_type,
             "alpha_lqt2": alpha_lqt2,
             "tot_with_prior": tot_with_prior,

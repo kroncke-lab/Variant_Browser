@@ -45,9 +45,7 @@ def variantview(request, hgvsc):
     ).get(hgvsc=hgvsc)
 
     recs_dists = kcnq1Distances.objects.filter(resnum=variant.resnum, distance__lt=15)
-    neighbors = list(
-        kcnq1Distances.objects.filter(resnum=variant.resnum).values_list('neighbor', flat=True)
-    )
+    neighbors = list(recs_dists.values_list('neighbor', flat=True))
     recs_funcs = KCNQ1FunctionalPapers.objects.filter(var=variant.var)
     recs_clin = KCNQ1ClinicalPapers.objects.filter(var=variant.var, pmid__isnull=False)
     recs_vars = KCNQ1NewVariant.objects.filter(resnum__in=neighbors).filter(
@@ -81,9 +79,9 @@ def variantview(request, hgvsc):
             'variant': variant,
             'alpha': alpha,
             'beta': beta,
-            'clin_papers': len(recs_clin),
+            'clin_papers': recs_clin.count(),
             'var_in_silico': var_in_silico,
-            'func_papers': len(recs_funcs),
+            'func_papers': recs_funcs.count(),
             'var_type': var_type,
             'unaff': unaff,
             "alpha_lqt1": alpha_lqt1,
