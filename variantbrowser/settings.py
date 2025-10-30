@@ -26,7 +26,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #False
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', '127.0.0.1', 'localhost']
 
@@ -118,9 +118,8 @@ DATABASES = {
 }
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'my_cache_table',
-        'TIMEOUT': 60*60*24*30,
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 60 * 60 * 24 * 30,
     }
 }
 
