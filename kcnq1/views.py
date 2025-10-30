@@ -1,7 +1,7 @@
 import math
 
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.cache import cache_page
 from kcnq1.models import (
     KCNQ1NewVariant,
@@ -33,16 +33,19 @@ def display(request):
 
 @cache_page(60*60*31)
 def variantview(request, hgvsc):
-    variant = KCNQ1NewVariant.objects.select_related(None).only(
-        'resnum',
-        'var',
-        'total_carriers',
-        'lqt1',
-        'lqt1_penetrance',
-        'structure_lqt1',
-        'function_lqt1',
-        'gnomad',
-    ).get(hgvsc=hgvsc)
+    variant = get_object_or_404(
+        KCNQ1NewVariant.objects.select_related(None).only(
+            'resnum',
+            'var',
+            'total_carriers',
+            'lqt1',
+            'lqt1_penetrance',
+            'structure_lqt1',
+            'function_lqt1',
+            'gnomad',
+        ),
+        hgvsc=hgvsc
+    )
 
     recs_dists = kcnq1Distances.objects.filter(resnum=variant.resnum, distance__lt=15)
     neighbors = list(recs_dists.values_list('neighbor', flat=True))
