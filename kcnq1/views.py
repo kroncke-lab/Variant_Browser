@@ -33,8 +33,10 @@ def display(request):
 
 @cache_page(60*60*31)
 def variantview(request, hgvsc):
-    variant = get_object_or_404(
-        KCNQ1NewVariant.objects.select_related(None).only(
+    variant = (
+        KCNQ1NewVariant.objects
+        .select_related(None)
+        .only(
             'resnum',
             'var',
             'total_carriers',
@@ -43,9 +45,14 @@ def variantview(request, hgvsc):
             'structure_lqt1',
             'function_lqt1',
             'gnomad',
-        ),
-        hgvsc=hgvsc
+        )
+        .filter(hgvsc__iexact=hgvsc.strip())  # safer: ignore case and whitespace
+        .first()
     )
+
+    if not variant:
+        raise Http404("Variant not found")
+
 
     recs_dists = kcnq1Distances.objects.filter(resnum=variant.resnum, distance__lt=15)
     neighbors = list(recs_dists.values_list('neighbor', flat=True))
