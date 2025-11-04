@@ -31,7 +31,7 @@ def display(request):
     return ret
 
 
-@cache_page(60*60*31)
+#@cache_page(60*60*31)
 def variantview(request, hgvsc):
     variant = (
         KCNQ1NewVariant.objects
