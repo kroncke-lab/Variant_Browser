@@ -1,5 +1,6 @@
 from django.http import HttpResponseForbidden
 from django.utils.deprecation import MiddlewareMixin
+import logging
 
 
 class BlockBotsMiddleware(MiddlewareMixin):
@@ -33,3 +34,29 @@ class BlockBotsMiddleware(MiddlewareMixin):
             return HttpResponseForbidden("Bot access denied")
 
         return None
+
+
+class SuppressHealthCheckLogsFilter(logging.Filter):
+    """Logging filter to suppress health check requests from logs"""
+
+    def filter(self, record):
+        # Filter out health check requests
+        if hasattr(record, 'request'):
+            path = getattr(record.request, 'path', '')
+            user_agent = record.request.META.get('HTTP_USER_AGENT', '')
+
+            # Suppress logs for health check endpoints and Azure monitoring
+            if path == '/api/health' or \
+               'HealthCheck' in user_agent or \
+               'ReadyForRequest' in user_agent:
+                return False
+
+        # For messages that contain health check patterns
+        message = getattr(record, 'msg', '') or ''
+        if isinstance(message, str):
+            if '/api/health' in message or \
+               'HealthCheck' in message or \
+               'ReadyForRequest' in message:
+                return False
+
+        return True
