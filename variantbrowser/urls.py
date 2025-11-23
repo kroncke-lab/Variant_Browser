@@ -10,9 +10,16 @@ TODO add SCN5A url and all subsequently necessary files to run variant browser s
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from django.http import HttpResponse
 from . import views
 
+
+def health(request):
+    """Health check endpoint for Azure App Service monitoring"""
+    return HttpResponse("ok", content_type="text/plain")
+
 urlpatterns = [
+    path('api/health', health, name='health'),
     path('admin/', admin.site.urls),
     path('KCNH2/', include('kcnh2.urls')),
     path('SCN5A/', include('scn5a.urls')),
