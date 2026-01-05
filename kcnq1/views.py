@@ -1,8 +1,12 @@
 import math
+import logging
 
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.cache import cache_page
+
+logger = logging.getLogger(__name__)
 from kcnq1.models import (
     KCNQ1NewVariant,
     KCNQ1ClinicalPapers,
@@ -45,13 +49,15 @@ def variantview(request, hgvsc):
             'structure_lqt1',
             'function_lqt1',
             'gnomad',
+            'lqt1_dist',  # Added: required by template line 94
         )
         .filter(hgvsc__iexact=hgvsc.strip())  # safer: ignore case and whitespace
         .first()
     )
 
     if not variant:
-        raise Http404("Variant not found")
+        logger.warning(f"Variant not found: {hgvsc}")
+        raise Http404(f"Variant not found: {hgvsc}")
 
 
     recs_dists = kcnq1Distances.objects.filter(resnum=variant.resnum, distance__lt=15)
@@ -96,5 +102,6 @@ def variantview(request, hgvsc):
             'unaff': unaff,
             "alpha_lqt1": alpha_lqt1,
             "tot_with_prior": tot_with_prior,
+            'dist_dat': recs_dists,  # Template expects this name (line 247)
         },
     )
