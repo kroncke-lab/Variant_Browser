@@ -4,6 +4,42 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'vendor/datatables/css/jquery.dataTables.min.css' %}">
 <style>
+    /* Fix DataTables missing sort icons - use CSS instead of PNGs */
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc,
+    table.dataTable thead .sorting_asc_disabled,
+    table.dataTable thead .sorting_desc_disabled {
+        background-image: none !important;
+        padding-right: 20px;
+        position: relative;
+    }
+
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_desc:after {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        font-size: 0.8em;
+    }
+
+    table.dataTable thead .sorting:after {
+        content: "⇅";
+    }
+
+    table.dataTable thead .sorting_asc:after {
+        content: "↑";
+        opacity: 1;
+    }
+
+    table.dataTable thead .sorting_desc:after {
+        content: "↓";
+        opacity: 1;
+    }
+
     .stat-card {
         border-radius: 1rem;
     }
@@ -42,7 +78,7 @@
                 <div class="card-body text-center">
                     <p class="text-muted text-uppercase small mb-1">Total carriers</p>
                     <p class="stat-value">{{ variant.total_carriers }}</p>
-                    <p class="small text-muted mb-0">{{ variant.lqt1 }} LQT1 · {{ variant.unaff_gnomad }} unaffected</p>
+                    <p class="small text-muted mb-0">{{ variant.lqt1 }} LQT1 · {{ unaff }} unaffected</p>
                 </div>
             </div>
         </div>
@@ -139,7 +175,7 @@
                 <td>Literature, cohort, and gnomAD</td>
                 <td>–</td>
                 <td>{{ variant.total_carriers }}</td>
-                <td>{{ variant.unaff_gnomad }}</td>
+                <td>{{ unaff }}</td>
                 <td>{{ variant.lqt1 }}</td>
                 <td>–</td>
             </tr>
@@ -157,7 +193,7 @@
     <p class="text-muted small">Totals may differ from individual publications due to duplicate patients removed during curation.</p>
 </section>
 
-{% if variant.funclqt1 > 0 %}
+{% if func_papers > 0 %}
 <section aria-labelledby="functional-heading">
     <div class="d-flex align-items-center gap-3 mb-3">
         <h2 id="functional-heading" class="h4 fw-semibold">Functional data</h2>
