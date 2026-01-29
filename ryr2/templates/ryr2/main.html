@@ -65,6 +65,15 @@
     <script src='https://cdn.plot.ly/plotly-2.27.1.min.js'></script>
     <!-- Custom RYR2 JS -->
     <script type="text/javascript" src="{% static 'js/var_table_ryr2.js' %}"></script>
+    <!-- Initialize Bootstrap tooltips -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function(el) {
+                return new bootstrap.Tooltip(el);
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block page_content %}
@@ -92,10 +101,10 @@
         <th>Ch.1 (grch38)</th>
         <th>Variant</th>
         <th>Residue Number</th>
-        <th>CPVT</th>
-        <th>Total Carriers</th>
-        <th>Hotspot</th>
-        <th>CPVT Penetrance(%)</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Number of heterozygous carriers diagnosed with Catecholaminergic Polymorphic Ventricular Tachycardia">CPVT</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Total heterozygous carriers observed (CPVT + unaffected). Includes gnomAD population data, assumed unaffected given CPVT rarity.">Total Carriers</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Known pathogenic hotspot region within RYR2">Hotspot</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Bayesian posterior mean probability of CPVT diagnosis given heterozygosity">CPVT Penetrance(%)</th>
     </tr>
     </thead>
     <tbody>
