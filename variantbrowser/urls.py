@@ -26,8 +26,8 @@ urlpatterns = [
     path('KCNQ1/', include('kcnq1.urls')),
     path('RyR2/', include('ryr2.urls')),
     path('', views.home, name='home'),
-    path('penetrance_estimate_protocol', views.penetrance_estimation, name='penetrance_estimate'),
-    path('penetrance_estimate_protocol_details', views.penetrance_estimation_first_SCN5A, name='penetrance_estimate_details'),
+    path('penetrance_estimate_protocol/', views.penetrance_estimation, name='penetrance_estimate'),
+    path('penetrance_estimate_protocol_details/', views.penetrance_estimation_first_SCN5A, name='penetrance_estimate_details'),
     path('about/', views.about, name='about'),
 ]
 

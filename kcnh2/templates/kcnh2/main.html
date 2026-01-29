@@ -69,6 +69,15 @@
     <script src='https://cdn.plot.ly/plotly-2.27.1.min.js'></script>
     <!-- Custom KCNH2 JS -->
     <script type="text/javascript" src="{% static 'js/var_table_kcnh2.js' %}"></script>
+    <!-- Initialize Bootstrap tooltips -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function(el) {
+                return new bootstrap.Tooltip(el);
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block page_content %}
@@ -102,11 +111,11 @@ WT (100%), PMID: 39315434. Click variant link
         <th>HGVSc</th>
         <th>Variant</th>
         <th>Residue Number</th>
-        <th>LQT2</th>
-        <th>Total Carriers</th>
-        <th>MAVE Function</th>
-        <th>Location</th>
-        <th>LQT2 Penetrance(%)</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Number of heterozygous carriers diagnosed with Long QT Syndrome type 2">LQT2</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Total heterozygous carriers observed (LQT2 + Unaffected). Includes gnomAD population data, assumed unaffected given LQT2 rarity.">Total Carriers</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Cell surface trafficking relative to wild-type (100%). Values <50% suggest moderate functional impact; <30% suggests strong impact. PMID: 39315434">MAVE Function</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Structural region within the KCNH2 protein (e.g., Pore, Transmembrane, Cytoplasmic)">Location</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Bayesian posterior mean probability of LQT2 diagnosis given heterozygosity. Combines variant features (prior) with observed carrier data.">LQT2 Penetrance(%)</th>
     </tr>
     </thead>
     <tbody>
