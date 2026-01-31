@@ -28,7 +28,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', 'www.variantbrowser.org', '127.0.0.1', 'localhost']
 
 
 # Application definition
