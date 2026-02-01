@@ -4,6 +4,17 @@ $(document).ready( function() {
 
 } );
 
+// Color-coded penetrance for visual risk assessment
+function getPenetranceColor(value) {
+    var v = parseFloat(value);
+    if (isNaN(v)) return 'transparent';
+    if (v < 20) return '#dcfce7'; // green-100 - low risk
+    if (v < 40) return '#fef9c3'; // yellow-100 - moderate-low
+    if (v < 60) return '#fed7aa'; // orange-100 - moderate
+    if (v < 80) return '#fecaca'; // red-100 - high
+    return '#fca5a5'; // red-300 - very high
+}
+
 function initTable () {
 
     $('#example').show();
@@ -18,11 +29,30 @@ function initTable () {
             'searchBuilder',
             'searchPanes'
         ],
-        dom: 'Bfti'
+        dom: 'Bfti',
+        columnDefs: [
+            {
+                // Color-code LQT3 penetrance column (column 9)
+                targets: 9,
+                createdCell: function(td, cellData, rowData, row, col) {
+                    $(td).css('background-color', getPenetranceColor(cellData));
+                    $(td).css('font-weight', '600');
+                }
+            },
+            {
+                // Color-code BrS1 penetrance column (column 10)
+                targets: 10,
+                createdCell: function(td, cellData, rowData, row, col) {
+                    $(td).css('background-color', getPenetranceColor(cellData));
+                    $(td).css('font-weight', '600');
+                }
+            }
+        ]
     }).on('search.dt', function () {
     tableActions(table);
 });
     $(".lds-dual-ring").remove();
+    $('#quick-stats').show();
      tableActions(table);
 }
 
@@ -37,12 +67,32 @@ function tableActions (table) {
 
     table.rows({filter: 'applied'}).every( function() {
         var data = this.data();
-        brs1.push(data[5]);
-        lqt3.push(data[4]);
-        unaff.push(data[6]);
-        p_brs1.push(data[10])
-        p_lqt3.push(data[9])
+        brs1.push(parseInt(data[5]) || 0);
+        lqt3.push(parseInt(data[4]) || 0);
+        unaff.push(parseInt(data[6]) || 0);
+        p_brs1.push(parseFloat(data[10]) || 0);
+        p_lqt3.push(parseFloat(data[9]) || 0);
     });
+
+    // Update quick stats banner
+    var totalVariants = table.rows().count();
+    var filteredVariants = p_brs1.length;
+    var meanBrs1Pen = p_brs1.length > 0 ? (p_brs1.reduce((a, b) => a + b, 0) / p_brs1.length).toFixed(1) : 0;
+    var meanLqt3Pen = p_lqt3.length > 0 ? (p_lqt3.reduce((a, b) => a + b, 0) / p_lqt3.length).toFixed(1) : 0;
+    var totalBrs1 = brs1.reduce((a, b) => a + b, 0);
+    var totalLqt3 = lqt3.reduce((a, b) => a + b, 0);
+    var totalCarriers = unaff.reduce((a, b) => a + b, 0);
+    
+    var statsHtml = '<div class="d-flex flex-wrap gap-3 justify-content-center align-items-center">' +
+        '<span class="badge bg-primary fs-6">' + filteredVariants + ' of ' + totalVariants + ' variants</span>' +
+        '<span class="badge bg-danger fs-6">BrS1: ' + meanBrs1Pen + '% mean</span>' +
+        '<span class="badge bg-warning text-dark fs-6">LQT3: ' + meanLqt3Pen + '% mean</span>' +
+        '<span class="badge bg-info fs-6">' + totalBrs1.toLocaleString() + ' BrS1 carriers</span>' +
+        '<span class="badge bg-info fs-6">' + totalLqt3.toLocaleString() + ' LQT3 carriers</span>' +
+        '<span class="badge bg-light text-dark fs-6">' + totalCarriers.toLocaleString() + ' total carriers</span>' +
+        '</div>';
+    
+    $('#quick-stats').html(statsHtml);
     var trace = {
       x: brs1,
       type: 'histogram',

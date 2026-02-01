@@ -4,6 +4,17 @@ $(document).ready( function() {
 
 } );
 
+// Color-coded penetrance for visual risk assessment
+function getPenetranceColor(value) {
+    var v = parseFloat(value);
+    if (isNaN(v)) return 'transparent';
+    if (v < 20) return '#dcfce7'; // green-100 - low risk
+    if (v < 40) return '#fef9c3'; // yellow-100 - moderate-low
+    if (v < 60) return '#fed7aa'; // orange-100 - moderate
+    if (v < 80) return '#fecaca'; // red-100 - high
+    return '#fca5a5'; // red-300 - very high
+}
+
 function initTable () {
 
     $('#example').show();
@@ -18,11 +29,22 @@ function initTable () {
             'searchBuilder',
             'searchPanes'
         ],
-        dom: 'Bfti'
+        dom: 'Bfti',
+        columnDefs: [
+            {
+                // Color-code penetrance column (column 8)
+                targets: 8,
+                createdCell: function(td, cellData, rowData, row, col) {
+                    $(td).css('background-color', getPenetranceColor(cellData));
+                    $(td).css('font-weight', '600');
+                }
+            }
+        ]
     }).on('search.dt', function () {
     tableActions(table);
 });
     $(".lds-dual-ring").remove();
+    $('#quick-stats').show();
      tableActions(table);
 }
 
@@ -35,10 +57,29 @@ function tableActions (table) {
 
     table.rows({filter: 'applied'}).every( function() {
         var data = this.data();
-        lqt1.push(data[5]);
-        tot.push(data[4]);
-        p_lqt1.push(data[8])
+        lqt1.push(parseInt(data[5]) || 0);
+        tot.push(parseInt(data[4]) || 0);
+        p_lqt1.push(parseFloat(data[8]) || 0);
     });
+
+    // Update quick stats banner
+    var totalVariants = table.rows().count();
+    var filteredVariants = p_lqt1.length;
+    var meanPenetrance = p_lqt1.length > 0 ? (p_lqt1.reduce((a, b) => a + b, 0) / p_lqt1.length).toFixed(1) : 0;
+    var minPen = p_lqt1.length > 0 ? Math.min(...p_lqt1).toFixed(0) : 0;
+    var maxPen = p_lqt1.length > 0 ? Math.max(...p_lqt1).toFixed(0) : 0;
+    var totalLQT1 = lqt1.reduce((a, b) => a + b, 0);
+    var totalCarriers = tot.reduce((a, b) => a + b, 0);
+    
+    var statsHtml = '<div class="d-flex flex-wrap gap-3 justify-content-center align-items-center">' +
+        '<span class="badge bg-primary fs-6">' + filteredVariants + ' of ' + totalVariants + ' variants</span>' +
+        '<span class="badge bg-secondary fs-6">Mean penetrance: ' + meanPenetrance + '%</span>' +
+        '<span class="badge bg-light text-dark fs-6">Range: ' + minPen + '% – ' + maxPen + '%</span>' +
+        '<span class="badge bg-info fs-6">' + totalLQT1.toLocaleString() + ' LQT1 carriers</span>' +
+        '<span class="badge bg-light text-dark fs-6">' + totalCarriers.toLocaleString() + ' total carriers</span>' +
+        '</div>';
+    
+    $('#quick-stats').html(statsHtml);
     var trace = {
       x: lqt1,
       type: 'histogram',
