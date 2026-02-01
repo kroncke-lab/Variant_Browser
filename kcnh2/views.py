@@ -43,19 +43,11 @@ def calculate_credible_interval(alpha_prior, lqt2_count, unaff_count, confidence
 # Create your views here.
 @cache_page(60*60*31)
 def display(request):
-    recs = newVariant.objects.filter(isoform='A').only(
-        'pos',
-        'hgvsc',
-        'var',
-        'resnum',
-        'lqt2',
-        'total_carriers',
-        'mave_score',
-        'structure',
-        'p_mean_w',
-    )
-    ret = render(request, 'kcnh2/main.html', {'recs': recs})
-    return ret
+    """
+    Render the KCNH2 variant browser page.
+    Data is loaded via AJAX from /kcnh2/api/variants/ for faster initial page load.
+    """
+    return render(request, 'kcnh2/main.html')
 
 
 @cache_page(60*60*31)

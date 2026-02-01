@@ -103,6 +103,12 @@ WT (100%), PMID: 39315434. Click variant link
         are interested in (results will update the histogram plots below).
     </p>
 </div>
+<!-- Quick Stats Banner - updates with filters -->
+<div id="quick-stats" class="my-3 p-3 bg-light rounded-3 text-center" style="display:none;">
+    <div class="d-flex flex-wrap gap-3 justify-content-center align-items-center">
+        <span class="text-muted">Loading statistics...</span>
+    </div>
+</div>
     <div class="lds-dual-ring" align="center" ></div>
 <table id="example" class="table table-striped table-bordered" style="display:none">
     <thead>
@@ -119,21 +125,8 @@ WT (100%), PMID: 39315434. Click variant link
     </tr>
     </thead>
     <tbody>
-    {% for sts in recs %}
-    <tr>
-        <td>{{sts.pos}}</td>
-        <td>{{sts.hgvsc|truncatechars_html:9}}</td>
-        <td><a href="{% url 'kcnh2:detail' sts.hgvsc %}" target="_blank">{{sts.var|truncatechars_html:7}}</a></td>
-        <td>{{sts.resnum}}</td>
-        <td>{{sts.lqt2}}</td>
-        <td>{{sts.total_carriers}}</td>
-        <td>{{sts.mave_score}}</td>
-        <td>{{sts.structure}}</td>
-        <td>{% widthratio sts.p_mean_w 1 100 %}</td>
-    </tr>
-    {% endfor %}
-
-   </tbody>
+    <!-- Data loaded via AJAX from /kcnh2/api/variants/ -->
+    </tbody>
 </table>
 <body>
     <div align="center" class="fa-beer"><h1>Histogram of <i>KCNH2</i> Variant Carriers with LQTS</h1></div>
