@@ -42,8 +42,12 @@ class SuppressHealthCheckLogsFilter(logging.Filter):
     def filter(self, record):
         # Filter out health check requests
         if hasattr(record, 'request'):
-            path = getattr(record.request, 'path', '')
-            user_agent = record.request.META.get('HTTP_USER_AGENT', '')
+            # Guard against non-HTTP request objects (e.g., sockets during errors)
+            req = record.request
+            if not hasattr(req, 'META'):
+                return True
+            path = getattr(req, 'path', '')
+            user_agent = req.META.get('HTTP_USER_AGENT', '')
 
             # Suppress logs for health check endpoints and Azure monitoring
             if path == '/api/health' or \

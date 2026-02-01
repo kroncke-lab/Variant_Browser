@@ -20,6 +20,7 @@ def health(request):
 
 urlpatterns = [
     path('api/health', health, name='health'),
+    path('api/search/', views.variant_search, name='variant_search'),
     path('admin/', admin.site.urls),
     path('KCNH2/', include('kcnh2.urls')),
     path('SCN5A/', include('scn5a.urls')),

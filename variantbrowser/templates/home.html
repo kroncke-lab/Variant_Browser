@@ -8,13 +8,100 @@
             <p class="lead text-muted">Explore curated clinical, structural, and functional evidence for <i>KCNQ1</i>,
                 <i>KCNH2</i>, <i>SCN5A</i>, and <i>RYR2</i> variants. Filter interactive tables, view graphical summaries,
                 and download data to support research and clinical decision making.</p>
-            <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+            <!-- Quick Search -->
+            <div class="mt-4 mb-3">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-xl-6">
+                        <div class="input-group input-group-lg shadow-sm">
+                            <span class="input-group-text bg-white border-end-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-muted" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                            </span>
+                            <input type="text" id="variantSearch" class="form-control border-start-0" 
+                                   placeholder="Search any variant: R534C, p.Ala561Val, c.1600G>A..." 
+                                   autocomplete="off">
+                        </div>
+                        <div id="searchResults" class="position-relative">
+                            <div id="searchDropdown" class="position-absolute w-100 bg-white border rounded-3 shadow-lg mt-1 d-none" style="z-index: 1000; max-height: 400px; overflow-y: auto;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
                 <a class="btn btn-primary" href="#get-started">Get started</a>
                 <a class="btn btn-outline-secondary" href="{% url 'about' %}">Learn more about the project</a>
             </div>
         </div>
     </div>
 </section>
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('variantSearch');
+    const searchDropdown = document.getElementById('searchDropdown');
+    let debounceTimer;
+    
+    searchInput.addEventListener('input', function() {
+        clearTimeout(debounceTimer);
+        const query = this.value.trim();
+        
+        if (query.length < 2) {
+            searchDropdown.classList.add('d-none');
+            return;
+        }
+        
+        debounceTimer = setTimeout(function() {
+            fetch('/api/search/?q=' + encodeURIComponent(query))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.results && data.results.length > 0) {
+                        let html = '<div class="list-group list-group-flush">';
+                        data.results.forEach(function(r) {
+                            const penBadge = r.penetrance !== null 
+                                ? '<span class="badge ' + getPenetranceBadge(r.penetrance) + ' ms-2">' + r.penetrance + '%</span>'
+                                : '';
+                            html += '<a href="' + r.url + '" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">' +
+                                '<div><span class="badge bg-secondary me-2">' + r.gene + '</span><strong>' + r.variant + '</strong></div>' +
+                                '<div>' + penBadge + '</div>' +
+                                '</a>';
+                        });
+                        html += '</div>';
+                        searchDropdown.innerHTML = html;
+                        searchDropdown.classList.remove('d-none');
+                    } else {
+                        searchDropdown.innerHTML = '<div class="p-3 text-muted text-center">No variants found</div>';
+                        searchDropdown.classList.remove('d-none');
+                    }
+                })
+                .catch(err => {
+                    searchDropdown.innerHTML = '<div class="p-3 text-danger text-center">Search error</div>';
+                    searchDropdown.classList.remove('d-none');
+                });
+        }, 300);
+    });
+    
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+            searchDropdown.classList.add('d-none');
+        }
+    });
+    
+    function getPenetranceBadge(value) {
+        if (value < 20) return 'bg-success';
+        if (value < 40) return 'bg-info';
+        if (value < 60) return 'bg-warning text-dark';
+        if (value < 80) return 'bg-danger';
+        return 'bg-danger';
+    }
+});
+</script>
+{% endblock %}
 
 <section id="get-started" class="py-4">
     <h2 class="h4 fw-semibold mb-4">Jump straight to a dataset</h2>
