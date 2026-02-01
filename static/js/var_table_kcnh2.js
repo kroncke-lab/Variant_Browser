@@ -66,15 +66,21 @@ function createDataTable(rawData) {
         data: rawData,
         order: [0, 'desc'],
         orderClasses: true,
-        scrollY: 400,
-        scroller: true,
-        deferRender: true, // Only render visible rows - huge performance boost
-        responsive: true,
+        scrollY: '60vh',           // Use viewport height for responsive sizing
+        scrollCollapse: true,
+        scroller: {
+            loadingIndicator: true,
+            displayBuffer: 30      // Render 30 rows above/below viewport
+        },
+        deferRender: true,         // Only render visible rows - huge performance boost
+        paging: true,              // Required for scroller
+        pageLength: 50,            // Fallback if scroller fails
+        responsive: false,         // Disable - conflicts with scroller
         buttons: [
             'searchBuilder',
             'searchPanes'
         ],
-        dom: 'Bfti',
+        dom: 'Bfrtip',             // Added 'r' for processing indicator, 'p' for pagination fallback
         columns: [
             { data: 0, title: 'Ch.7' },           // pos
             { data: 1, title: 'HGVSc' },          // hgvsc_short
