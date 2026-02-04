@@ -11,10 +11,11 @@
  * [3] var_short - truncated variant for display
  * [4] resnum - Residue Number
  * [5] lqt2 - LQT2 count
- * [6] total_carriers - Total Carriers
- * [7] mave_score - MAVE Function
- * [8] structure - Location
- * [9] p_pct - LQT2 Penetrance %
+ * [6] lit_cohort - Lit/Cohort carriers
+ * [7] gnomad - gnomAD carriers
+ * [8] mave_score - MAVE Function
+ * [9] structure - Location
+ * [10] p_pct - LQT2 Penetrance %
  */
 
 $(document).ready(function() {
@@ -69,7 +70,7 @@ function createDataTable(rawData) {
         scrollY: '60vh',           // Use viewport height for responsive sizing
         scrollCollapse: true,
         scroller: {
-            loadingIndicator: true,
+            loadingIndicator: false,
             displayBuffer: 30      // Render 30 rows above/below viewport
         },
         deferRender: true,         // Only render visible rows - huge performance boost
@@ -77,6 +78,12 @@ function createDataTable(rawData) {
         pageLength: 50,            // Fallback if scroller fails
         responsive: false,         // Disable - conflicts with scroller
         buttons: [
+            {
+                extend: 'csvHtml5',
+                text: 'Export CSV',
+                exportOptions: { columns: ':visible' }
+            },
+            'colvis',
             'searchBuilder',
             'searchPanes'
         ],
@@ -96,15 +103,16 @@ function createDataTable(rawData) {
             },
             { data: 4, title: 'Residue Number' }, // resnum
             { data: 5, title: 'LQT2' },           // lqt2
-            { data: 6, title: 'Total Carriers' }, // total_carriers
-            { data: 7, title: 'MAVE Function' },  // mave_score
-            { data: 8, title: 'Location' },       // structure
-            { data: 9, title: 'LQT2 Penetrance(%)' } // p_pct
+            { data: 6, title: 'Lit/Cohort' },     // lit_cohort
+            { data: 7, title: 'gnomAD' },         // gnomad
+            { data: 8, title: 'MAVE Function' },  // mave_score
+            { data: 9, title: 'Location' },       // structure
+            { data: 10, title: 'LQT2 Penetrance(%)' } // p_pct
         ],
         columnDefs: [
             {
                 // Color-code penetrance column
-                targets: 8, // LQT2 Penetrance column (0-indexed in display)
+                targets: 9, // LQT2 Penetrance column (0-indexed in display)
                 createdCell: function(td, cellData, rowData, row, col) {
                     $(td).css('background-color', getPenetranceColor(cellData));
                     $(td).css('font-weight', '600');
@@ -112,7 +120,7 @@ function createDataTable(rawData) {
             },
             {
                 // Color-code MAVE function column - lower is worse
-                targets: 6, // MAVE Function column
+                targets: 7, // MAVE Function column
                 createdCell: function(td, cellData, rowData, row, col) {
                     $(td).css('background-color', getMaveColor(cellData));
                 }
@@ -134,14 +142,20 @@ function createDataTable(rawData) {
 
 function tableActions(table) {
     var lqt2 = [];
+    var lit = [];
+    var gnomad = [];
     var tot = [];
     var p_lqt2 = [];
 
     table.rows({filter: 'applied'}).every(function() {
         var data = this.data();
         lqt2.push(parseInt(data[5]) || 0);      // lqt2 is index 5 in raw data
-        tot.push(parseInt(data[6]) || 0);       // total_carriers is index 6
-        p_lqt2.push(parseFloat(data[9]) || 0);  // penetrance is index 9
+        var litCount = parseInt(data[6]) || 0;
+        var gnomadCount = parseInt(data[7]) || 0;
+        lit.push(litCount);
+        gnomad.push(gnomadCount);
+        tot.push(litCount + gnomadCount);
+        p_lqt2.push(parseFloat(data[10]) || 0);  // penetrance is index 10
     });
 
     // Update quick stats banner
@@ -151,83 +165,32 @@ function tableActions(table) {
     var minPen = p_lqt2.length > 0 ? Math.min(...p_lqt2).toFixed(0) : 0;
     var maxPen = p_lqt2.length > 0 ? Math.max(...p_lqt2).toFixed(0) : 0;
     var totalLQT2 = lqt2.reduce((a, b) => a + b, 0);
-    var totalCarriers = tot.reduce((a, b) => a + b, 0);
+    var totalLit = lit.reduce((a, b) => a + b, 0);
+    var totalGnomad = gnomad.reduce((a, b) => a + b, 0);
     
     var statsHtml = '<div class="d-flex flex-wrap gap-3 justify-content-center align-items-center">' +
         '<span class="badge bg-primary fs-6">' + filteredVariants + ' of ' + totalVariants + ' variants</span>' +
         '<span class="badge bg-secondary fs-6">Mean penetrance: ' + meanPenetrance + '%</span>' +
         '<span class="badge bg-light text-dark fs-6">Range: ' + minPen + '% – ' + maxPen + '%</span>' +
         '<span class="badge bg-info fs-6">' + totalLQT2.toLocaleString() + ' LQT2 carriers</span>' +
-        '<span class="badge bg-light text-dark fs-6">' + totalCarriers.toLocaleString() + ' total carriers</span>' +
+        '<span class="badge bg-light text-dark fs-6">' + totalLit.toLocaleString() + ' lit/cohort carriers</span>' +
+        '<span class="badge bg-light text-dark fs-6">' + totalGnomad.toLocaleString() + ' gnomAD carriers</span>' +
         '</div>';
     
     $('#quick-stats').html(statsHtml);
     
     // LQT2 carriers histogram
-    var trace = {
-        x: lqt2,
-        type: 'histogram',
-        xbins: {
-            size: 1,
-            start: 1
-        }
-    };
-    var layout = {
-        xaxis: {
-            title: "Number of KCNH2 variant carriers diagnosed with LQTS",
-            range: [1,]
-        },
-        yaxis: {
-            title: "Number of unique KCNH2 variants",
-            autorange: true
-        }
-    };
-    Plotly.newPlot('myDiv', [trace], layout);
+    VBCharts.carrierHistogram('myDiv', lqt2, '', 'LQT2 carriers per variant', {
+        color: VBCharts.colors.primary
+    });
 
     // Total carriers histogram
-    var trace2 = {
-        x: tot,
-        type: 'histogram',
-        autobinx: false,
-        xbins: {
-            end: 300,
-            size: 2,
-            start: 1
-        }
-    };
-    var layout2 = {
-        xaxis: {
-            title: "Number of carriers for each KCNH2 variant",
-            range: [1, 300],
-        },
-        yaxis: {
-            title: "Number of unique KCNH2 variants",
-            type: 'log',
-            autorange: true
-        }
-    };
-    Plotly.newPlot('myDiv2', [trace2], layout2);
+    VBCharts.totalCarriersHistogram('myDiv2', tot, '', {
+        color: VBCharts.colors.secondary
+    });
 
     // Penetrance histogram
-    var trace3 = {
-        x: p_lqt2,
-        type: 'histogram',
-        autobinx: false,
-        xbins: {
-            end: 100,
-            size: 10,
-            start: 0
-        }
-    };
-    var layout3 = {
-        xaxis: {
-            title: "LQT2 Penetrance Estimate (%)",
-            range: [0, 100],
-        },
-        yaxis: {
-            title: "Number of unique KCNH2 variants",
-            autorange: true
-        }
-    };
-    Plotly.newPlot('myDiv3', [trace3], layout3);
+    VBCharts.penetranceHistogram('myDiv3', p_lqt2, '', {
+        color: VBCharts.colors.accent
+    });
 }
