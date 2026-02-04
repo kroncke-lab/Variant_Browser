@@ -20,19 +20,11 @@ from kcnq1.models import (
 # thirty days 86400 * 30
 @cache_page(60*60*31)
 def display(request):
-    recs = KCNQ1NewVariant.objects.only(
-        'pos',
-        'hgvsc',
-        'var',
-        'resnum',
-        'lqt1',
-        'total_carriers',
-        'function_lqt1',
-        'structure_lqt1',
-        'lqt1_penetrance',
-    )
-    ret = render(request, 'kcnq1/main.html', {'recs': recs})
-    return ret
+    """
+    Render the KCNQ1 variant browser page.
+    Data is loaded via AJAX from /KCNQ1/api/variants/ for faster initial page load.
+    """
+    return render(request, 'kcnq1/main.html')
 
 
 #@cache_page(60*60*31)
