@@ -33,6 +33,11 @@
                 <div class="card-body text-center">
                     <p class="text-muted text-uppercase small mb-1">Estimated LQT2 penetrance</p>
                     <p class="stat-value text-primary">{% widthratio variant.p_mean_w 1 100 %}%</p>
+                    {% if ci_low != None and ci_high != None %}
+                    <p class="small text-muted mb-1" data-bs-toggle="tooltip" title="90% credible interval from Bayesian posterior distribution">
+                        <span class="badge bg-light text-secondary">90% CI: {{ ci_low }}% – {{ ci_high }}%</span>
+                    </p>
+                    {% endif %}
                     <p class="small text-muted mb-0">{{ alpha_lqt2 }}/{{ tot_with_prior }} effective observations</p>
                 </div>
             </div>
@@ -288,6 +293,12 @@
             if (table.length) {
                 table.DataTable(tableOptions);
             }
+        });
+        
+        // Initialize Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function(el) {
+            return new bootstrap.Tooltip(el);
         });
     });
 </script>
