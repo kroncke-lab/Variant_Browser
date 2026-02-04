@@ -28,7 +28,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['variantbrowser.azurewebsites.net', 'variantbrowser.org', 'www.variantbrowser.org', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -100,7 +100,9 @@ DATABASES = {
         'PORT': '1433',
 
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
+            'driver': 'FreeTDS',
+            'host_is_server': True,
+            'extra_params': 'TDS_Version=7.4',
         },
     },
     'azure_sql_db': {
@@ -112,7 +114,9 @@ DATABASES = {
         'PORT': '1433',
 
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
+            'driver': 'FreeTDS',
+            'host_is_server': True,
+            'extra_params': 'TDS_Version=7.4',
         },
     },
 }
