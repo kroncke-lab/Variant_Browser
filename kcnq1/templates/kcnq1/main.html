@@ -43,6 +43,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/searchbuilder/1.6.0/css/searchBuilder.dataTables.min.css">
     <!-- SearchPanes Extension CSS (v2.x for DT1) -->
     <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.dataTables.min.css">
+    <!-- Scroller Extension CSS (virtual scrolling) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/scroller/2.3.0/css/scroller.dataTables.min.css">
 {% endblock %}
 
 {% block extra_js %}
@@ -66,6 +68,8 @@
     <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js"></script>
     <!-- Responsive Extension JS -->
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <!-- Scroller Extension JS (virtual scrolling for large datasets) -->
+    <script src="https://cdn.datatables.net/scroller/2.3.0/js/dataTables.scroller.min.js"></script>
     <!-- Plotly -->
     <script src='https://cdn.plot.ly/plotly-2.27.1.min.js'></script>
     <!-- Custom KCNQ1 JS -->
@@ -117,28 +121,16 @@
         <th>Variant</th>
         <th>Residue Number</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Number of heterozygous carriers diagnosed with Long QT Syndrome type 1">LQT1</th>
-        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Total heterozygous carriers observed (LQT1 + Unaffected). Includes gnomAD population data, assumed unaffected given LQT1 rarity.">Total Carriers</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Heterozygous carriers from literature and clinical cohorts (excluding gnomAD)">Lit/Cohort</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Heterozygous carriers from gnomAD population database (assumed unaffected given LQT1 rarity)">gnomAD</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Functional classification based on published electrophysiology studies">Function</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Structural region within the KCNQ1 protein associated with LQT1 risk">Location (LQT1)</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Bayesian posterior mean probability of LQT1 diagnosis given heterozygosity. Combines variant features (prior) with observed carrier data.">LQT1 Penetrance(%)</th>
     </tr>
     </thead>
     <tbody>
-    {% for sts in recs %}
-    <tr>
-        <td>{{sts.pos}}</td>
-        <td>{{sts.hgvsc|truncatechars_html:12}}</td>
-        <td><a href="{% url 'kcnq1:detail' sts.hgvsc %}" target="_blank">{{sts.var|truncatechars_html:7}}</a></td>
-        <td>{{sts.resnum}}</td>
-        <th>{{sts.lqt1}}</th>
-        <td>{{sts.total_carriers}}</td>
-        <td>{{ sts.function_lqt1 }}</td>
-        <td>{{sts.structure_lqt1}}</td>
-        <td>{% widthratio sts.lqt1_penetrance 1 100 %}</td>
-    </tr>
-    {% endfor %}
-
-   </tbody>
+    <!-- Data loaded via AJAX from /KCNQ1/api/variants/ -->
+    </tbody>
 </table>
     <body>
     <div align="center" class="fa-beer"><h1>Histogram of <i>KCNQ1</i> Variant Carriers with LQTS</h1></div>

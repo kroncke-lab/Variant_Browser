@@ -1,17 +1,17 @@
 """
-AJAX data endpoint for KCNH2 variants.
+AJAX data endpoint for KCNQ1 variants.
 Returns all variants as JSON for client-side DataTables processing.
 JSON is ~5x smaller than HTML table markup and parses faster.
 """
 from django.http import JsonResponse
 from django.views.decorators.cache import cache_page
-from kcnh2.models import newVariant
+from kcnq1.models import KCNQ1NewVariant
 
 
 @cache_page(60 * 60 * 24)  # Cache for 24 hours
 def datatables_api(request):
     """
-    Returns all KCNH2 isoform A variants as JSON for DataTables.
+    Returns all KCNQ1 variants as JSON for DataTables.
 
     Client-side DataTables will handle:
     - Sorting
@@ -19,40 +19,40 @@ def datatables_api(request):
     - Virtual scrolling
     - Histogram updates
 
-    This is much faster than rendering 8000 <tr> elements in Django template.
+    This is much faster than rendering thousands of <tr> elements in Django template.
 
     Column mapping:
-    [0] pos - Ch.7 position
+    [0] pos - Ch.11 position
     [1] hgvsc_short - truncated HGVSc for display
     [2] hgvsc_full - full HGVSc for variant link
     [3] var_short - truncated variant for display
     [4] resnum - Residue Number
-    [5] lqt2 - LQT2 count
+    [5] lqt1 - LQT1 count
     [6] lit_cohort - Literature/Cohort carriers (total - gnomad)
     [7] gnomad - gnomAD carriers
-    [8] mave_score - MAVE Function
-    [9] structure - Location
-    [10] p_pct - LQT2 Penetrance %
+    [8] function - Function classification
+    [9] structure - Location (LQT1)
+    [10] lqt1_pct - LQT1 Penetrance %
     """
-    # Get all isoform A variants with only needed fields
-    variants = newVariant.objects.filter(isoform='A').only(
+    # Get all variants with only needed fields
+    variants = KCNQ1NewVariant.objects.only(
         'pos',
         'hgvsc',
         'var',
         'resnum',
-        'lqt2',
+        'lqt1',
         'total_carriers',
         'gnomad',
-        'mave_score',
-        'structure',
-        'p_mean_w',
-    ).order_by('-pos')
+        'function_lqt1',
+        'structure_lqt1',
+        'lqt1_penetrance',
+    ).order_by('pos')
 
     # Build compact JSON response
     data = []
     for v in variants:
-        # Calculate penetrance percentage (p_mean_w is already 0-100)
-        p_pct = int(v.p_mean_w) if v.p_mean_w else 0
+        # lqt1_penetrance is stored as decimal 0-1, convert to percentage
+        p_pct = int(v.lqt1_penetrance * 100) if v.lqt1_penetrance else 0
 
         # Calculate lit/cohort carriers (total minus gnomad)
         total = v.total_carriers if v.total_carriers else 0
@@ -61,15 +61,15 @@ def datatables_api(request):
 
         data.append([
             v.pos,
-            truncate(v.hgvsc, 9) if v.hgvsc else '',
+            truncate(v.hgvsc, 12) if v.hgvsc else '',
             v.hgvsc,  # Full hgvsc for link
             truncate(v.var, 7) if v.var else '',
             v.resnum,
-            v.lqt2 if v.lqt2 else 0,
+            v.lqt1 if v.lqt1 else 0,
             lit_cohort,
             gnomad,
-            v.mave_score if v.mave_score is not None else '',
-            v.structure if v.structure else '',
+            v.function_lqt1 if v.function_lqt1 else '',
+            v.structure_lqt1 if v.structure_lqt1 else '',
             p_pct,
         ])
 
