@@ -20,7 +20,7 @@
  * [12] brs1_pct - BrS1 Penetrance %
  */
 
-let chartsEnabled = false;
+let chartsEnabled = true;  // Load charts immediately
 let chartsPlaceholderSet = false;
 let serverStats = null;  // Store server-computed statistics
 
