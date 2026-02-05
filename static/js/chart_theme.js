@@ -1,63 +1,67 @@
 /**
  * Shared Plotly Chart Theme for Variant Browser
  *
- * Provides consistent styling across all gene pages.
- * Usage: VBCharts.binned(data, title, xLabel, options)
+ * Clean, clinical aesthetic with card-based layout.
+ * Charts have no internal titles - titles live in card headers.
  */
 
 const VBCharts = {
-    // Color palette matching the app's design
+    // Color palette - clean, clinical colors
     colors: {
-        primary: '#3b82f6',      // Blue
-        secondary: '#06b6d4',    // Cyan
-        accent: '#8b5cf6',       // Purple
+        primary: '#3b82f6',      // Blue - for affected carriers
+        secondary: '#14b8a6',    // Teal - for total/unaffected carriers
+        accent: '#8b5cf6',       // Purple - for penetrance
         warning: '#f59e0b',      // Amber
         danger: '#ef4444',       // Red
         success: '#10b981',      // Green
-        gradient: [              // For multiple series
-            '#3b82f6', '#06b6d4', '#8b5cf6', '#f59e0b', '#10b981'
+        gradient: [
+            '#3b82f6', '#14b8a6', '#8b5cf6', '#f59e0b', '#10b981'
         ]
     },
 
-    // Base layout config
+    // Base layout - minimal, clean aesthetic
     baseLayout: {
         paper_bgcolor: 'transparent',
-        plot_bgcolor: '#fafafa',
+        plot_bgcolor: 'white',
         font: {
-            family: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
-            size: 12,
-            color: '#374151'
+            family: 'Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+            size: 11,
+            color: '#6b7280'  // Muted gray for labels
         },
-        margin: { t: 50, r: 30, b: 60, l: 65 },
+        margin: { t: 20, r: 25, b: 50, l: 55 },  // Reduced top margin (no title)
         hoverlabel: {
             bgcolor: '#1f2937',
             bordercolor: '#1f2937',
-            font: { color: 'white', size: 13 }
+            font: { color: 'white', size: 12 }
         },
         xaxis: {
-            gridcolor: '#e5e7eb',
-            linecolor: '#d1d5db',
-            tickfont: { size: 11 },
-            title: { standoff: 15 }
+            gridcolor: '#f3f4f6',      // Very light gridlines
+            linecolor: '#e5e7eb',      // Subtle axis line
+            linewidth: 1,
+            tickfont: { size: 10, color: '#9ca3af' },
+            title: { font: { size: 11, color: '#6b7280' }, standoff: 12 },
+            zeroline: false
         },
         yaxis: {
-            gridcolor: '#e5e7eb',
-            linecolor: '#d1d5db',
-            tickfont: { size: 11 },
-            title: { standoff: 10 }
+            gridcolor: '#f3f4f6',      // Very light gridlines
+            linecolor: '#e5e7eb',      // Subtle axis line
+            linewidth: 1,
+            tickfont: { size: 10, color: '#9ca3af' },
+            title: { font: { size: 11, color: '#6b7280' }, standoff: 8 },
+            zeroline: false
         }
     },
 
-    // Plotly config (toolbar, interactions)
+    // Plotly config - minimal toolbar
     config: {
         responsive: true,
         displayModeBar: 'hover',
-        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d'],
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'zoomIn2d', 'zoomOut2d'],
         displaylogo: false
     },
 
     /**
-     * Create a styled histogram trace
+     * Create a styled histogram trace - clean solid bars
      */
     histogramTrace: function(data, options = {}) {
         const color = options.color || this.colors.primary;
@@ -67,23 +71,19 @@ const VBCharts = {
             marker: {
                 color: color,
                 line: {
-                    color: this.darken(color, 20),
-                    width: 1
+                    color: color,  // Same color outline for clean look
+                    width: 0.5
                 },
-                opacity: 0.85
+                opacity: 0.9
             },
-            hovertemplate: '<b>%{y}</b> variants<br>%{x} carriers<extra></extra>',
+            hovertemplate: '<b>%{y}</b> variants<br>%{x}<extra></extra>',
             ...options.trace
         };
     },
 
     /**
-     * Create a histogram with consistent styling
-     * @param {string} containerId - DOM element ID
-     * @param {Array} data - Data array for histogram
-     * @param {string} title - Chart title
-     * @param {string} xLabel - X-axis label
-     * @param {Object} options - Additional options
+     * Create a histogram with clean, minimal styling
+     * No title in plot area - titles live in card headers
      */
     histogram: function(containerId, data, title, xLabel, options = {}) {
         const trace = this.histogramTrace(data, options);
@@ -95,28 +95,23 @@ const VBCharts = {
 
         const layout = {
             ...this.baseLayout,
-            title: {
-                text: title,
-                font: { size: 14, color: '#1f2937', weight: 600 },
-                x: 0.02,
-                xanchor: 'left'
-            },
+            // No title - titles are in card headers
             xaxis: {
                 ...this.baseLayout.xaxis,
-                title: { text: xLabel, standoff: 15 },
+                title: { text: xLabel, font: { size: 11, color: '#6b7280' }, standoff: 12 },
                 range: options.xRange || null
             },
             yaxis: {
                 ...this.baseLayout.yaxis,
-                title: { text: options.yLabel || 'Number of variants', standoff: 10 },
+                title: { text: options.yLabel || 'Variants', font: { size: 11, color: '#6b7280' }, standoff: 8 },
                 type: options.logY ? 'log' : 'linear',
-                // Semi-log: log scale with linear-looking tick labels
                 tickmode: options.logY ? 'array' : 'auto',
-                tickvals: options.logY ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000] : null,
-                ticktext: options.logY ? ['1', '2', '5', '10', '20', '50', '100', '200', '500', '1k', '2k', '5k', '10k'] : null,
+                tickvals: options.logY ? [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000] : null,
+                ticktext: options.logY ? ['1', '2', '5', '10', '20', '50', '100', '200', '500', '1k', '2k', '5k'] : null,
                 autorange: true
             },
-            bargap: 0.05
+            bargap: 0.08,
+            height: 280  // Consistent card height
         };
 
         Plotly.newPlot(containerId, [trace], layout, this.config);
