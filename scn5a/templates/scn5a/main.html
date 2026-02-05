@@ -28,8 +28,59 @@
         transform: rotate(360deg);
       }
     }
-    div.fa-beer {
-        margin-top: 70px;
+    /* Distribution Charts Section */
+    .distribution-section {
+        background-color: #f5f6f8;
+        padding: 40px 30px;
+        margin-top: 40px;
+        border-radius: 12px;
+    }
+    .section-header {
+        margin-bottom: 28px;
+    }
+    .section-header h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 4px;
+    }
+    .section-subtitle {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin: 0;
+    }
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+    @media (max-width: 992px) {
+        .charts-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    .chart-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        padding: 24px;
+    }
+    .chart-card-header {
+        margin-bottom: 16px;
+    }
+    .chart-card-header h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin: 0 0 4px 0;
+    }
+    .chart-card-header p {
+        font-size: 0.8125rem;
+        color: #9ca3af;
+        margin: 0;
+    }
+    .chart-container {
+        min-height: 280px;
     }
     </style>
     <!-- DataTables 1.x Core CSS -->
@@ -138,32 +189,58 @@
     <!-- Data loaded via AJAX from /SCN5A/api/variants/ -->
     </tbody>
 </table>
-<body>
-    <div align="center" class="fa-beer"><h1>Histogram of <i>SCN5A</i> Variant Carriers with LQTS</h1></div>
-    Below is histogram of the number of heterozygous carriers of <i>SCN5A</i> variants observed in individuals diagnosed
-    with LQT3 displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number of heterozygous carriers.
-        <div id='myDiv2'><!-- Plotly chart will be drawn inside this DIV --></div>
-    <div class="lds-dual-ring" align="center"></div>
-    <div align="center" class="fa-beer"><h1>Histogram of Putative Unaffected Heterozygous <i>SCN5A</i> Variant Carriers</h1></div>
-    Below is a histogram of the number of heterozygous carriers of <i>SCN5A</i> variants observed in unaffected
-    individuals and in gnomAD (given the rarity of the LQT3 phenotype in the general public, we assume these
-    individuals are also likely unaffected) displayed in the table above. The y-axis is the number of unique variants (log scale) and the x-axis
-    shows the number of heterozygous carriers (truncated at 300 to aid visualization).
-    <div id='myDiv3'><!-- Plotly chart will be drawn inside this DIV --></div>
-    <div class="lds-dual-ring" align="center"></div>
-    <div align="center" class="fa-beer"><h1>Histogram of <i>SCN5A</i> Variant Carriers with BrS1</h1></div>
-    Below is histogram of the number of heterozygous carriers of <i>SCN5A</i> variants observed in individuals diagnosed
-    with BrS1 displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number of heterozygous carriers.
-    <div id='myDiv1'><!-- Plotly chart will be drawn inside this DIV --></div>
-    <div class="lds-dual-ring" align="center"></div>
-    <div align="center" class="fa-beer"><h1>Histogram of BrS1 Penetrance Estimates for <i>SCN5A</i> Variants</h1></div>
-    Below is a histogram of the estimates of BrS1 penetrance for all variants displayed in the table above. The range is
-    from 0% (impossible) to 100% (certain).
-    <div id='myDiv4'><!-- Plotly chart will be drawn inside this DIV --></div>
-    <div class="lds-dual-ring" align="center"></div>
-    <div align="center" class="fa-beer"><h1>Histogram of LQT3 Penetrance Estimates for <i>SCN5A</i> Variants</h1></div>
-    Below is a histogram of the estimates of LQT3 penetrance for all variants displayed in the table above. The range is
-    from 0% (impossible) to 100% (certain).
-    <div id='myDiv5'><!-- Plotly chart will be drawn inside this DIV --></div>
-</body>
+<!-- Distribution Charts Section -->
+<div class="distribution-section">
+    <div class="section-header">
+        <h2>Distribution Charts</h2>
+        <p class="section-subtitle">Charts update automatically when you filter the table above</p>
+    </div>
+
+    <div class="charts-grid">
+        <!-- BrS1 Carrier Distribution -->
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h3>BrS1 Carrier Distribution</h3>
+                <p>Number of Brugada Syndrome carriers per variant</p>
+            </div>
+            <div id="myDiv1" class="chart-container"></div>
+        </div>
+
+        <!-- LQT3 Carrier Distribution -->
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h3>LQT3 Carrier Distribution</h3>
+                <p>Number of Long QT type 3 carriers per variant</p>
+            </div>
+            <div id="myDiv2" class="chart-container"></div>
+        </div>
+
+        <!-- Unaffected Carrier Distribution -->
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h3>Unaffected Carrier Distribution</h3>
+                <p>Unaffected carriers including gnomAD (log scale, capped at 300)</p>
+            </div>
+            <div id="myDiv3" class="chart-container"></div>
+        </div>
+
+        <!-- BrS1 Penetrance Distribution -->
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h3>BrS1 Penetrance Distribution</h3>
+                <p>Estimated Brugada penetrance from 0% to 100%</p>
+            </div>
+            <div id="myDiv4" class="chart-container"></div>
+        </div>
+
+        <!-- LQT3 Penetrance Distribution -->
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h3>LQT3 Penetrance Distribution</h3>
+                <p>Estimated Long QT type 3 penetrance from 0% to 100%</p>
+            </div>
+            <div id="myDiv5" class="chart-container"></div>
+        </div>
+    </div>
+</div>
 {% endblock %}
