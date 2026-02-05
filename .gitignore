@@ -1,2 +1,84 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-*.pyc
+# Virtual environments
+venv/
+venv_*/
+.venv/
+env/
+ENV/
+
+# ODBC environment
+.odbc_env/
+
+# Node
+node_modules/
+package-lock.json
+
+# Environment variables / secrets
+.env
+.env.*
+*.env
+
+# Local settings with secrets
+variantbrowser/settings_azure.py
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Database
+*.sqlite3
+db.sqlite3
+
+# Django
+*.log
+*.pot
+staticfiles/
+media/
+
+# Static file collection (generated)
+static/admin/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test/scratch files
+test_*.js
+*.tmp
+
+# Coverage / testing
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
