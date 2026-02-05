@@ -72,6 +72,8 @@
     <script src="https://cdn.datatables.net/scroller/2.3.0/js/dataTables.scroller.min.js"></script>
     <!-- Plotly -->
     <script src='https://cdn.plot.ly/plotly-2.27.1.min.js'></script>
+    <!-- Shared Chart Theme -->
+    <script type="text/javascript" src="{% static 'js/chart_theme.js' %}"></script>
     <!-- Custom KCNQ1 JS -->
     <script type="text/javascript" src="{% static 'js/var_table_kcnq1.js' %}"></script>
     <!-- Initialize Bootstrap tooltips -->
@@ -100,7 +102,7 @@
         match convention. 'Total Carriers' is the number of heterozygotes diagnosed with LQT1 or other disease,
         Unaffected with disease, and found in the genome aggregation database (gnomAD). 'Other' is the number of
         heterozygoes diagnosed with a cardiac disease which is not LQT1. Click the variant link for more details.
-        Below are histogram plots for LQT2 affected carriers, unaffected carriers, and estimated LQTS
+        Below are histogram plots for LQT1 affected carriers, unaffected carriers, and estimated LQTS
         penetrance. Use the 'Search Builder' and 'Search Panes' to select subsets of variants based on properties you
         are interested in (results will update the histogram plots below). 'GOF' and 'LOF' indicate gain-of-function and
         loss-of-function, respectively.

@@ -67,6 +67,8 @@
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <!-- Plotly -->
     <script src='https://cdn.plot.ly/plotly-2.27.1.min.js'></script>
+    <!-- Shared Chart Theme -->
+    <script type="text/javascript" src="{% static 'js/chart_theme.js' %}"></script>
     <!-- Custom SCN5A JS -->
     <script type="text/javascript" src="{% static 'js/var_table_scn5a.js' %}"></script>
     <!-- Initialize Bootstrap tooltips -->
@@ -120,7 +122,8 @@
         <th>Residue Number</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Number of heterozygous carriers diagnosed with Long QT Syndrome type 3">LQT3</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Number of heterozygous carriers diagnosed with Brugada Syndrome type 1">BrS1</th>
-        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Total heterozygous carriers observed (affected + unaffected). Includes gnomAD population data, assumed unaffected given phenotype rarity.">Total Carriers</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Heterozygous carriers from literature and clinical cohorts (excluding gnomAD)">Lit/Cohort</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Heterozygous carriers from gnomAD population database (assumed unaffected given phenotype rarity)">gnomAD</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Functional classification based on published electrophysiology studies">Function</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Structural region within the SCN5A protein">Location</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Bayesian posterior mean probability of LQT3 diagnosis given heterozygosity">LQT3 Penetrance(%)</th>
@@ -128,23 +131,8 @@
     </tr>
     </thead>
     <tbody>
-    {% for sts in recs %}
-    <tr>
-        <td>{{sts.pos}}</td>
-        <td>{{sts.hgvsc|truncatechars_html:12}}</td>
-        <td><a href="{% url 'scn5a:detail' sts.hgvsc %}" target="_blank">{{sts.var|truncatechars_html:7}}</a></td>
-        <td>{{sts.resnum}}</td>
-        <td>{{sts.lqt3}}</td>
-        <td>{{sts.brs1}}</td>
-        <td>{{sts.total_carriers}}</td>
-        <td>{{sts.function_class}}</td>
-        <td>{{sts.structure}}</td>
-        <td>{% widthratio sts.lqt3_penetrance 1 100 %}</td>
-        <td>{% widthratio sts.brs1_penetrance 1 100 %}</td>
-    </tr>
-    {% endfor %}
-
-   </tbody>
+    <!-- Data loaded via AJAX from /SCN5A/api/variants/ -->
+    </tbody>
 </table>
 <body>
     <div align="center" class="fa-beer"><h1>Histogram of <i>SCN5A</i> Variant Carriers with LQTS</h1></div>
