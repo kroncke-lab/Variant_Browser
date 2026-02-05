@@ -4,7 +4,6 @@ import logging
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
-from django.views.decorators.cache import cache_page
 
 logger = logging.getLogger(__name__)
 from kcnq1.models import (
@@ -18,7 +17,6 @@ from kcnq1.models import (
 
 # Create your views here.
 # thirty days 86400 * 30
-@cache_page(60*60*31)
 def display(request):
     """
     Render the KCNQ1 variant browser page.
@@ -27,7 +25,6 @@ def display(request):
     return render(request, 'kcnq1/main.html')
 
 
-#@cache_page(60*60*31)
 def variantview(request, hgvsc):
     variant = (
         KCNQ1NewVariant.objects

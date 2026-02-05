@@ -4,7 +4,6 @@ Returns all variants as JSON for client-side DataTables processing.
 JSON is ~5x smaller than HTML table markup and parses faster.
 """
 from django.http import JsonResponse
-from django.views.decorators.cache import cache_page
 from django.views.decorators.gzip import gzip_page
 from scn5a.models import newVariant_scn5a
 
@@ -30,7 +29,6 @@ def calculate_penetrance(alpha, beta_val, affected, total_carriers):
 
 
 @gzip_page
-@cache_page(60 * 60 * 24)  # Cache for 24 hours
 def datatables_api(request):
     """
     Returns all SCN5A variants as JSON for DataTables.

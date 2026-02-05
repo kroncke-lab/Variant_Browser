@@ -2,13 +2,11 @@ import math
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
-from django.views.decorators.cache import cache_page
 from scn5a.models import newVariant_scn5a, scn5aDistances, scn5aPapers
 
 
 # Create your views here.
 # thirty days 86400 * 30
-@cache_page(60*60*31)
 def display(request):
     recs = newVariant_scn5a.objects.only(
         'pos',
@@ -27,7 +25,6 @@ def display(request):
     return ret
 
 
-@cache_page(60*60*31)
 def variantview(request, hgvsc):
     variant = get_object_or_404(
         newVariant_scn5a.objects.select_related(None).only(
