@@ -20,8 +20,6 @@
  * [12] brs1_pct - BrS1 Penetrance %
  */
 
-let chartsEnabled = true;  // Load charts immediately
-let chartsPlaceholderSet = false;
 let serverStats = null;  // Store server-computed statistics
 
 $(document).ready(function() {
@@ -200,20 +198,6 @@ function tableActions(table) {
 
     $('#quick-stats').html(statsHtml);
 
-    if (!chartsEnabled) {
-        if (!chartsPlaceholderSet) {
-            var placeholder = '<div class="d-flex align-items-center justify-content-center h-100 text-muted"><span>Click "Enable Charts" to load</span></div>';
-            $('#myDiv1, #myDiv2, #myDiv3, #myDiv4, #myDiv5').html(placeholder);
-            $('#scn5a-chart-toggle').show();
-            $('#chart-status').text('Charts paused for performance.');
-            chartsPlaceholderSet = true;
-        }
-        return;
-    }
-
-    $('#scn5a-chart-toggle').hide();
-    $('#chart-status').text('');
-
     // BrS1 carriers histogram
     VBCharts.carrierHistogram('myDiv1', brs1, '', 'BrS1 carriers per variant', {
         color: VBCharts.colors.danger
@@ -240,9 +224,3 @@ function tableActions(table) {
     });
 }
 
-$(document).on('click', '#scn5a-chart-toggle', function() {
-    chartsEnabled = true;
-    chartsPlaceholderSet = false;
-    // Trigger a redraw to populate charts with current page/filter
-    $('#example').DataTable().draw(false);
-});
