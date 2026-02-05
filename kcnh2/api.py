@@ -51,8 +51,8 @@ def datatables_api(request):
     # Build compact JSON response
     data = []
     for v in variants:
-        # Calculate penetrance percentage (p_mean_w is already 0-100)
-        p_pct = int(v.p_mean_w) if v.p_mean_w else 0
+        # Calculate penetrance percentage (p_mean_w is 0-1, convert to 0-100)
+        p_pct = int(v.p_mean_w * 100) if v.p_mean_w else 0
 
         # Calculate lit/cohort carriers (total minus gnomad)
         total = v.total_carriers if v.total_carriers else 0

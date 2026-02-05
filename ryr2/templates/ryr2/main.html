@@ -29,6 +29,9 @@
         transform: rotate(360deg);
       }
     }
+    div.fa-beer {
+        margin-top: 70px;
+    }
     </style>
     <!-- DataTables 1.x Core CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
@@ -40,6 +43,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/searchbuilder/1.6.0/css/searchBuilder.dataTables.min.css">
     <!-- SearchPanes Extension CSS (v2.x for DT1) -->
     <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.dataTables.min.css">
+    <!-- Scroller Extension CSS (virtual scrolling) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/scroller/2.3.0/css/scroller.dataTables.min.css">
 {% endblock %}
 
 {% block extra_js %}
@@ -61,8 +66,12 @@
     <script src="https://cdn.datatables.net/searchbuilder/1.6.0/js/dataTables.searchBuilder.min.js"></script>
     <!-- SearchPanes Extension JS (v2.x for DT1) -->
     <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js"></script>
+    <!-- Scroller Extension JS (virtual scrolling for large datasets) -->
+    <script src="https://cdn.datatables.net/scroller/2.3.0/js/dataTables.scroller.min.js"></script>
     <!-- Plotly -->
     <script src='https://cdn.plot.ly/plotly-2.27.1.min.js'></script>
+    <!-- Shared Chart Theme -->
+    <script type="text/javascript" src="{% static 'js/chart_theme.js' %}"></script>
     <!-- Custom RYR2 JS -->
     <script type="text/javascript" src="{% static 'js/var_table_ryr2.js' %}"></script>
     <!-- Initialize Bootstrap tooltips -->
@@ -108,24 +117,33 @@
         <th>Variant</th>
         <th>Residue Number</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Number of heterozygous carriers diagnosed with Catecholaminergic Polymorphic Ventricular Tachycardia">CPVT</th>
-        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Total heterozygous carriers observed (CPVT + unaffected). Includes gnomAD population data, assumed unaffected given CPVT rarity.">Total Carriers</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Heterozygous carriers from literature and clinical cohorts">Lit/Cohort</th>
+        <th data-bs-toggle="tooltip" data-bs-placement="top" title="Heterozygous carriers identified as unaffected">Unaffected</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Known pathogenic hotspot region within RYR2">Hotspot</th>
         <th data-bs-toggle="tooltip" data-bs-placement="top" title="Bayesian posterior mean probability of CPVT diagnosis given heterozygosity">CPVT Penetrance(%)</th>
     </tr>
     </thead>
     <tbody>
-    {% for sts in variants %}
-    <tr>
-        <td>{{ sts.grch38_pos }}</td>
-        <td>{{ sts.var }}</td>
-        <td>{{ sts.resnum }}</td>
-        <th>{{ sts.cpvt }}</th>
-        <td>{{ sts.total_carriers }}</td>
-        <td>{{ sts.hotspot }}</td>
-        <td>{% widthratio sts.p_mean_w 1 100 %}</td>
-    </tr>
-    {% endfor %}
-   </tbody>
+    <!-- Data loaded via AJAX from /RyR2/api/variants/ -->
+    </tbody>
 </table>
+<body>
+    <div align="center" class="fa-beer"><h1>Histogram of <i>RYR2</i> Variant Carriers with CPVT</h1></div>
+    Below is histogram of the number of heterozygous carriers of <i>RYR2</i> variants observed in individuals diagnosed
+    with CPVT displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number of heterozygous carriers.
+	<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+    <div class="lds-dual-ring" align="center"></div>
+    <div align="center" class="fa-beer"><h1>Histogram of Putative Unaffected Heterozygous <i>RYR2</i> Variant Carriers</h1></div>
+    Below is a histogram of the number of heterozygous carriers of <i>RYR2</i> variants observed in unaffected
+    individuals displayed in the table above. The y-axis is the number of unique variants (log scale) and the x-axis
+    shows the number of heterozygous carriers (truncated at 300 to aid visualization).
+    <div id='myDiv2'><!-- Plotly chart will be drawn inside this DIV --></div>
+    <div class="lds-dual-ring" align="center"></div>
+    <div align="center" class="fa-beer"><h1>Histogram of CPVT Penetrance Estimates for <i>RYR2</i> Variants</h1></div>
+    Below is a histogram of the estimates of CPVT penetrance for all variants displayed in the table above. The range is
+    from 0% (impossible) to 100% (certain).
+    <div id='myDiv3'><!-- Plotly chart will be drawn inside this DIV --></div>
+    <div class="lds-dual-ring" align="center"></div>
+</body>
 
 {% endblock %}
