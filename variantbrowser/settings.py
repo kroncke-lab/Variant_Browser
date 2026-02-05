@@ -90,6 +90,22 @@ DJANGO_DATABASE_NAME = os.environ['DJANGO_DATABASE_NAME']
 DJANGO_DATABASE_PASSWORD = os.environ['DJANGO_DATABASE_PASSWORD']
 DJANGO_DATABASE_SERVER = os.environ['DJANGO_DATABASE_SERVER']
 DJANGO_DATABASE_USER = os.environ['DJANGO_DATABASE_USER']
+# Use ODBC Driver 17 for SQL Server on Azure, FreeTDS locally
+DJANGO_DATABASE_DRIVER = os.environ.get('DJANGO_DATABASE_DRIVER', 'ODBC Driver 17 for SQL Server')
+
+# Build driver options - FreeTDS needs extra TDS_Version param
+if 'FreeTDS' in DJANGO_DATABASE_DRIVER:
+    DB_OPTIONS = {
+        'driver': DJANGO_DATABASE_DRIVER,
+        'host_is_server': True,
+        'extra_params': 'TDS_Version=7.4',
+    }
+else:
+    DB_OPTIONS = {
+        'driver': DJANGO_DATABASE_DRIVER,
+        'host_is_server': True,
+    }
+
 DATABASES = {
     'default': {
         'NAME': DJANGO_DATABASE_NAME,
@@ -98,12 +114,7 @@ DATABASES = {
         'PASSWORD': DJANGO_DATABASE_PASSWORD,
         'HOST': DJANGO_DATABASE_SERVER,
         'PORT': '1433',
-
-        'OPTIONS': {
-            'driver': 'FreeTDS',
-            'host_is_server': True,
-            'extra_params': 'TDS_Version=7.4',
-        },
+        'OPTIONS': DB_OPTIONS,
     },
     'azure_sql_db': {
         'NAME': DJANGO_DATABASE_NAME,
@@ -112,12 +123,7 @@ DATABASES = {
         'PASSWORD': DJANGO_DATABASE_PASSWORD,
         'HOST': DJANGO_DATABASE_SERVER,
         'PORT': '1433',
-
-        'OPTIONS': {
-            'driver': 'FreeTDS',
-            'host_is_server': True,
-            'extra_params': 'TDS_Version=7.4',
-        },
+        'OPTIONS': DB_OPTIONS,
     },
 }
 CACHES = {
