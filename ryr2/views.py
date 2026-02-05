@@ -1,15 +1,12 @@
 import math
 from django.shortcuts import render
-from django.views.decorators.cache import cache_page
 from ryr2.models import RYR2Variant
 
-@cache_page(60*60*31)
 def display(request):
     variants = RYR2Variant.objects.all()
     ret = render(request, 'ryr2/main.html', {'variants': variants})
     return ret
 
-@cache_page(60*60*31)
 def variantview(request, hgvsc):
     # NOTE: This view has incomplete implementation - missing RYR2Distances,
     # RYR2FunctionalPapers, RYR2ClinicalPapers, and RYR2InSilico models

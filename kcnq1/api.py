@@ -4,11 +4,9 @@ Returns all variants as JSON for client-side DataTables processing.
 JSON is ~5x smaller than HTML table markup and parses faster.
 """
 from django.http import JsonResponse
-from django.views.decorators.cache import cache_page
 from kcnq1.models import KCNQ1NewVariant
 
 
-@cache_page(60 * 60 * 24)  # Cache for 24 hours
 def datatables_api(request):
     """
     Returns all KCNQ1 variants as JSON for DataTables.

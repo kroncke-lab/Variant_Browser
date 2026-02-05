@@ -4,11 +4,9 @@ Returns all variants as JSON for client-side DataTables processing.
 JSON is ~5x smaller than HTML table markup and parses faster.
 """
 from django.http import JsonResponse
-from django.views.decorators.cache import cache_page
 from ryr2.models import RYR2Variant
 
 
-@cache_page(60 * 60 * 24)  # Cache for 24 hours
 def datatables_api(request):
     """
     Returns all RYR2 variants as JSON for DataTables.

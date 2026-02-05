@@ -3,7 +3,6 @@ from scipy.stats import beta as beta_dist
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
-from django.views.decorators.cache import cache_page
 from kcnh2.models import newVariant, ClinicalPapers, kcnh2Distances, FunctionalPapers
 
 
@@ -41,7 +40,6 @@ def calculate_credible_interval(alpha_prior, lqt2_count, unaff_count, confidence
 
 
 # Create your views here.
-@cache_page(60*60*31)
 def display(request):
     """
     Render the KCNH2 variant browser page.
@@ -50,7 +48,6 @@ def display(request):
     return render(request, 'kcnh2/main.html')
 
 
-@cache_page(60*60*31)
 def variantview(request, hgvsc):
     variant = get_object_or_404(
         newVariant.objects.select_related(None).only(
