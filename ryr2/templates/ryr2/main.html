@@ -127,24 +127,23 @@
     <!-- Data loaded via AJAX from /RyR2/api/variants/ -->
     </tbody>
 </table>
-<body>
+    <body>
     <div align="center" class="fa-beer"><h1>Histogram of <i>RYR2</i> Variant Carriers with CPVT</h1></div>
     Below is histogram of the number of heterozygous carriers of <i>RYR2</i> variants observed in individuals diagnosed
     with CPVT displayed in the table above. The y-axis is the number of unique variants and the x-axis shows the number of heterozygous carriers.
 	<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
-    <div class="lds-dual-ring" align="center"></div>
+    <div class="lds-dual-ring" align="center" ></div>
     <div align="center" class="fa-beer"><h1>Histogram of Putative Unaffected Heterozygous <i>RYR2</i> Variant Carriers</h1></div>
     Below is a histogram of the number of heterozygous carriers of <i>RYR2</i> variants observed in unaffected
     individuals displayed in the table above. The y-axis is the number of unique variants (log scale) and the x-axis
     shows the number of heterozygous carriers (truncated at 300 to aid visualization).
     <div id='myDiv2'><!-- Plotly chart will be drawn inside this DIV --></div>
-    <div class="lds-dual-ring" align="center"></div>
+    <div class="lds-dual-ring" align="center" ></div>
     <div align="center" class="fa-beer"><h1>Histogram of CPVT Penetrance Estimates for <i>RYR2</i> Variants</h1></div>
     Below is a histogram of the estimates of CPVT penetrance for all variants displayed in the table above. The range is
-    0-100% penetrance. The y-axis is the number of unique variants per penetrance bin. Using the 'Search Builder' and
-    'Search Panes' will filter the histogram plots, allowing you to visualize the same subset as in the table above.
+    from 0% (impossible) to 100% (certain).
     <div id='myDiv3'><!-- Plotly chart will be drawn inside this DIV --></div>
-    <div class="lds-dual-ring" align="center"></div>
+    <div class="lds-dual-ring" align="center" ></div>
 </body>
 
 {% endblock %}
