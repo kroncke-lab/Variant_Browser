@@ -42,6 +42,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/searchbuilder/1.6.0/css/searchBuilder.dataTables.min.css">
     <!-- SearchPanes Extension CSS (v2.x for DT1) -->
     <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.dataTables.min.css">
+    <!-- Scroller Extension CSS (virtual scrolling) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/scroller/2.3.0/css/scroller.dataTables.min.css">
 {% endblock %}
 
 {% block extra_js %}
@@ -65,6 +67,8 @@
     <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js"></script>
     <!-- Responsive Extension JS -->
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <!-- Scroller Extension JS (virtual scrolling for large datasets) -->
+    <script src="https://cdn.datatables.net/scroller/2.3.0/js/dataTables.scroller.min.js"></script>
     <!-- Plotly -->
     <script src='https://cdn.plot.ly/plotly-2.27.1.min.js'></script>
     <!-- Shared Chart Theme -->
@@ -154,14 +158,12 @@
     <div class="lds-dual-ring" align="center"></div>
     <div align="center" class="fa-beer"><h1>Histogram of BrS1 Penetrance Estimates for <i>SCN5A</i> Variants</h1></div>
     Below is a histogram of the estimates of BrS1 penetrance for all variants displayed in the table above. The range is
-    0-100% penetrance. The y-axis is the number of unique variants per penetrance bin. Using the 'Search Builder' and
-    'Search Panes' will filter the histogram plots, allowing you to visualize the same subset as in the table above.
+    from 0% (impossible) to 100% (certain).
     <div id='myDiv4'><!-- Plotly chart will be drawn inside this DIV --></div>
     <div class="lds-dual-ring" align="center"></div>
     <div align="center" class="fa-beer"><h1>Histogram of LQT3 Penetrance Estimates for <i>SCN5A</i> Variants</h1></div>
     Below is a histogram of the estimates of LQT3 penetrance for all variants displayed in the table above. The range is
-    0-100% penetrance. The y-axis is the number of unique variants per penetrance bin. Using the 'Search Builder' and
-    'Search Panes' will filter the histogram plots, allowing you to visualize the same subset as in the table above.
+    from 0% (impossible) to 100% (certain).
     <div id='myDiv5'><!-- Plotly chart will be drawn inside this DIV --></div>
 </body>
 {% endblock %}
